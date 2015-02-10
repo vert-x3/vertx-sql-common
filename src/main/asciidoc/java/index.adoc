@@ -1,3 +1,217 @@
-= Vert.x Common SQL interface
+== Vert.x Common SQL interface
 
-//TODO: complete docs
+The common SQL interface is used to interact with Vert.x SQL services.
+
+You obtain a connection to the database via the service interface for the specific SQL service that you are using
+(e.g. JDBC/MySQL/PostgreSQL).
+
+== The SQL Connection
+
+A connection to the database is represented by `link:apidocs/io/vertx/ext/sql/SqlConnection.html[SqlConnection]`.
+
+=== Auto-commit
+
+When you obtain a connection auto commit is set to `true`. This means that each operation you perform will effectively
+execute in its own transaction.
+
+If you wish to perform multiple operations in a single transaction you should set auto commit to false with
+`link:apidocs/io/vertx/ext/sql/SqlConnection.html#setAutoCommit-boolean-io.vertx.core.Handler-[setAutoCommit]`.
+
+When the operation is complete, the handler will be called:
+
+[source,java]
+----
+connection.setAutoCommit(false, res -> {
+  if (res.succeeded()) {
+    // OK!
+  } else {
+    // Failed!
+  }
+});
+----
+
+=== Executing queries
+
+To execute a query use `link:apidocs/io/vertx/ext/sql/SqlConnection.html#query-java.lang.String-io.vertx.core.Handler-[query]`
+
+The query string is raw SQL that is passed through without changes to the actual database.
+
+The handler will be called with the results, represented by `link:apidocs/io/vertx/ext/sql/ResultSet.html[ResultSet]` when the query has
+been run.
+
+[source,java]
+----
+connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", res -> {
+  if (res.succeeded()) {
+    // Get the result set
+    ResultSet resultSet = res.result();
+  } else {
+    // Failed!
+  }
+});
+----
+
+The `link:apidocs/io/vertx/ext/sql/ResultSet.html[ResultSet]` instance represents the results of a query.
+
+The list of column names are available with `link:apidocs/io/vertx/ext/sql/ResultSet.html#getColumnNames--[getColumnNames]`, and the actual results
+available with `link:apidocs/io/vertx/ext/sql/ResultSet.html#getResults--[getResults]`
+
+The results are a list of `link:apidocs/io/vertx/core/json/JsonArray.html[JsonArray]` instances, one for each row of the results.
+
+[source,java]
+----
+List<String> columnNames = resultSet.getColumnNames();
+
+List<JsonArray> results = resultSet.getResults();
+
+for (JsonArray row: results) {
+
+  String id = row.getString(0);
+  String fName = row.getString(1);
+  String lName = row.getString(2);
+  int shoeSize = row.getInteger(3);
+
+}
+----
+
+=== Prepared statement queries
+
+To execute a prepared statement query you can use
+`link:apidocs/io/vertx/ext/sql/SqlConnection.html#queryWithParams-java.lang.String-io.vertx.core.json.JsonArray-io.vertx.core.Handler-[queryWithParams]`.
+
+This takes the query, containing the parameter place holders, and a `link:apidocs/io/vertx/core/json/JsonArray.html[JsonArray]` or parameter
+values.
+
+[source,java]
+----
+String query = "SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE WHERE LNAME=? AND SHOE_SIZE > ?";
+JsonArray params = new JsonArray().add("Fox").add(9);
+
+connection.queryWithParams(query, params, res -> {
+
+  if (res.succeeded()) {
+    // Get the result set
+    ResultSet resultSet = res.result();
+  } else {
+    // Failed!
+  }
+});
+----
+
+=== Executing INSERT, UPDATE or DELETE
+
+To execute an operation which updates the database use `link:apidocs/io/vertx/ext/sql/SqlConnection.html#update-java.lang.String-io.vertx.core.Handler-[update]`.
+
+The update string is raw SQL that is passed through without changes to the actual database.
+
+The handler will be called with the results, represented by `link:apidocs/io/vertx/ext/sql/UpdateResult.html[UpdateResult]` when the update has
+been run.
+
+The update result holds the number of rows updated with `link:apidocs/io/vertx/ext/sql/UpdateResult.html#getUpdated--[getUpdated]`, and
+if the update generated keys, they are available with `link:apidocs/io/vertx/ext/sql/UpdateResult.html#getKeys--[getKeys]`.
+
+[source,java]
+----
+List<String> columnNames = resultSet.getColumnNames();
+
+List<JsonArray> results = resultSet.getResults();
+
+for (JsonArray row: results) {
+
+  String id = row.getString(0);
+  String fName = row.getString(1);
+  String lName = row.getString(2);
+  int shoeSize = row.getInteger(3);
+
+}
+----
+
+=== Prepared statement updates
+
+To execute a prepared statement update you can use
+`link:apidocs/io/vertx/ext/sql/SqlConnection.html#updateWithParams-java.lang.String-io.vertx.core.json.JsonArray-io.vertx.core.Handler-[updateWithParams]`.
+
+This takes the update, containing the parameter place holders, and a `link:apidocs/io/vertx/core/json/JsonArray.html[JsonArray]` or parameter
+values.
+
+[source,java]
+----
+String update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?";
+JsonArray params = new JsonArray().add("Fox");
+
+connection.updateWithParams(update, params, res -> {
+
+  if (res.succeeded()) {
+
+    UpdateResult updateResult = res.result();
+
+    System.out.println("No. of rows updated: " + updateResult.getUpdated());
+
+  } else {
+
+    // Failed!
+
+  }
+});
+----
+
+=== Executing other operations
+
+To execute any other database operation, e.g. a `CREATE TABLE` you can use
+`link:apidocs/io/vertx/ext/sql/SqlConnection.html#execute-java.lang.String-io.vertx.core.Handler-[execute]`.
+
+The string is passed through without changes to the actual database. The handler is called when the operation
+is complete
+
+[source,java]
+----
+String sql = "CREATE TABLE PEOPLE (ID int generated by default as identity (start with 1 increment by 1) not null," +
+             "FNAME varchar(255), LNAME varchar(255), SHOE_SIZE int);";
+
+connection.execute(sql, execute -> {
+  if (execute.succeeded()) {
+    System.out.println("Table created !");
+  } else {
+    // Failed!
+  }
+});
+
+String update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?";
+JsonArray params = new JsonArray().add("Fox");
+
+connection.updateWithParams(update, params, res -> {
+
+  if (res.succeeded()) {
+    UpdateResult updateResult = res.result();
+    System.out.println("No. of rows updated: " + updateResult.getUpdated());
+
+  } else {
+    // Failed!
+  }
+});
+----
+
+=== Using transactions
+
+To use transactions first set auto-commit to false with `link:apidocs/io/vertx/ext/sql/SqlConnection.html#setAutoCommit-boolean-io.vertx.core.Handler-[setAutoCommit]`.
+
+You then do your transactional operations and when you want to commit or rollback use
+`link:apidocs/io/vertx/ext/sql/SqlConnection.html#commit-io.vertx.core.Handler-[commit]` or
+`link:apidocs/io/vertx/ext/sql/SqlConnection.html#rollback-io.vertx.core.Handler-[rollback]`.
+
+Once the commit/rollback is complete the handler will be called and the next transaction will be automatically started.
+
+[source,java]
+----
+connection.commit(res -> {
+  if (res.succeeded()) {
+    // Committed OK!
+  } else {
+    // Failed!
+  }
+});
+----
+
+=== Closing connections
+
+When you've done with the connection you should return it to the pool with `link:apidocs/io/vertx/ext/sql/SqlConnection.html#close-io.vertx.core.Handler-[close]`.

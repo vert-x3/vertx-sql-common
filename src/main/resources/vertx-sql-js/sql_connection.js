@@ -22,7 +22,7 @@ var JsonObject = io.vertx.core.json.JsonObject;
 var JSqlConnection = io.vertx.ext.sql.SqlConnection;
 
 /**
- Represents the <code>JdbcConnection</code> which is obtained from the <code>JdbcService</code>.
+ Represents a connection to a SQL database
 
  @class
 */
@@ -32,11 +32,11 @@ var SqlConnection = function(j_val) {
   var that = this;
 
   /**
-   Sets the auto commit flag for this connection. True by default. Set to false if you want
+   Sets the auto commit flag for this connection. True by default.
 
    @public
    @param autoCommit {boolean} the autoCommit flag, true by default. 
-   @param resultHandler {function} 
+   @param resultHandler {function} the handler which is called once this operation completes. 
    @return {SqlConnection}
    */
   this.setAutoCommit = function(autoCommit, resultHandler) {
@@ -80,7 +80,7 @@ var SqlConnection = function(j_val) {
 
    @public
    @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
-   @param resultHandler {function} the handler which is called once the operation completes. It will return a list of <code>JsonObject</code>'s which represent the ResultSet. So column names are keys, and values are of course values. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
    @return {SqlConnection}
    */
   this.query = function(sql, resultHandler) {
@@ -102,8 +102,8 @@ var SqlConnection = function(j_val) {
 
    @public
    @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
-   @param params {todo} these are the parameters to fill the statement. Pass null if the statement is not a prepared statement. 
-   @param resultHandler {function} the handler which is called once the operation completes. It will return a list of <code>JsonObject</code>'s which represent the ResultSet. So column names are keys, and values are of course values. 
+   @param params {todo} these are the parameters to fill the statement. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
    @return {SqlConnection}
    */
   this.queryWithParams = function(sql, params, resultHandler) {
@@ -149,7 +149,7 @@ var SqlConnection = function(j_val) {
 
    @public
    @param sql {string} the SQL to execute. For example <code>INSERT INTO table ...</code> 
-   @param params {todo} these are the parameters to fill the statement. Pass null if the statement is not a prepared statement. 
+   @param params {todo} these are the parameters to fill the statement. 
    @param resultHandler {function} the handler which is called once the operation completes. 
    @return {SqlConnection}
    */
