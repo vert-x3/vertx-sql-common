@@ -62,7 +62,21 @@ public class SqlConnection {
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
    *
    * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-   * @param params if the SQL statement is to be a prepared statement, these are the parameters to fill the statement. Pass null if
+   * @param resultHandler the handler which is called once the operation completes. It will return a list of <code>JsonObject</code>'s
+   * which represent the ResultSet. So column names are keys, and values are of course values.
+   *
+   * @see java.sql.Statement#executeQuery(String)
+   * @see java.sql.PreparedStatement#executeQuery(String)
+   */
+  public SqlConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) {
+    this.delegate.query(sql, resultHandler);
+    return this;
+  }
+  /**
+   * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
+   *
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params these are the parameters to fill the statement. Pass null if
    * the statement is not a prepared statement.
    * @param resultHandler the handler which is called once the operation completes. It will return a list of <code>JsonObject</code>'s
    * which represent the ResultSet. So column names are keys, and values are of course values.
@@ -70,8 +84,8 @@ public class SqlConnection {
    * @see java.sql.Statement#executeQuery(String)
    * @see java.sql.PreparedStatement#executeQuery(String)
    */
-  public SqlConnection query(String sql, List<Object> params, Handler<AsyncResult<ResultSet>> resultHandler) {
-    this.delegate.query(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, resultHandler);
+  public SqlConnection queryWithParams(String sql, List<Object> params, Handler<AsyncResult<ResultSet>> resultHandler) {
+    this.delegate.queryWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, resultHandler);
     return this;
   }
   /**
@@ -79,15 +93,29 @@ public class SqlConnection {
    * statement.
    *
    * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
-   * @param params if the SQL statement is to be a prepared statement, these are the parameters to fill the statement. Pass null if
+   * @param resultHandler the handler which is called once the operation completes.
+   *
+   * @see java.sql.Statement#executeUpdate(String)
+   * @see java.sql.PreparedStatement#executeUpdate(String)
+   */
+  public SqlConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) {
+    this.delegate.update(sql, resultHandler);
+    return this;
+  }
+  /**
+   * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement with the given parameters
+   *
+   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params these are the parameters to fill the statement. Pass null if
    * the statement is not a prepared statement.
    * @param resultHandler the handler which is called once the operation completes.
    *
    * @see java.sql.Statement#executeUpdate(String)
    * @see java.sql.PreparedStatement#executeUpdate(String)
    */
-  public SqlConnection update(String sql, List<Object> params, Handler<AsyncResult<UpdateResult>> resultHandler) {
-    this.delegate.update(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, resultHandler);
+  public SqlConnection updateWithParams(String sql, List<Object> params, Handler<AsyncResult<UpdateResult>> resultHandler) {
+    this.delegate.updateWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, resultHandler);
     return this;
   }
   /**

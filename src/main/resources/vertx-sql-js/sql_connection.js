@@ -80,14 +80,36 @@ var SqlConnection = function(j_val) {
 
    @public
    @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
-   @param params {todo} if the SQL statement is to be a prepared statement, these are the parameters to fill the statement. Pass null if the statement is not a prepared statement. 
    @param resultHandler {function} the handler which is called once the operation completes. It will return a list of <code>JsonObject</code>'s which represent the ResultSet. So column names are keys, and values are of course values. 
    @return {SqlConnection}
    */
-  this.query = function(sql, params, resultHandler) {
+  this.query = function(sql, resultHandler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sqlConnection.query(sql, function(ar) {
+      if (ar.succeeded()) {
+        resultHandler(utils.convReturnJson(ar.result().toJson()), null);
+      } else {
+        resultHandler(null, ar.cause());
+      }
+    });
+      return that;
+    } else utils.invalidArgs();
+  };
+
+  /**
+   Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
+
+   @public
+   @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
+   @param params {todo} these are the parameters to fill the statement. Pass null if the statement is not a prepared statement. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a list of <code>JsonObject</code>'s which represent the ResultSet. So column names are keys, and values are of course values. 
+   @return {SqlConnection}
+   */
+  this.queryWithParams = function(sql, params, resultHandler) {
     var __args = arguments;
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sqlConnection.query(sql, utils.convParamJsonArray(params), function(ar) {
+      j_sqlConnection.queryWithParams(sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {
@@ -104,14 +126,37 @@ var SqlConnection = function(j_val) {
 
    @public
    @param sql {string} the SQL to execute. For example <code>INSERT INTO table ...</code> 
-   @param params {todo} if the SQL statement is to be a prepared statement, these are the parameters to fill the statement. Pass null if the statement is not a prepared statement. 
    @param resultHandler {function} the handler which is called once the operation completes. 
    @return {SqlConnection}
    */
-  this.update = function(sql, params, resultHandler) {
+  this.update = function(sql, resultHandler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sqlConnection.update(sql, function(ar) {
+      if (ar.succeeded()) {
+        resultHandler(utils.convReturnJson(ar.result().toJson()), null);
+      } else {
+        resultHandler(null, ar.cause());
+      }
+    });
+      return that;
+    } else utils.invalidArgs();
+  };
+
+  /**
+   Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   statement with the given parameters
+
+   @public
+   @param sql {string} the SQL to execute. For example <code>INSERT INTO table ...</code> 
+   @param params {todo} these are the parameters to fill the statement. Pass null if the statement is not a prepared statement. 
+   @param resultHandler {function} the handler which is called once the operation completes. 
+   @return {SqlConnection}
+   */
+  this.updateWithParams = function(sql, params, resultHandler) {
     var __args = arguments;
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sqlConnection.update(sql, utils.convParamJsonArray(params), function(ar) {
+      j_sqlConnection.updateWithParams(sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {

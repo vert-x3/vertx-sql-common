@@ -67,7 +67,17 @@ public class SqlConnectionVertxProxyHandler extends ProxyHandler {
         break;
       }
       case "query": {
-        service.query((java.lang.String)json.getValue("sql"), (io.vertx.core.json.JsonArray)json.getValue("params"), res -> {
+        service.query((java.lang.String)json.getValue("sql"), res -> {
+  if (res.failed()) {
+    msg.fail(-1, res.cause().getMessage());
+  } else {
+    msg.reply(res.result().toJson());
+  }
+});
+        break;
+      }
+      case "queryWithParams": {
+        service.queryWithParams((java.lang.String)json.getValue("sql"), (io.vertx.core.json.JsonArray)json.getValue("params"), res -> {
   if (res.failed()) {
     msg.fail(-1, res.cause().getMessage());
   } else {
@@ -77,7 +87,17 @@ public class SqlConnectionVertxProxyHandler extends ProxyHandler {
         break;
       }
       case "update": {
-        service.update((java.lang.String)json.getValue("sql"), (io.vertx.core.json.JsonArray)json.getValue("params"), res -> {
+        service.update((java.lang.String)json.getValue("sql"), res -> {
+  if (res.failed()) {
+    msg.fail(-1, res.cause().getMessage());
+  } else {
+    msg.reply(res.result().toJson());
+  }
+});
+        break;
+      }
+      case "updateWithParams": {
+        service.updateWithParams((java.lang.String)json.getValue("sql"), (io.vertx.core.json.JsonArray)json.getValue("params"), res -> {
   if (res.failed()) {
     msg.fail(-1, res.cause().getMessage());
   } else {

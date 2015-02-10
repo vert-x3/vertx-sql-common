@@ -46,4 +46,24 @@ public class UpdateResult {
   public JsonArray getKeys() {
     return keys;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    UpdateResult that = (UpdateResult) o;
+
+    if (updated != that.updated) return false;
+    if (keys != null ? !keys.equals(that.keys) : that.keys != null) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = updated;
+    result = 31 * result + (keys != null ? keys.hashCode() : 0);
+    return result;
+  }
 }
