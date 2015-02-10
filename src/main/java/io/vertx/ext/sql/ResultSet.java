@@ -7,6 +7,11 @@ import io.vertx.core.json.JsonObject;
 import java.util.List;
 
 /**
+ * Represents the results of a SQL query.
+ * <p>
+ * It contains a list for the column names of the results, and a list of {@code JsonArray} - one for each row of the
+ * results.
+ *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 @DataObject
@@ -15,19 +20,38 @@ public class ResultSet {
   private List<String> columnNames;
   private List<JsonArray> results;
 
+  /**
+   * Default constructor
+   */
   public ResultSet() {
   }
 
+  /**
+   * Copy constructor
+   *
+   * @param other  result-set to copy
+   */
   public ResultSet(ResultSet other) {
     this.columnNames = other.columnNames;
     this.results = other.results;
   }
 
+  /**
+   * Create a result-set
+   *
+   * @param columnNames  the column names
+   * @param results  the results
+   */
   public ResultSet(List<String> columnNames, List<JsonArray> results) {
     this.columnNames = columnNames;
     this.results = results;
   }
 
+  /**
+   * Create a result-set from JSON
+   *
+   * @param json  the json
+   */
   @SuppressWarnings("unchecked")
   public ResultSet(JsonObject json) {
     JsonArray arr = json.getJsonArray("columnNames");
@@ -40,6 +64,11 @@ public class ResultSet {
     }
   }
 
+  /**
+   * Convert to JSON
+   *
+   * @return json object
+   */
   public JsonObject toJson() {
     JsonObject obj = new JsonObject();
     obj.put("columnNames", new JsonArray(columnNames));
@@ -47,10 +76,20 @@ public class ResultSet {
     return obj;
   }
 
+  /**
+   * Get the results
+   *
+   * @return the results
+   */
   public List<JsonArray> getResults() {
     return results;
   }
 
+  /**
+   * Get the column names
+   *
+   * @return the column names
+   */
   public List<String> getColumnNames() {
     return columnNames;
   }

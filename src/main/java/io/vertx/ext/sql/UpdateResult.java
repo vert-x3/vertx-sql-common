@@ -5,6 +5,11 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
 /**
+ * Represents the result of an update/insert/delete operation on the database.
+ * <p>
+ * The number of rows updated is available with {@link io.vertx.ext.sql.UpdateResult#getUpdated} and any generated
+ * keys are available with {@link io.vertx.ext.sql.UpdateResult#getKeys}.
+ *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 @DataObject
@@ -13,25 +18,49 @@ public class UpdateResult {
   private int updated;
   private JsonArray keys;
 
+  /**
+   * Default constructor
+   */
   public UpdateResult() {
   }
 
+  /**
+   * Copy constructor
+   *
+   * @param other  the result to copy
+   */
   public UpdateResult(UpdateResult other) {
     this.updated = other.updated;
     this.keys = other.getKeys();
   }
 
+  /**
+   * Constructor from JSON
+   *
+   * @param json  the json
+   */
   @SuppressWarnings("unchecked")
   public UpdateResult(JsonObject json) {
     this.updated = json.getInteger("updated");
     keys = json.getJsonArray("keys");
   }
 
+  /**
+   * Constructor
+   *
+   * @param updated  number of rows updated
+   * @param keys  any generated keys
+   */
   public UpdateResult(int updated, JsonArray keys) {
     this.updated = updated;
     this.keys = keys;
   }
 
+  /**
+   * Convert to JSON
+   *
+   * @return  the json
+   */
   public JsonObject toJson() {
     JsonObject obj = new JsonObject();
     obj.put("updated", updated);
@@ -39,10 +68,20 @@ public class UpdateResult {
     return obj;
   }
 
+  /**
+   * Get the number of rows updated
+   *
+   * @return number of rows updated
+   */
   public int getUpdated() {
     return updated;
   }
 
+  /**
+   * Get any generated keys
+   *
+   * @return generated keys
+   */
   public JsonArray getKeys() {
     return keys;
   }
