@@ -175,20 +175,6 @@ connection.execute(sql, execute -> {
     // Failed!
   }
 });
-
-String update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?";
-JsonArray params = new JsonArray().add("Fox");
-
-connection.updateWithParams(update, params, res -> {
-
-  if (res.succeeded()) {
-    UpdateResult updateResult = res.result();
-    System.out.println("No. of rows updated: " + updateResult.getUpdated());
-
-  } else {
-    // Failed!
-  }
-});
 ----
 
 === Using transactions
