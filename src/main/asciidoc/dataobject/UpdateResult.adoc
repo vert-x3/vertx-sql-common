@@ -1,7 +1,10 @@
 == UpdateResult
 
 ++++
- @author <a href="http://tfox.org">Tim Fox</a>
+ Represents the result of an update/insert/delete operation on the database.
+ <p>
+ The number of rows updated is available with {@link http://www.google.com} and any generated
+ keys are available with {@link http://www.google.com}.
 ++++
 
 |===

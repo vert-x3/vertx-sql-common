@@ -23,7 +23,7 @@ import io.vertx.ext.sql.ResultSet
 import io.vertx.core.AsyncResult
 import io.vertx.core.Handler
 /**
- * Represents the <code>JdbcConnection</code> which is obtained from the <code>JdbcService</code>.
+ * Represents a connection to a SQL database
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
@@ -37,10 +37,10 @@ public class SqlConnection {
     return delegate;
   }
   /**
-   * Sets the auto commit flag for this connection. True by default. Set to false if you want
+   * Sets the auto commit flag for this connection. True by default.
    *
-   * @param autoCommit the autoCommit flag, true by default.
-   * @param resultHandler
+   * @param autoCommit  the autoCommit flag, true by default.
+   * @param resultHandler  the handler which is called once this operation completes.
    * @see java.sql.Connection#setAutoCommit(boolean)
    */
   public SqlConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) {
@@ -50,8 +50,8 @@ public class SqlConnection {
   /**
    * Executes the given SQL statement
    *
-   * @param sql the SQL to execute. For example <code>CREATE TABLE IF EXISTS table ...</code>
-   * @param resultHandler the handler which is called once this operation completes.
+   * @param sql  the SQL to execute. For example <code>CREATE TABLE IF EXISTS table ...</code>
+   * @param resultHandler  the handler which is called once this operation completes.
    * @see java.sql.Statement#execute(String)
    */
   public SqlConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler) {
@@ -61,9 +61,8 @@ public class SqlConnection {
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
    *
-   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-   * @param resultHandler the handler which is called once the operation completes. It will return a list of <code>JsonObject</code>'s
-   * which represent the ResultSet. So column names are keys, and values are of course values.
+   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param resultHandler  the handler which is called once the operation completes. It will return a ResultSet.
    *
    * @see java.sql.Statement#executeQuery(String)
    * @see java.sql.PreparedStatement#executeQuery(String)
@@ -75,11 +74,9 @@ public class SqlConnection {
   /**
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
    *
-   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-   * @param params these are the parameters to fill the statement. Pass null if
-   * the statement is not a prepared statement.
-   * @param resultHandler the handler which is called once the operation completes. It will return a list of <code>JsonObject</code>'s
-   * which represent the ResultSet. So column names are keys, and values are of course values.
+   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params  these are the parameters to fill the statement.
+   * @param resultHandler  the handler which is called once the operation completes. It will return a ResultSet.
    *
    * @see java.sql.Statement#executeQuery(String)
    * @see java.sql.PreparedStatement#executeQuery(String)
@@ -92,8 +89,8 @@ public class SqlConnection {
    * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement.
    *
-   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
-   * @param resultHandler the handler which is called once the operation completes.
+   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param resultHandler  the handler which is called once the operation completes.
    *
    * @see java.sql.Statement#executeUpdate(String)
    * @see java.sql.PreparedStatement#executeUpdate(String)
@@ -106,10 +103,9 @@ public class SqlConnection {
    * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement with the given parameters
    *
-   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
-   * @param params these are the parameters to fill the statement. Pass null if
-   * the statement is not a prepared statement.
-   * @param resultHandler the handler which is called once the operation completes.
+   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params  these are the parameters to fill the statement.
+   * @param resultHandler  the handler which is called once the operation completes.
    *
    * @see java.sql.Statement#executeUpdate(String)
    * @see java.sql.PreparedStatement#executeUpdate(String)
