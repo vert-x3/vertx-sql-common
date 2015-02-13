@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.vertx</groupId>
     <artifactId>vertx-ext-parent</artifactId>
-    <version>5</version>
+    <version>6</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -51,7 +51,6 @@
       <groupId>io.vertx</groupId>
       <artifactId>vertx-rx-java</artifactId>
       <optional>true</optional>
-      <version>${stack.version}</version>
     </dependency>
 
     <dependency>
@@ -73,30 +72,6 @@
       <artifactId>vertx-service-factory</artifactId>
     </dependency>
 
-
   </dependencies>
 
-  <build>
-    <plugins>
-      <!-- Todo : move that in vertx-ext-parent later -->
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>assemble-docs</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <attach>true</attach>
-              <descriptors>
-                <descriptor>src/main/assembly/docs.xml</descriptor>
-              </descriptors>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
