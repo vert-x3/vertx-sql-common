@@ -4,6 +4,7 @@ import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class ResultSet {
 
   private List<String> columnNames;
   private List<JsonArray> results;
+  private List<JsonObject> rows;
 
   /**
    * Default constructor
@@ -92,6 +94,47 @@ public class ResultSet {
    */
   public List<String> getColumnNames() {
     return columnNames;
+  }
+
+  /**
+   * Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
+   * the column values.
+   * <p>
+   * Beware that it's legal for a query result in SQL to contain duplicate column names, in which case one will
+   * overwrite the other if using this method. If that's the case use {@link #getResults} instead.
+   *
+   * @return  the rows represented as JSON object instances
+   */
+  public List<JsonObject> getRows() {
+    if (rows == null) {
+      rows = new ArrayList<>(results.size());
+      int cols = columnNames.size();
+      for (JsonArray result: results) {
+        JsonObject row = new JsonObject();
+        for (int i = 0; i < cols; i++) {
+          row.put(columnNames.get(i), result.getValue(i));
+        }
+      }
+    }
+    return rows;
+  }
+
+  /**
+   * Return the number of rows in the result set
+   *
+   * @return the number of rows
+   */
+  public int getNumRows() {
+    return results.size();
+  }
+
+  /**
+   * Return the number of columns in the result set
+   *
+   * @return the number of columns
+   */
+  public int getNumColumns() {
+    return columnNames.size();
   }
 
   @Override

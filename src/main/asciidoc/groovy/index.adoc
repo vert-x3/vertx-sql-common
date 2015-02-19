@@ -76,6 +76,29 @@ results.each { row ->
 
 ----
 
+You can also retrieve the rows as a list of Json object instances with `link:groovydoc/io/vertx/groovy/ext/sql/ResultSet.html#getRows()[getRows]` -
+this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
+column names - if that's the case you should use `link:groovydoc/io/vertx/groovy/ext/sql/ResultSet.html#getResults()[getResults]` instead.
+
+Here's an example of iterating through the results as Json object instances:
+
+[source,java]
+----
+
+def rows = resultSet.rows
+
+rows.each { row ->
+
+  def id = row."ID"
+  def fName = row."FNAME"
+  def lName = row."LNAME"
+  def shoeSize = row."SHOE_SIZE"
+
+}
+
+
+----
+
 === Prepared statement queries
 
 To execute a prepared statement query you can use

@@ -76,6 +76,29 @@ Array.prototype.forEach.call(results, function(row) {
 
 ----
 
+You can also retrieve the rows as a list of Json object instances with `link:dataobject/ResultSet.html#getRows[getRows]` -
+this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
+column names - if that's the case you should use `link:dataobject/ResultSet.html#getResults[getResults]` instead.
+
+Here's an example of iterating through the results as Json object instances:
+
+[source,java]
+----
+
+var rows = resultSet.rows;
+
+Array.prototype.forEach.call(rows, function(row) {
+
+  var id = row."ID";
+  var fName = row."FNAME";
+  var lName = row."LNAME";
+  var shoeSize = row."SHOE_SIZE";
+
+});
+
+
+----
+
 === Prepared statement queries
 
 To execute a prepared statement query you can use

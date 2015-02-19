@@ -1,6 +1,7 @@
 package examples;
 
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SqlConnection;
 import io.vertx.ext.sql.UpdateResult;
@@ -46,6 +47,21 @@ public class Examples {
       String fName = row.getString(1);
       String lName = row.getString(2);
       int shoeSize = row.getInteger(3);
+
+    }
+
+  }
+
+  public void example3__1(ResultSet resultSet) {
+
+    List<JsonObject> rows = resultSet.getRows();
+
+    for (JsonObject row: rows) {
+
+      String id = row.getString("ID");
+      String fName = row.getString("FNAME");
+      String lName = row.getString("LNAME");
+      int shoeSize = row.getInteger("SHOE_SIZE");
 
     }
 

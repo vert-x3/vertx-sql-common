@@ -51,6 +51,17 @@
  * {@link examples.Examples#example3}
  * ----
  *
+ * You can also retrieve the rows as a list of Json object instances with {@link io.vertx.ext.sql.ResultSet#getRows()} -
+ * this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
+ * column names - if that's the case you should use {@link io.vertx.ext.sql.ResultSet#getResults()} instead.
+ *
+ * Here's an example of iterating through the results as Json object instances:
+ *
+ * [source,java]
+ * ----
+ * {@link examples.Examples#example3__1}
+ * ----
+ *
  * === Prepared statement queries
  *
  * To execute a prepared statement query you can use

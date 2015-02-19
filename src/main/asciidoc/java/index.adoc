@@ -74,6 +74,26 @@ for (JsonArray row: results) {
 }
 ----
 
+You can also retrieve the rows as a list of Json object instances with `link:apidocs/io/vertx/ext/sql/ResultSet.html#getRows--[getRows]` -
+this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
+column names - if that's the case you should use `link:apidocs/io/vertx/ext/sql/ResultSet.html#getResults--[getResults]` instead.
+
+Here's an example of iterating through the results as Json object instances:
+
+[source,java]
+----
+List<JsonObject> rows = resultSet.getRows();
+
+for (JsonObject row: rows) {
+
+  String id = row.getString("ID");
+  String fName = row.getString("FNAME");
+  String lName = row.getString("LNAME");
+  int shoeSize = row.getInteger("SHOE_SIZE");
+
+}
+----
+
 === Prepared statement queries
 
 To execute a prepared statement query you can use
