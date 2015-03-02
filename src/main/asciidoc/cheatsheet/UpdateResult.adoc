@@ -1,0 +1,15 @@
+== UpdateResult
+
+++++
+ Represents the result of an update/insert/delete operation on the database.
+ <p>
+ The number of rows updated is available with link and any generated
+ keys are available with link.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|===

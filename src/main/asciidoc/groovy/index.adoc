@@ -23,7 +23,9 @@ When the operation is complete, the handler will be called:
 ----
 connection.setAutoCommit(false, { res ->
   if (res.succeeded()) {
+    // OK!
   } else {
+    // Failed!
   }
 })
 
@@ -45,6 +47,7 @@ connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", { res ->
     // Get the result set
     def resultSet = res.result()
   } else {
+    // Failed!
   }
 })
 
@@ -122,6 +125,7 @@ connection.queryWithParams(query, params, { res ->
     // Get the result set
     def resultSet = res.result()
   } else {
+    // Failed!
   }
 })
 
@@ -184,6 +188,9 @@ connection.updateWithParams(update, params, { res ->
     println("No. of rows updated: ${updateResult.updated}")
 
   } else {
+
+    // Failed!
+
   }
 })
 
@@ -207,6 +214,7 @@ connection.execute(sql, { execute ->
   if (execute.succeeded()) {
     println("Table created !")
   } else {
+    // Failed!
   }
 })
 
@@ -232,7 +240,9 @@ Once the commit/rollback is complete the handler will be called and the next tra
 
 connection.commit({ res ->
   if (res.succeeded()) {
+    // Committed OK!
   } else {
+    // Failed!
   }
 })
 

@@ -6,7 +6,10 @@
  It contains a list for the column names of the results, and a list of <code>JsonArray</code> - one for each row of the
  results.
 ++++
+'''
 
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
 |===
-|Name | Type | Description
+^|Name | Type ^| Description
 |===
