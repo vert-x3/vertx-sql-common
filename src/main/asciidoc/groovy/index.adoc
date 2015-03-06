@@ -37,7 +37,7 @@ To execute a query use `link:groovydoc/io/vertx/groovy/ext/sql/SqlConnection.htm
 
 The query string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:groovydoc/io/vertx/groovy/ext/sql/ResultSet.html[ResultSet]` when the query has
+The handler will be called with the results, represented by `link:../cheatsheet/ResultSet.html[ResultSet]` when the query has
 been run.
 
 [source,java]
@@ -53,10 +53,10 @@ connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", { res ->
 
 ----
 
-The `link:groovydoc/io/vertx/groovy/ext/sql/ResultSet.html[ResultSet]` instance represents the results of a query.
+The `link:../cheatsheet/ResultSet.html[ResultSet]` instance represents the results of a query.
 
-The list of column names are available with `link:groovydoc/io/vertx/groovy/ext/sql/ResultSet.html#getColumnNames()[getColumnNames]`, and the actual results
-available with `link:groovydoc/io/vertx/groovy/ext/sql/ResultSet.html#getResults()[getResults]`
+The list of column names are available with `link:../cheatsheet/ResultSet.html#getColumnNames()[getColumnNames]`, and the actual results
+available with `link:../cheatsheet/ResultSet.html#getResults()[getResults]`
 
 The results are a list of `link:groovydoc/io/vertx/groovy/core/json/JsonArray.html[JsonArray]` instances, one for each row of the results.
 
@@ -79,9 +79,9 @@ results.each { row ->
 
 ----
 
-You can also retrieve the rows as a list of Json object instances with `link:groovydoc/io/vertx/groovy/ext/sql/ResultSet.html#getRows()[getRows]` -
+You can also retrieve the rows as a list of Json object instances with `link:../cheatsheet/ResultSet.html#getRows()[getRows]` -
 this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
-column names - if that's the case you should use `link:groovydoc/io/vertx/groovy/ext/sql/ResultSet.html#getResults()[getResults]` instead.
+column names - if that's the case you should use `link:../cheatsheet/ResultSet.html#getResults()[getResults]` instead.
 
 Here's an example of iterating through the results as Json object instances:
 
@@ -138,11 +138,11 @@ To execute an operation which updates the database use `link:groovydoc/io/vertx/
 
 The update string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:groovydoc/io/vertx/groovy/ext/sql/UpdateResult.html[UpdateResult]` when the update has
+The handler will be called with the results, represented by `link:../cheatsheet/UpdateResult.html[UpdateResult]` when the update has
 been run.
 
-The update result holds the number of rows updated with `link:groovydoc/io/vertx/groovy/ext/sql/UpdateResult.html#getUpdated()[getUpdated]`, and
-if the update generated keys, they are available with `link:groovydoc/io/vertx/groovy/ext/sql/UpdateResult.html#getKeys()[getKeys]`.
+The update result holds the number of rows updated with `link:../cheatsheet/UpdateResult.html#getUpdated()[getUpdated]`, and
+if the update generated keys, they are available with `link:../cheatsheet/UpdateResult.html#getKeys()[getKeys]`.
 
 [source,java]
 ----

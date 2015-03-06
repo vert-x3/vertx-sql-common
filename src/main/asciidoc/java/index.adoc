@@ -7,7 +7,7 @@ You obtain a connection to the database via the service interface for the specif
 
 == The SQL Connection
 
-A connection to the database is represented by `link:apidocs/io/vertx/ext/sql/SqlConnection.html[SqlConnection]`.
+A connection to the database is represented by `link:../../apidocs/io/vertx/ext/sql/SqlConnection.html[SqlConnection]`.
 
 === Auto-commit
 
@@ -15,7 +15,7 @@ When you obtain a connection auto commit is set to `true`. This means that each 
 execute in its own transaction.
 
 If you wish to perform multiple operations in a single transaction you should set auto commit to false with
-`link:apidocs/io/vertx/ext/sql/SqlConnection.html#setAutoCommit-boolean-io.vertx.core.Handler-[setAutoCommit]`.
+`link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#setAutoCommit-boolean-io.vertx.core.Handler-[setAutoCommit]`.
 
 When the operation is complete, the handler will be called:
 
@@ -32,11 +32,11 @@ connection.setAutoCommit(false, res -> {
 
 === Executing queries
 
-To execute a query use `link:apidocs/io/vertx/ext/sql/SqlConnection.html#query-java.lang.String-io.vertx.core.Handler-[query]`
+To execute a query use `link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#query-java.lang.String-io.vertx.core.Handler-[query]`
 
 The query string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:apidocs/io/vertx/ext/sql/ResultSet.html[ResultSet]` when the query has
+The handler will be called with the results, represented by `link:../../apidocs/io/vertx/ext/sql/ResultSet.html[ResultSet]` when the query has
 been run.
 
 [source,java]
@@ -51,12 +51,12 @@ connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", res -> {
 });
 ----
 
-The `link:apidocs/io/vertx/ext/sql/ResultSet.html[ResultSet]` instance represents the results of a query.
+The `link:../../apidocs/io/vertx/ext/sql/ResultSet.html[ResultSet]` instance represents the results of a query.
 
-The list of column names are available with `link:apidocs/io/vertx/ext/sql/ResultSet.html#getColumnNames--[getColumnNames]`, and the actual results
-available with `link:apidocs/io/vertx/ext/sql/ResultSet.html#getResults--[getResults]`
+The list of column names are available with `link:../../apidocs/io/vertx/ext/sql/ResultSet.html#getColumnNames--[getColumnNames]`, and the actual results
+available with `link:../../apidocs/io/vertx/ext/sql/ResultSet.html#getResults--[getResults]`
 
-The results are a list of `link:apidocs/io/vertx/core/json/JsonArray.html[JsonArray]` instances, one for each row of the results.
+The results are a list of `link:../../apidocs/io/vertx/core/json/JsonArray.html[JsonArray]` instances, one for each row of the results.
 
 [source,java]
 ----
@@ -74,9 +74,9 @@ for (JsonArray row: results) {
 }
 ----
 
-You can also retrieve the rows as a list of Json object instances with `link:apidocs/io/vertx/ext/sql/ResultSet.html#getRows--[getRows]` -
+You can also retrieve the rows as a list of Json object instances with `link:../../apidocs/io/vertx/ext/sql/ResultSet.html#getRows--[getRows]` -
 this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
-column names - if that's the case you should use `link:apidocs/io/vertx/ext/sql/ResultSet.html#getResults--[getResults]` instead.
+column names - if that's the case you should use `link:../../apidocs/io/vertx/ext/sql/ResultSet.html#getResults--[getResults]` instead.
 
 Here's an example of iterating through the results as Json object instances:
 
@@ -97,9 +97,9 @@ for (JsonObject row: rows) {
 === Prepared statement queries
 
 To execute a prepared statement query you can use
-`link:apidocs/io/vertx/ext/sql/SqlConnection.html#queryWithParams-java.lang.String-io.vertx.core.json.JsonArray-io.vertx.core.Handler-[queryWithParams]`.
+`link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#queryWithParams-java.lang.String-io.vertx.core.json.JsonArray-io.vertx.core.Handler-[queryWithParams]`.
 
-This takes the query, containing the parameter place holders, and a `link:apidocs/io/vertx/core/json/JsonArray.html[JsonArray]` or parameter
+This takes the query, containing the parameter place holders, and a `link:../../apidocs/io/vertx/core/json/JsonArray.html[JsonArray]` or parameter
 values.
 
 [source,java]
@@ -120,15 +120,15 @@ connection.queryWithParams(query, params, res -> {
 
 === Executing INSERT, UPDATE or DELETE
 
-To execute an operation which updates the database use `link:apidocs/io/vertx/ext/sql/SqlConnection.html#update-java.lang.String-io.vertx.core.Handler-[update]`.
+To execute an operation which updates the database use `link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#update-java.lang.String-io.vertx.core.Handler-[update]`.
 
 The update string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:apidocs/io/vertx/ext/sql/UpdateResult.html[UpdateResult]` when the update has
+The handler will be called with the results, represented by `link:../../apidocs/io/vertx/ext/sql/UpdateResult.html[UpdateResult]` when the update has
 been run.
 
-The update result holds the number of rows updated with `link:apidocs/io/vertx/ext/sql/UpdateResult.html#getUpdated--[getUpdated]`, and
-if the update generated keys, they are available with `link:apidocs/io/vertx/ext/sql/UpdateResult.html#getKeys--[getKeys]`.
+The update result holds the number of rows updated with `link:../../apidocs/io/vertx/ext/sql/UpdateResult.html#getUpdated--[getUpdated]`, and
+if the update generated keys, they are available with `link:../../apidocs/io/vertx/ext/sql/UpdateResult.html#getKeys--[getKeys]`.
 
 [source,java]
 ----
@@ -149,9 +149,9 @@ for (JsonArray row: results) {
 === Prepared statement updates
 
 To execute a prepared statement update you can use
-`link:apidocs/io/vertx/ext/sql/SqlConnection.html#updateWithParams-java.lang.String-io.vertx.core.json.JsonArray-io.vertx.core.Handler-[updateWithParams]`.
+`link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#updateWithParams-java.lang.String-io.vertx.core.json.JsonArray-io.vertx.core.Handler-[updateWithParams]`.
 
-This takes the update, containing the parameter place holders, and a `link:apidocs/io/vertx/core/json/JsonArray.html[JsonArray]` or parameter
+This takes the update, containing the parameter place holders, and a `link:../../apidocs/io/vertx/core/json/JsonArray.html[JsonArray]` or parameter
 values.
 
 [source,java]
@@ -178,7 +178,7 @@ connection.updateWithParams(update, params, res -> {
 === Executing other operations
 
 To execute any other database operation, e.g. a `CREATE TABLE` you can use
-`link:apidocs/io/vertx/ext/sql/SqlConnection.html#execute-java.lang.String-io.vertx.core.Handler-[execute]`.
+`link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#execute-java.lang.String-io.vertx.core.Handler-[execute]`.
 
 The string is passed through without changes to the actual database. The handler is called when the operation
 is complete
@@ -199,11 +199,11 @@ connection.execute(sql, execute -> {
 
 === Using transactions
 
-To use transactions first set auto-commit to false with `link:apidocs/io/vertx/ext/sql/SqlConnection.html#setAutoCommit-boolean-io.vertx.core.Handler-[setAutoCommit]`.
+To use transactions first set auto-commit to false with `link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#setAutoCommit-boolean-io.vertx.core.Handler-[setAutoCommit]`.
 
 You then do your transactional operations and when you want to commit or rollback use
-`link:apidocs/io/vertx/ext/sql/SqlConnection.html#commit-io.vertx.core.Handler-[commit]` or
-`link:apidocs/io/vertx/ext/sql/SqlConnection.html#rollback-io.vertx.core.Handler-[rollback]`.
+`link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#commit-io.vertx.core.Handler-[commit]` or
+`link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#rollback-io.vertx.core.Handler-[rollback]`.
 
 Once the commit/rollback is complete the handler will be called and the next transaction will be automatically started.
 
@@ -220,4 +220,4 @@ connection.commit(res -> {
 
 === Closing connections
 
-When you've done with the connection you should return it to the pool with `link:apidocs/io/vertx/ext/sql/SqlConnection.html#close-io.vertx.core.Handler-[close]`.
+When you've done with the connection you should return it to the pool with `link:../../apidocs/io/vertx/ext/sql/SqlConnection.html#close-io.vertx.core.Handler-[close]`.
