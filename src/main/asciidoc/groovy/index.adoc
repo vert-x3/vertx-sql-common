@@ -55,10 +55,10 @@ connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", { res ->
 
 The `link:../cheatsheet/ResultSet.html[ResultSet]` instance represents the results of a query.
 
-The list of column names are available with `link:../cheatsheet/ResultSet.html#getColumnNames()[getColumnNames]`, and the actual results
-available with `link:../cheatsheet/ResultSet.html#getResults()[getResults]`
+The list of column names are available with `link:../cheatsheet/ResultSet.html#columnNames[columnNames]`, and the actual results
+available with `link:../cheatsheet/ResultSet.html#results[results]`
 
-The results are a list of `link:groovydoc/io/vertx/groovy/core/json/JsonArray.html[JsonArray]` instances, one for each row of the results.
+The results are a list of `link:../../vertx-core/groovy/groovydoc/io/vertx/groovy/core/json/JsonArray.html[JsonArray]` instances, one for each row of the results.
 
 [source,java]
 ----
@@ -79,9 +79,9 @@ results.each { row ->
 
 ----
 
-You can also retrieve the rows as a list of Json object instances with `link:../cheatsheet/ResultSet.html#getRows()[getRows]` -
+You can also retrieve the rows as a list of Json object instances with `link:../cheatsheet/ResultSet.html#rows[rows]` -
 this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
-column names - if that's the case you should use `link:../cheatsheet/ResultSet.html#getResults()[getResults]` instead.
+column names - if that's the case you should use `link:../cheatsheet/ResultSet.html#results[results]` instead.
 
 Here's an example of iterating through the results as Json object instances:
 
@@ -107,7 +107,7 @@ rows.each { row ->
 To execute a prepared statement query you can use
 `link:groovydoc/io/vertx/groovy/ext/sql/SqlConnection.html#queryWithParams(java.lang.String,%20io.vertx.core.json.JsonArray,%20io.vertx.core.Handler)[queryWithParams]`.
 
-This takes the query, containing the parameter place holders, and a `link:groovydoc/io/vertx/groovy/core/json/JsonArray.html[JsonArray]` or parameter
+This takes the query, containing the parameter place holders, and a `link:../../vertx-core/groovy/groovydoc/io/vertx/groovy/core/json/JsonArray.html[JsonArray]` or parameter
 values.
 
 [source,java]
@@ -141,8 +141,8 @@ The update string is raw SQL that is passed through without changes to the actua
 The handler will be called with the results, represented by `link:../cheatsheet/UpdateResult.html[UpdateResult]` when the update has
 been run.
 
-The update result holds the number of rows updated with `link:../cheatsheet/UpdateResult.html#getUpdated()[getUpdated]`, and
-if the update generated keys, they are available with `link:../cheatsheet/UpdateResult.html#getKeys()[getKeys]`.
+The update result holds the number of rows updated with `link:../cheatsheet/UpdateResult.html#updated[updated]`, and
+if the update generated keys, they are available with `link:../cheatsheet/UpdateResult.html#keys[keys]`.
 
 [source,java]
 ----
@@ -168,7 +168,7 @@ results.each { row ->
 To execute a prepared statement update you can use
 `link:groovydoc/io/vertx/groovy/ext/sql/SqlConnection.html#updateWithParams(java.lang.String,%20io.vertx.core.json.JsonArray,%20io.vertx.core.Handler)[updateWithParams]`.
 
-This takes the update, containing the parameter place holders, and a `link:groovydoc/io/vertx/groovy/core/json/JsonArray.html[JsonArray]` or parameter
+This takes the update, containing the parameter place holders, and a `link:../../vertx-core/groovy/groovydoc/io/vertx/groovy/core/json/JsonArray.html[JsonArray]` or parameter
 values.
 
 [source,java]
