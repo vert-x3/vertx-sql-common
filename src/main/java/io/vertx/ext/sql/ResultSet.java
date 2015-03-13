@@ -114,6 +114,7 @@ public class ResultSet {
         for (int i = 0; i < cols; i++) {
           row.put(columnNames.get(i), result.getValue(i));
         }
+        rows.add(row);
       }
     }
     return rows;
