@@ -123,8 +123,4 @@ public class SqlConnection {
     this.delegate.rollback(handler);
     return this;
   }
-
-  static final java.util.function.Function<io.vertx.ext.sql.SqlConnection, SqlConnection> FACTORY = io.vertx.lang.groovy.Factories.createFactory() {
-    io.vertx.ext.sql.SqlConnection arg -> new SqlConnection(arg);
-  };
 }

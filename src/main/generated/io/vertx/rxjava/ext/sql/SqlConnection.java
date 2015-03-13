@@ -28,9 +28,8 @@ import io.vertx.core.Handler;
 /**
  * Represents a connection to a SQL database
  *
- * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
- *
- * NOTE: This class has been automatically generated from the original non RX-ified interface using Vert.x codegen.
+ * <p/>
+ * NOTE: This class has been automatically generated from the {@link io.vertx.ext.sql.SqlConnection original} non RX-ified interface using Vert.x codegen.
  */
 
 public class SqlConnection {
@@ -47,10 +46,9 @@ public class SqlConnection {
 
   /**
    * Sets the auto commit flag for this connection. True by default.
-   *
-   * @param autoCommit  the autoCommit flag, true by default.
-   * @param resultHandler  the handler which is called once this operation completes.
-   * @see java.sql.Connection#setAutoCommit(boolean)
+   * @param autoCommit the autoCommit flag, true by default.
+   * @param resultHandler the handler which is called once this operation completes.
+   * @return 
    */
   public SqlConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) { 
     this.delegate.setAutoCommit(autoCommit, resultHandler);
@@ -59,10 +57,8 @@ public class SqlConnection {
 
   /**
    * Sets the auto commit flag for this connection. True by default.
-   *
-   * @param autoCommit  the autoCommit flag, true by default.
-   * @param resultHandler  the handler which is called once this operation completes.
-   * @see java.sql.Connection#setAutoCommit(boolean)
+   * @param autoCommit the autoCommit flag, true by default.
+   * @return 
    */
   public Observable<Void> setAutoCommitObservable(boolean autoCommit) { 
     io.vertx.rx.java.ObservableFuture<Void> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
@@ -72,10 +68,9 @@ public class SqlConnection {
 
   /**
    * Executes the given SQL statement
-   *
-   * @param sql  the SQL to execute. For example <code>CREATE TABLE IF EXISTS table ...</code>
-   * @param resultHandler  the handler which is called once this operation completes.
-   * @see java.sql.Statement#execute(String)
+   * @param sql the SQL to execute. For example <code>CREATE TABLE IF EXISTS table ...</code>
+   * @param resultHandler the handler which is called once this operation completes.
+   * @return 
    */
   public SqlConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler) { 
     this.delegate.execute(sql, resultHandler);
@@ -84,10 +79,8 @@ public class SqlConnection {
 
   /**
    * Executes the given SQL statement
-   *
-   * @param sql  the SQL to execute. For example <code>CREATE TABLE IF EXISTS table ...</code>
-   * @param resultHandler  the handler which is called once this operation completes.
-   * @see java.sql.Statement#execute(String)
+   * @param sql the SQL to execute. For example <code>CREATE TABLE IF EXISTS table ...</code>
+   * @return 
    */
   public Observable<Void> executeObservable(String sql) { 
     io.vertx.rx.java.ObservableFuture<Void> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
@@ -97,12 +90,9 @@ public class SqlConnection {
 
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
-   *
-   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-   * @param resultHandler  the handler which is called once the operation completes. It will return a ResultSet.
-   *
-   * @see java.sql.Statement#executeQuery(String)
-   * @see java.sql.PreparedStatement#executeQuery(String)
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @return 
    */
   public SqlConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
     this.delegate.query(sql, null /* Handler<AsyncResult<io.vertx.ext.sql.ResultSet>> with kind DATA_OBJECT not yet implemented */);
@@ -111,12 +101,8 @@ public class SqlConnection {
 
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
-   *
-   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-   * @param resultHandler  the handler which is called once the operation completes. It will return a ResultSet.
-   *
-   * @see java.sql.Statement#executeQuery(String)
-   * @see java.sql.PreparedStatement#executeQuery(String)
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @return 
    */
   public Observable<ResultSet> queryObservable(String sql) { 
     io.vertx.rx.java.ObservableFuture<ResultSet> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
@@ -126,13 +112,10 @@ public class SqlConnection {
 
   /**
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
-   *
-   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-   * @param params  these are the parameters to fill the statement.
-   * @param resultHandler  the handler which is called once the operation completes. It will return a ResultSet.
-   *
-   * @see java.sql.Statement#executeQuery(String)
-   * @see java.sql.PreparedStatement#executeQuery(String)
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params these are the parameters to fill the statement.
+   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @return 
    */
   public SqlConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) { 
     this.delegate.queryWithParams(sql, params, null /* Handler<AsyncResult<io.vertx.ext.sql.ResultSet>> with kind DATA_OBJECT not yet implemented */);
@@ -141,13 +124,9 @@ public class SqlConnection {
 
   /**
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
-   *
-   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-   * @param params  these are the parameters to fill the statement.
-   * @param resultHandler  the handler which is called once the operation completes. It will return a ResultSet.
-   *
-   * @see java.sql.Statement#executeQuery(String)
-   * @see java.sql.PreparedStatement#executeQuery(String)
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params these are the parameters to fill the statement.
+   * @return 
    */
   public Observable<ResultSet> queryWithParamsObservable(String sql, JsonArray params) { 
     io.vertx.rx.java.ObservableFuture<ResultSet> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
@@ -158,12 +137,9 @@ public class SqlConnection {
   /**
    * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement.
-   *
-   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
-   * @param resultHandler  the handler which is called once the operation completes.
-   *
-   * @see java.sql.Statement#executeUpdate(String)
-   * @see java.sql.PreparedStatement#executeUpdate(String)
+   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param resultHandler the handler which is called once the operation completes.
+   * @return 
    */
   public SqlConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) { 
     this.delegate.update(sql, null /* Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>> with kind DATA_OBJECT not yet implemented */);
@@ -173,12 +149,8 @@ public class SqlConnection {
   /**
    * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement.
-   *
-   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
-   * @param resultHandler  the handler which is called once the operation completes.
-   *
-   * @see java.sql.Statement#executeUpdate(String)
-   * @see java.sql.PreparedStatement#executeUpdate(String)
+   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @return 
    */
   public Observable<UpdateResult> updateObservable(String sql) { 
     io.vertx.rx.java.ObservableFuture<UpdateResult> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
@@ -189,13 +161,10 @@ public class SqlConnection {
   /**
    * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement with the given parameters
-   *
-   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
-   * @param params  these are the parameters to fill the statement.
-   * @param resultHandler  the handler which is called once the operation completes.
-   *
-   * @see java.sql.Statement#executeUpdate(String)
-   * @see java.sql.PreparedStatement#executeUpdate(String)
+   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params these are the parameters to fill the statement.
+   * @param resultHandler the handler which is called once the operation completes.
+   * @return 
    */
   public SqlConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) { 
     this.delegate.updateWithParams(sql, params, null /* Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>> with kind DATA_OBJECT not yet implemented */);
@@ -205,13 +174,9 @@ public class SqlConnection {
   /**
    * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement with the given parameters
-   *
-   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
-   * @param params  these are the parameters to fill the statement.
-   * @param resultHandler  the handler which is called once the operation completes.
-   *
-   * @see java.sql.Statement#executeUpdate(String)
-   * @see java.sql.PreparedStatement#executeUpdate(String)
+   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params these are the parameters to fill the statement.
+   * @return 
    */
   public Observable<UpdateResult> updateWithParamsObservable(String sql, JsonArray params) { 
     io.vertx.rx.java.ObservableFuture<UpdateResult> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
@@ -221,7 +186,6 @@ public class SqlConnection {
 
   /**
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
-   *
    * @param handler the handler called when this operation completes.
    */
   public void close(Handler<AsyncResult<Void>> handler) { 
@@ -230,8 +194,7 @@ public class SqlConnection {
 
   /**
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
-   *
-   * @param handler the handler called when this operation completes.
+   * @return 
    */
   public Observable<Void> closeObservable() { 
     io.vertx.rx.java.ObservableFuture<Void> handler = io.vertx.rx.java.RxHelper.observableFuture();
@@ -241,8 +204,8 @@ public class SqlConnection {
 
   /**
    * Commits all changes made since the previous commit/rollback.
-   *
    * @param handler the handler called when this operation completes.
+   * @return 
    */
   public SqlConnection commit(Handler<AsyncResult<Void>> handler) { 
     this.delegate.commit(handler);
@@ -251,8 +214,7 @@ public class SqlConnection {
 
   /**
    * Commits all changes made since the previous commit/rollback.
-   *
-   * @param handler the handler called when this operation completes.
+   * @return 
    */
   public Observable<Void> commitObservable() { 
     io.vertx.rx.java.ObservableFuture<Void> handler = io.vertx.rx.java.RxHelper.observableFuture();
@@ -262,8 +224,8 @@ public class SqlConnection {
 
   /**
    * Rolls back all changes made since the previous commit/rollback.
-   *
    * @param handler the handler called when this operation completes.
+   * @return 
    */
   public SqlConnection rollback(Handler<AsyncResult<Void>> handler) { 
     this.delegate.rollback(handler);
@@ -272,8 +234,7 @@ public class SqlConnection {
 
   /**
    * Rolls back all changes made since the previous commit/rollback.
-   *
-   * @param handler the handler called when this operation completes.
+   * @return 
    */
   public Observable<Void> rollbackObservable() { 
     io.vertx.rx.java.ObservableFuture<Void> handler = io.vertx.rx.java.RxHelper.observableFuture();
