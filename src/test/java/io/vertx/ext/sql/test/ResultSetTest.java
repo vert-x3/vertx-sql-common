@@ -51,6 +51,7 @@ public class ResultSetTest {
     assertEquals(results, rs.getResults());
 
     List<JsonObject> rows = rs.getRows();
+    assertEquals(numRows, rs.getRows().size());
     int index = 0;
     for (JsonObject row: rows) {
       JsonArray result = results.get(index);
