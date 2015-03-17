@@ -95,7 +95,7 @@ public class SqlConnection {
    * @return 
    */
   public SqlConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    this.delegate.query(sql, null /* Handler<AsyncResult<io.vertx.ext.sql.ResultSet>> with kind DATA_OBJECT not yet implemented */);
+    this.delegate.query(sql, resultHandler);
     return this;
   }
 
@@ -118,7 +118,7 @@ public class SqlConnection {
    * @return 
    */
   public SqlConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    this.delegate.queryWithParams(sql, params, null /* Handler<AsyncResult<io.vertx.ext.sql.ResultSet>> with kind DATA_OBJECT not yet implemented */);
+    this.delegate.queryWithParams(sql, params, resultHandler);
     return this;
   }
 
@@ -142,7 +142,7 @@ public class SqlConnection {
    * @return 
    */
   public SqlConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) { 
-    this.delegate.update(sql, null /* Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>> with kind DATA_OBJECT not yet implemented */);
+    this.delegate.update(sql, resultHandler);
     return this;
   }
 
@@ -167,7 +167,7 @@ public class SqlConnection {
    * @return 
    */
   public SqlConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) { 
-    this.delegate.updateWithParams(sql, params, null /* Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>> with kind DATA_OBJECT not yet implemented */);
+    this.delegate.updateWithParams(sql, params, resultHandler);
     return this;
   }
 
