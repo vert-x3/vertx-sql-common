@@ -42,7 +42,7 @@ var SqlConnection = function(j_val) {
   this.setAutoCommit = function(autoCommit, resultHandler) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
-      j_sqlConnection.setAutoCommit(autoCommit, function(ar) {
+      j_sqlConnection["setAutoCommit(boolean,io.vertx.core.Handler)"](autoCommit, function(ar) {
       if (ar.succeeded()) {
         resultHandler(null, null);
       } else {
@@ -64,7 +64,7 @@ var SqlConnection = function(j_val) {
   this.execute = function(sql, resultHandler) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sqlConnection.execute(sql, function(ar) {
+      j_sqlConnection["execute(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
         resultHandler(null, null);
       } else {
@@ -86,7 +86,7 @@ var SqlConnection = function(j_val) {
   this.query = function(sql, resultHandler) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sqlConnection.query(sql, function(ar) {
+      j_sqlConnection["query(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {
@@ -109,7 +109,7 @@ var SqlConnection = function(j_val) {
   this.queryWithParams = function(sql, params, resultHandler) {
     var __args = arguments;
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sqlConnection.queryWithParams(sql, utils.convParamJsonArray(params), function(ar) {
+      j_sqlConnection["queryWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {
@@ -132,7 +132,7 @@ var SqlConnection = function(j_val) {
   this.update = function(sql, resultHandler) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sqlConnection.update(sql, function(ar) {
+      j_sqlConnection["update(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {
@@ -156,7 +156,7 @@ var SqlConnection = function(j_val) {
   this.updateWithParams = function(sql, params, resultHandler) {
     var __args = arguments;
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sqlConnection.updateWithParams(sql, utils.convParamJsonArray(params), function(ar) {
+      j_sqlConnection["updateWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {
@@ -176,7 +176,7 @@ var SqlConnection = function(j_val) {
   this.close = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_sqlConnection.close(function(ar) {
+      j_sqlConnection["close(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
         handler(null, null);
       } else {
@@ -196,7 +196,7 @@ var SqlConnection = function(j_val) {
   this.commit = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_sqlConnection.commit(function(ar) {
+      j_sqlConnection["commit(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
         handler(null, null);
       } else {
@@ -217,7 +217,7 @@ var SqlConnection = function(j_val) {
   this.rollback = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_sqlConnection.rollback(function(ar) {
+      j_sqlConnection["rollback(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
         handler(null, null);
       } else {
