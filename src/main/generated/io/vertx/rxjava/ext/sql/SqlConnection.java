@@ -16,8 +16,7 @@
 
 package io.vertx.rxjava.ext.sql;
 
-import java.util.Map;
-import io.vertx.lang.rxjava.InternalHelper;
+import io.vertx.ext.sql.SQLConnection;
 import rx.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.sql.UpdateResult;
@@ -29,14 +28,14 @@ import io.vertx.core.Handler;
  * Represents a connection to a SQL database
  *
  * <p/>
- * NOTE: This class has been automatically generated from the {@link io.vertx.ext.sql.SqlConnection original} non RX-ified interface using Vert.x codegen.
+ * NOTE: This class has been automatically generated from the {@link io.vertx.ext.sql.SQLConnection original} non RX-ified interface using Vert.x codegen.
  */
 
 public class SqlConnection {
 
-  final io.vertx.ext.sql.SqlConnection delegate;
+  final SQLConnection delegate;
 
-  public SqlConnection(io.vertx.ext.sql.SqlConnection delegate) {
+  public SqlConnection(SQLConnection delegate) {
     this.delegate = delegate;
   }
 
@@ -243,7 +242,7 @@ public class SqlConnection {
   }
 
 
-  public static SqlConnection newInstance(io.vertx.ext.sql.SqlConnection arg) {
+  public static SqlConnection newInstance(SQLConnection arg) {
     return new SqlConnection(arg);
   }
 }

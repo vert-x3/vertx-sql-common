@@ -16,17 +16,12 @@
 
 package io.vertx.ext.sql;
 
-import io.vertx.ext.sql.SqlConnection;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.Future;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.json.JsonArray;
 import java.util.ArrayList;import java.util.HashSet;import java.util.List;import java.util.Map;import java.util.Set;import io.vertx.serviceproxy.ProxyHelper;
-import io.vertx.core.json.JsonArray;
-import io.vertx.ext.sql.SqlConnection;
-import io.vertx.ext.sql.UpdateResult;
-import io.vertx.ext.sql.ResultSet;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -34,7 +29,7 @@ import io.vertx.core.Handler;
   Generated Proxy code - DO NOT EDIT
   @author Roger the Robot
 */
-public class SqlConnectionVertxEBProxy implements SqlConnection {
+public class SqlConnectionVertxEBProxy implements SQLConnection {
 
   private Vertx _vertx;
   private String _address;
@@ -45,7 +40,7 @@ public class SqlConnectionVertxEBProxy implements SqlConnection {
     this._address = address;
   }
 
-  public SqlConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) {
+  public SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) {
     if (closed) {
       resultHandler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
       return this;
@@ -64,7 +59,7 @@ public class SqlConnectionVertxEBProxy implements SqlConnection {
     return this;
   }
 
-  public SqlConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler) {
+  public SQLConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler) {
     if (closed) {
       resultHandler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
       return this;
@@ -83,7 +78,7 @@ public class SqlConnectionVertxEBProxy implements SqlConnection {
     return this;
   }
 
-  public SqlConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) {
+  public SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) {
     if (closed) {
       resultHandler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
       return this;
@@ -102,7 +97,7 @@ public class SqlConnectionVertxEBProxy implements SqlConnection {
     return this;
   }
 
-  public SqlConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) {
+  public SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) {
     if (closed) {
       resultHandler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
       return this;
@@ -122,7 +117,7 @@ public class SqlConnectionVertxEBProxy implements SqlConnection {
     return this;
   }
 
-  public SqlConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) {
+  public SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) {
     if (closed) {
       resultHandler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
       return this;
@@ -141,7 +136,7 @@ public class SqlConnectionVertxEBProxy implements SqlConnection {
     return this;
   }
 
-  public SqlConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) {
+  public SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) {
     if (closed) {
       resultHandler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
       return this;
@@ -179,7 +174,7 @@ public class SqlConnectionVertxEBProxy implements SqlConnection {
     });
   }
 
-  public SqlConnection commit(Handler<AsyncResult<Void>> handler) {
+  public SQLConnection commit(Handler<AsyncResult<Void>> handler) {
     if (closed) {
       handler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
       return this;
@@ -197,7 +192,7 @@ public class SqlConnectionVertxEBProxy implements SqlConnection {
     return this;
   }
 
-  public SqlConnection rollback(Handler<AsyncResult<Void>> handler) {
+  public SQLConnection rollback(Handler<AsyncResult<Void>> handler) {
     if (closed) {
       handler.handle(Future.failedFuture(new IllegalStateException("Proxy is closed")));
       return this;

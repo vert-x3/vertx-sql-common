@@ -16,8 +16,7 @@
 
 package io.vertx.groovy.ext.sql;
 import groovy.transform.CompileStatic
-import io.vertx.lang.groovy.InternalHelper
-import io.vertx.core.json.JsonArray
+import io.vertx.ext.sql.SQLConnection
 import io.vertx.ext.sql.UpdateResult
 import io.vertx.ext.sql.ResultSet
 import io.vertx.core.AsyncResult
@@ -27,8 +26,8 @@ import io.vertx.core.Handler
 */
 @CompileStatic
 public class SqlConnection {
-  final def io.vertx.ext.sql.SqlConnection delegate;
-  public SqlConnection(io.vertx.ext.sql.SqlConnection delegate) {
+  final def SQLConnection delegate;
+  public SqlConnection(SQLConnection delegate) {
     this.delegate = delegate;
   }
   public Object getDelegate() {

@@ -21,9 +21,9 @@ import java.sql.SQLException;
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public class RuntimeSqlException extends RuntimeException {
+public class RuntimeSQLException extends RuntimeException {
 
-  public RuntimeSqlException(SQLException exception) {
+  public RuntimeSQLException(SQLException exception) {
     super(exception.getMessage(), exception.getCause());
   }
 }
