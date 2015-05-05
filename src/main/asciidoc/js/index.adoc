@@ -7,7 +7,7 @@ You obtain a connection to the database via the service interface for the specif
 
 == The SQL Connection
 
-A connection to the database is represented by `link:jsdoc/sql_connection-SqlConnection.html[SqlConnection]`.
+A connection to the database is represented by `link:jsdoc/sql_connection-SQLConnection.html[SQLConnection]`.
 
 === Auto-commit
 
@@ -15,7 +15,7 @@ When you obtain a connection auto commit is set to `true`. This means that each 
 execute in its own transaction.
 
 If you wish to perform multiple operations in a single transaction you should set auto commit to false with
-`link:jsdoc/sql_connection-SqlConnection.html#setAutoCommit[setAutoCommit]`.
+`link:jsdoc/sql_connection-SQLConnection.html#setAutoCommit[setAutoCommit]`.
 
 When the operation is complete, the handler will be called:
 
@@ -33,7 +33,7 @@ connection.setAutoCommit(false, function (res, res_err) {
 
 === Executing queries
 
-To execute a query use `link:jsdoc/sql_connection-SqlConnection.html#query[query]`
+To execute a query use `link:jsdoc/sql_connection-SQLConnection.html#query[query]`
 
 The query string is raw SQL that is passed through without changes to the actual database.
 
@@ -105,7 +105,7 @@ Array.prototype.forEach.call(rows, function(row) {
 === Prepared statement queries
 
 To execute a prepared statement query you can use
-`link:jsdoc/sql_connection-SqlConnection.html#queryWithParams[queryWithParams]`.
+`link:jsdoc/sql_connection-SQLConnection.html#queryWithParams[queryWithParams]`.
 
 This takes the query, containing the parameter place holders, and a `JsonArray` or parameter
 values.
@@ -134,7 +134,7 @@ connection.queryWithParams(query, params, function (res, res_err) {
 
 === Executing INSERT, UPDATE or DELETE
 
-To execute an operation which updates the database use `link:jsdoc/sql_connection-SqlConnection.html#update[update]`.
+To execute an operation which updates the database use `link:jsdoc/sql_connection-SQLConnection.html#update[update]`.
 
 The update string is raw SQL that is passed through without changes to the actual database.
 
@@ -166,7 +166,7 @@ Array.prototype.forEach.call(results, function(row) {
 === Prepared statement updates
 
 To execute a prepared statement update you can use
-`link:jsdoc/sql_connection-SqlConnection.html#updateWithParams[updateWithParams]`.
+`link:jsdoc/sql_connection-SQLConnection.html#updateWithParams[updateWithParams]`.
 
 This takes the update, containing the parameter place holders, and a `JsonArray` or parameter
 values.
@@ -200,7 +200,7 @@ connection.updateWithParams(update, params, function (res, res_err) {
 === Executing other operations
 
 To execute any other database operation, e.g. a `CREATE TABLE` you can use
-`link:jsdoc/sql_connection-SqlConnection.html#execute[execute]`.
+`link:jsdoc/sql_connection-SQLConnection.html#execute[execute]`.
 
 The string is passed through without changes to the actual database. The handler is called when the operation
 is complete
@@ -223,11 +223,11 @@ connection.execute(sql, function (execute, execute_err) {
 
 === Using transactions
 
-To use transactions first set auto-commit to false with `link:jsdoc/sql_connection-SqlConnection.html#setAutoCommit[setAutoCommit]`.
+To use transactions first set auto-commit to false with `link:jsdoc/sql_connection-SQLConnection.html#setAutoCommit[setAutoCommit]`.
 
 You then do your transactional operations and when you want to commit or rollback use
-`link:jsdoc/sql_connection-SqlConnection.html#commit[commit]` or
-`link:jsdoc/sql_connection-SqlConnection.html#rollback[rollback]`.
+`link:jsdoc/sql_connection-SQLConnection.html#commit[commit]` or
+`link:jsdoc/sql_connection-SQLConnection.html#rollback[rollback]`.
 
 Once the commit/rollback is complete the handler will be called and the next transaction will be automatically started.
 
@@ -251,4 +251,4 @@ connection.commit(function (res, res_err) {
 
 === Closing connections
 
-When you've done with the connection you should return it to the pool with `link:jsdoc/sql_connection-SqlConnection.html#close[close]`.
+When you've done with the connection you should return it to the pool with `link:jsdoc/sql_connection-SQLConnection.html#close[close]`.

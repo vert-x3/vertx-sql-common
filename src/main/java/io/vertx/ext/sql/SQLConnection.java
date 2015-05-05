@@ -17,8 +17,6 @@
 package io.vertx.ext.sql;
 
 import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.ProxyClose;
-import io.vertx.codegen.annotations.ProxyGen;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -30,8 +28,7 @@ import io.vertx.core.json.JsonArray;
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 @VertxGen
-@ProxyGen
-public interface SqlConnection {
+public interface SQLConnection {
 
   /**
    * Sets the auto commit flag for this connection. True by default.
@@ -41,7 +38,7 @@ public interface SqlConnection {
    * @see java.sql.Connection#setAutoCommit(boolean)
    */
   @Fluent
-  SqlConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler);
+  SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler);
 
   /**
    * Executes the given SQL statement
@@ -51,7 +48,7 @@ public interface SqlConnection {
    * @see java.sql.Statement#execute(String)
    */
   @Fluent
-  SqlConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler);
+  SQLConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler);
 
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
@@ -63,7 +60,7 @@ public interface SqlConnection {
    * @see java.sql.PreparedStatement#executeQuery(String)
    */
   @Fluent
-  SqlConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
+  SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
@@ -76,7 +73,7 @@ public interface SqlConnection {
    * @see java.sql.PreparedStatement#executeQuery(String)
    */
   @Fluent
-  SqlConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
+  SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
    * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
@@ -89,7 +86,7 @@ public interface SqlConnection {
    * @see java.sql.PreparedStatement#executeUpdate(String)
    */
   @Fluent
-  SqlConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler);
+  SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler);
 
   /**
    * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
@@ -103,14 +100,13 @@ public interface SqlConnection {
    * @see java.sql.PreparedStatement#executeUpdate(String)
    */
   @Fluent
-  SqlConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
+  SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
 
   /**
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
    *
    * @param handler the handler called when this operation completes.
    */
-  @ProxyClose
   void close(Handler<AsyncResult<Void>> handler);
 
   /**
@@ -119,7 +115,7 @@ public interface SqlConnection {
    * @param handler the handler called when this operation completes.
    */
   @Fluent
-  SqlConnection commit(Handler<AsyncResult<Void>> handler);
+  SQLConnection commit(Handler<AsyncResult<Void>> handler);
 
   /**
    * Rolls back all changes made since the previous commit/rollback.
@@ -127,5 +123,5 @@ public interface SqlConnection {
    * @param handler the handler called when this operation completes.
    */
   @Fluent
-  SqlConnection rollback(Handler<AsyncResult<Void>> handler);
+  SQLConnection rollback(Handler<AsyncResult<Void>> handler);
 }

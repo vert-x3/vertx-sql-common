@@ -16,24 +16,16 @@
 
 package io.vertx.ext.sql;
 
-import io.vertx.ext.sql.SqlConnection;
 import io.vertx.core.Vertx;
 import io.vertx.core.Handler;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.eventbus.Message;
-import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.eventbus.ReplyException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.json.JsonArray;
-import java.util.ArrayList;import java.util.HashSet;import java.util.List;import java.util.Map;import java.util.Set;import java.util.UUID;
+import java.util.ArrayList;import java.util.HashSet;import java.util.List;import java.util.Map;import java.util.Set;
+
 import io.vertx.serviceproxy.ProxyHelper;
 import io.vertx.serviceproxy.ProxyHandler;
-import io.vertx.core.json.JsonArray;
-import io.vertx.ext.sql.SqlConnection;
-import io.vertx.ext.sql.UpdateResult;
-import io.vertx.ext.sql.ResultSet;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
 
 /*
   Generated Proxy code - DO NOT EDIT
@@ -42,13 +34,13 @@ import io.vertx.core.Handler;
 public class SqlConnectionVertxProxyHandler extends ProxyHandler {
 
   private final Vertx vertx;
-  private final SqlConnection service;
+  private final SQLConnection service;
   private final String address;
   private final long timerID;
   private long lastAccessed;
   private final long timeoutSeconds;
 
-  public SqlConnectionVertxProxyHandler(Vertx vertx, SqlConnection service, String address, boolean topLevel, long timeoutSeconds) {
+  public SqlConnectionVertxProxyHandler(Vertx vertx, SQLConnection service, String address, boolean topLevel, long timeoutSeconds) {
     this.vertx = vertx;
     this.service = service;
     this.address = address;

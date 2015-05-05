@@ -8,7 +8,7 @@
  *
  * == The SQL Connection
  *
- * A connection to the database is represented by {@link io.vertx.ext.sql.SqlConnection}.
+ * A connection to the database is represented by {@link io.vertx.ext.sql.SQLConnection}.
  *
  * === Auto-commit
  *
@@ -16,7 +16,7 @@
  * execute in its own transaction.
  *
  * If you wish to perform multiple operations in a single transaction you should set auto commit to false with
- * {@link io.vertx.ext.sql.SqlConnection#setAutoCommit(boolean, io.vertx.core.Handler)}.
+ * {@link io.vertx.ext.sql.SQLConnection#setAutoCommit(boolean, io.vertx.core.Handler)}.
  *
  * When the operation is complete, the handler will be called:
  *
@@ -27,7 +27,7 @@
  *
  * === Executing queries
  *
- * To execute a query use {@link io.vertx.ext.sql.SqlConnection#query(java.lang.String, io.vertx.core.Handler)}
+ * To execute a query use {@link io.vertx.ext.sql.SQLConnection#query(java.lang.String, io.vertx.core.Handler)}
  *
  * The query string is raw SQL that is passed through without changes to the actual database.
  *
@@ -65,7 +65,7 @@
  * === Prepared statement queries
  *
  * To execute a prepared statement query you can use
- * {@link io.vertx.ext.sql.SqlConnection#queryWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}.
+ * {@link io.vertx.ext.sql.SQLConnection#queryWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}.
  *
  * This takes the query, containing the parameter place holders, and a {@link io.vertx.core.json.JsonArray} or parameter
  * values.
@@ -77,7 +77,7 @@
  *
  * === Executing INSERT, UPDATE or DELETE
  *
- * To execute an operation which updates the database use {@link io.vertx.ext.sql.SqlConnection#update(java.lang.String, io.vertx.core.Handler)}.
+ * To execute an operation which updates the database use {@link io.vertx.ext.sql.SQLConnection#update(java.lang.String, io.vertx.core.Handler)}.
  *
  * The update string is raw SQL that is passed through without changes to the actual database.
  *
@@ -95,7 +95,7 @@
  * === Prepared statement updates
  *
  * To execute a prepared statement update you can use
- * {@link io.vertx.ext.sql.SqlConnection#updateWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}.
+ * {@link io.vertx.ext.sql.SQLConnection#updateWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}.
  *
  * This takes the update, containing the parameter place holders, and a {@link io.vertx.core.json.JsonArray} or parameter
  * values.
@@ -108,7 +108,7 @@
  * === Executing other operations
  *
  * To execute any other database operation, e.g. a `CREATE TABLE` you can use
- * {@link io.vertx.ext.sql.SqlConnection#execute(java.lang.String, io.vertx.core.Handler)}.
+ * {@link io.vertx.ext.sql.SQLConnection#execute(java.lang.String, io.vertx.core.Handler)}.
  *
  * The string is passed through without changes to the actual database. The handler is called when the operation
  * is complete
@@ -120,11 +120,11 @@
  *
  * === Using transactions
  *
- * To use transactions first set auto-commit to false with {@link io.vertx.ext.sql.SqlConnection#setAutoCommit(boolean, io.vertx.core.Handler)}.
+ * To use transactions first set auto-commit to false with {@link io.vertx.ext.sql.SQLConnection#setAutoCommit(boolean, io.vertx.core.Handler)}.
  *
  * You then do your transactional operations and when you want to commit or rollback use
- * {@link io.vertx.ext.sql.SqlConnection#commit(io.vertx.core.Handler)} or
- * {@link io.vertx.ext.sql.SqlConnection#rollback(io.vertx.core.Handler)}.
+ * {@link io.vertx.ext.sql.SQLConnection#commit(io.vertx.core.Handler)} or
+ * {@link io.vertx.ext.sql.SQLConnection#rollback(io.vertx.core.Handler)}.
  *
  * Once the commit/rollback is complete the handler will be called and the next transaction will be automatically started.
  *
@@ -135,7 +135,7 @@
  *
  * === Closing connections
  *
- * When you've done with the connection you should return it to the pool with {@link io.vertx.ext.sql.SqlConnection#close(io.vertx.core.Handler)}.
+ * When you've done with the connection you should return it to the pool with {@link io.vertx.ext.sql.SQLConnection#close(io.vertx.core.Handler)}.
  *
  */
 @Document(fileName = "index.adoc")

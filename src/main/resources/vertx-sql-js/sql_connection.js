@@ -19,16 +19,16 @@ var utils = require('vertx-js/util/utils');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JSqlConnection = io.vertx.ext.sql.SqlConnection;
+var JSQLConnection = io.vertx.ext.sql.SQLConnection;
 
 /**
  Represents a connection to a SQL database
 
  @class
 */
-var SqlConnection = function(j_val) {
+var SQLConnection = function(j_val) {
 
-  var j_sqlConnection = j_val;
+  var j_sQLConnection = j_val;
   var that = this;
 
   /**
@@ -37,12 +37,12 @@ var SqlConnection = function(j_val) {
    @public
    @param autoCommit {boolean} the autoCommit flag, true by default. 
    @param resultHandler {function} the handler which is called once this operation completes. 
-   @return {SqlConnection}
+   @return {SQLConnection}
    */
   this.setAutoCommit = function(autoCommit, resultHandler) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
-      j_sqlConnection["setAutoCommit(boolean,io.vertx.core.Handler)"](autoCommit, function(ar) {
+      j_sQLConnection["setAutoCommit(boolean,io.vertx.core.Handler)"](autoCommit, function(ar) {
       if (ar.succeeded()) {
         resultHandler(null, null);
       } else {
@@ -59,12 +59,12 @@ var SqlConnection = function(j_val) {
    @public
    @param sql {string} the SQL to execute. For example <code>CREATE TABLE IF EXISTS table ...</code> 
    @param resultHandler {function} the handler which is called once this operation completes. 
-   @return {SqlConnection}
+   @return {SQLConnection}
    */
   this.execute = function(sql, resultHandler) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sqlConnection["execute(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
+      j_sQLConnection["execute(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
         resultHandler(null, null);
       } else {
@@ -81,12 +81,12 @@ var SqlConnection = function(j_val) {
    @public
    @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
    @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
-   @return {SqlConnection}
+   @return {SQLConnection}
    */
   this.query = function(sql, resultHandler) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sqlConnection["query(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
+      j_sQLConnection["query(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {
@@ -104,12 +104,12 @@ var SqlConnection = function(j_val) {
    @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
    @param params {todo} these are the parameters to fill the statement. 
    @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
-   @return {SqlConnection}
+   @return {SQLConnection}
    */
   this.queryWithParams = function(sql, params, resultHandler) {
     var __args = arguments;
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sqlConnection["queryWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
+      j_sQLConnection["queryWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {
@@ -127,12 +127,12 @@ var SqlConnection = function(j_val) {
    @public
    @param sql {string} the SQL to execute. For example <code>INSERT INTO table ...</code> 
    @param resultHandler {function} the handler which is called once the operation completes. 
-   @return {SqlConnection}
+   @return {SQLConnection}
    */
   this.update = function(sql, resultHandler) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sqlConnection["update(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
+      j_sQLConnection["update(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {
@@ -151,12 +151,12 @@ var SqlConnection = function(j_val) {
    @param sql {string} the SQL to execute. For example <code>INSERT INTO table ...</code> 
    @param params {todo} these are the parameters to fill the statement. 
    @param resultHandler {function} the handler which is called once the operation completes. 
-   @return {SqlConnection}
+   @return {SQLConnection}
    */
   this.updateWithParams = function(sql, params, resultHandler) {
     var __args = arguments;
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sqlConnection["updateWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
+      j_sQLConnection["updateWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnJson(ar.result().toJson()), null);
       } else {
@@ -176,7 +176,7 @@ var SqlConnection = function(j_val) {
   this.close = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_sqlConnection["close(io.vertx.core.Handler)"](function(ar) {
+      j_sQLConnection["close(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
         handler(null, null);
       } else {
@@ -191,12 +191,12 @@ var SqlConnection = function(j_val) {
 
    @public
    @param handler {function} the handler called when this operation completes. 
-   @return {SqlConnection}
+   @return {SQLConnection}
    */
   this.commit = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_sqlConnection["commit(io.vertx.core.Handler)"](function(ar) {
+      j_sQLConnection["commit(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
         handler(null, null);
       } else {
@@ -212,12 +212,12 @@ var SqlConnection = function(j_val) {
 
    @public
    @param handler {function} the handler called when this operation completes. 
-   @return {SqlConnection}
+   @return {SQLConnection}
    */
   this.rollback = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_sqlConnection["rollback(io.vertx.core.Handler)"](function(ar) {
+      j_sQLConnection["rollback(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
         handler(null, null);
       } else {
@@ -231,8 +231,8 @@ var SqlConnection = function(j_val) {
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.
-  this._jdel = j_sqlConnection;
+  this._jdel = j_sQLConnection;
 };
 
 // We export the Constructor function
-module.exports = SqlConnection;
+module.exports = SQLConnection;
