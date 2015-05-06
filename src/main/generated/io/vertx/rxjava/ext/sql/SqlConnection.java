@@ -16,7 +16,8 @@
 
 package io.vertx.rxjava.ext.sql;
 
-import io.vertx.ext.sql.SQLConnection;
+import java.util.Map;
+import io.vertx.lang.rxjava.InternalHelper;
 import rx.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.sql.UpdateResult;
@@ -31,11 +32,11 @@ import io.vertx.core.Handler;
  * NOTE: This class has been automatically generated from the {@link io.vertx.ext.sql.SQLConnection original} non RX-ified interface using Vert.x codegen.
  */
 
-public class SqlConnection {
+public class SQLConnection {
 
-  final SQLConnection delegate;
+  final io.vertx.ext.sql.SQLConnection delegate;
 
-  public SqlConnection(SQLConnection delegate) {
+  public SQLConnection(io.vertx.ext.sql.SQLConnection delegate) {
     this.delegate = delegate;
   }
 
@@ -49,7 +50,7 @@ public class SqlConnection {
    * @param resultHandler the handler which is called once this operation completes.
    * @return 
    */
-  public SqlConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) { 
+  public SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) { 
     this.delegate.setAutoCommit(autoCommit, resultHandler);
     return this;
   }
@@ -71,7 +72,7 @@ public class SqlConnection {
    * @param resultHandler the handler which is called once this operation completes.
    * @return 
    */
-  public SqlConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler) { 
+  public SQLConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler) { 
     this.delegate.execute(sql, resultHandler);
     return this;
   }
@@ -93,7 +94,7 @@ public class SqlConnection {
    * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
    * @return 
    */
-  public SqlConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
+  public SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
     this.delegate.query(sql, resultHandler);
     return this;
   }
@@ -116,7 +117,7 @@ public class SqlConnection {
    * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
    * @return 
    */
-  public SqlConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) { 
+  public SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) { 
     this.delegate.queryWithParams(sql, params, resultHandler);
     return this;
   }
@@ -140,7 +141,7 @@ public class SqlConnection {
    * @param resultHandler the handler which is called once the operation completes.
    * @return 
    */
-  public SqlConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) { 
+  public SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) { 
     this.delegate.update(sql, resultHandler);
     return this;
   }
@@ -165,7 +166,7 @@ public class SqlConnection {
    * @param resultHandler the handler which is called once the operation completes.
    * @return 
    */
-  public SqlConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) { 
+  public SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) { 
     this.delegate.updateWithParams(sql, params, resultHandler);
     return this;
   }
@@ -206,7 +207,7 @@ public class SqlConnection {
    * @param handler the handler called when this operation completes.
    * @return 
    */
-  public SqlConnection commit(Handler<AsyncResult<Void>> handler) { 
+  public SQLConnection commit(Handler<AsyncResult<Void>> handler) { 
     this.delegate.commit(handler);
     return this;
   }
@@ -226,7 +227,7 @@ public class SqlConnection {
    * @param handler the handler called when this operation completes.
    * @return 
    */
-  public SqlConnection rollback(Handler<AsyncResult<Void>> handler) { 
+  public SQLConnection rollback(Handler<AsyncResult<Void>> handler) { 
     this.delegate.rollback(handler);
     return this;
   }
@@ -242,7 +243,7 @@ public class SqlConnection {
   }
 
 
-  public static SqlConnection newInstance(SQLConnection arg) {
-    return new SqlConnection(arg);
+  public static SQLConnection newInstance(io.vertx.ext.sql.SQLConnection arg) {
+    return new SQLConnection(arg);
   }
 }
