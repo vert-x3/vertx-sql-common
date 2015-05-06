@@ -1,0 +1,254 @@
+== Vert.x Common SQL interface
+
+The common SQL interface is used to interact with Vert.x SQL services.
+
+You obtain a connection to the database via the service interface for the specific SQL service that you are using
+(e.g. JDBC/MySQL/PostgreSQL).
+
+== The SQL Connection
+
+A connection to the database is represented by `link:yardoc/VertxSql/SQLConnection.html[SQLConnection]`.
+
+=== Auto-commit
+
+When you obtain a connection auto commit is set to `true`. This means that each operation you perform will effectively
+execute in its own transaction.
+
+If you wish to perform multiple operations in a single transaction you should set auto commit to false with
+`link:yardoc/VertxSql/SQLConnection.html#set_auto_commit-instance_method[setAutoCommit]`.
+
+When the operation is complete, the handler will be called:
+
+[source,java]
+----
+connection.set_auto_commit(false) { |res,res_err|
+  if (res_err == nil)
+    # OK!
+  else
+    # Failed!
+  end
+}
+
+----
+
+=== Executing queries
+
+To execute a query use `link:yardoc/VertxSql/SQLConnection.html#query-instance_method[query]`
+
+The query string is raw SQL that is passed through without changes to the actual database.
+
+The handler will be called with the results, represented by `link:../cheatsheet/ResultSet.html[ResultSet]` when the query has
+been run.
+
+[source,java]
+----
+connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE") { |res,res_err|
+  if (res_err == nil)
+    # Get the result set
+    resultSet = res
+  else
+    # Failed!
+  end
+}
+
+----
+
+The `link:../cheatsheet/ResultSet.html[ResultSet]` instance represents the results of a query.
+
+The list of column names are available with `link:../cheatsheet/ResultSet.html#columnNames[getColumnNames]`, and the actual results
+available with `link:../cheatsheet/ResultSet.html#results[getResults]`
+
+The results are a list of `link:unavailable[JsonArray]` instances, one for each row of the results.
+
+[source,java]
+----
+
+columnNames = resultSet['columnNames']
+
+results = resultSet['results']
+
+results.each do |row|
+
+  id = row[0]
+  fName = row[1]
+  lName = row[2]
+  shoeSize = row[3]
+
+end
+
+
+----
+
+You can also retrieve the rows as a list of Json object instances with `link:../cheatsheet/ResultSet.html#rows[getRows]` -
+this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
+column names - if that's the case you should use `link:../cheatsheet/ResultSet.html#results[getResults]` instead.
+
+Here's an example of iterating through the results as Json object instances:
+
+[source,java]
+----
+
+rows = resultSet['rows']
+
+rows.each do |row|
+
+  id = row["ID"]
+  fName = row["FNAME"]
+  lName = row["LNAME"]
+  shoeSize = row["SHOE_SIZE"]
+
+end
+
+
+----
+
+=== Prepared statement queries
+
+To execute a prepared statement query you can use
+`link:yardoc/VertxSql/SQLConnection.html#query_with_params-instance_method[queryWithParams]`.
+
+This takes the query, containing the parameter place holders, and a `link:unavailable[JsonArray]` or parameter
+values.
+
+[source,java]
+----
+
+query = "SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE WHERE LNAME=? AND SHOE_SIZE > ?"
+params = [
+  "Fox",
+  9
+]
+
+connection.query_with_params(query, params) { |res,res_err|
+
+  if (res_err == nil)
+    # Get the result set
+    resultSet = res
+  else
+    # Failed!
+  end
+}
+
+
+----
+
+=== Executing INSERT, UPDATE or DELETE
+
+To execute an operation which updates the database use `link:yardoc/VertxSql/SQLConnection.html#update-instance_method[update]`.
+
+The update string is raw SQL that is passed through without changes to the actual database.
+
+The handler will be called with the results, represented by `link:../cheatsheet/UpdateResult.html[UpdateResult]` when the update has
+been run.
+
+The update result holds the number of rows updated with `link:../cheatsheet/UpdateResult.html#updated[getUpdated]`, and
+if the update generated keys, they are available with `link:../cheatsheet/UpdateResult.html#keys[getKeys]`.
+
+[source,java]
+----
+
+columnNames = resultSet['columnNames']
+
+results = resultSet['results']
+
+results.each do |row|
+
+  id = row[0]
+  fName = row[1]
+  lName = row[2]
+  shoeSize = row[3]
+
+end
+
+
+----
+
+=== Prepared statement updates
+
+To execute a prepared statement update you can use
+`link:yardoc/VertxSql/SQLConnection.html#update_with_params-instance_method[updateWithParams]`.
+
+This takes the update, containing the parameter place holders, and a `link:unavailable[JsonArray]` or parameter
+values.
+
+[source,java]
+----
+
+update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?"
+params = [
+  "Fox"
+]
+
+connection.update_with_params(update, params) { |res,res_err|
+
+  if (res_err == nil)
+
+    updateResult = res
+
+    puts "No. of rows updated: #{updateResult['updated']}"
+
+  else
+
+    # Failed!
+
+  end
+}
+
+
+----
+
+=== Executing other operations
+
+To execute any other database operation, e.g. a `CREATE TABLE` you can use
+`link:yardoc/VertxSql/SQLConnection.html#execute-instance_method[execute]`.
+
+The string is passed through without changes to the actual database. The handler is called when the operation
+is complete
+
+[source,java]
+----
+
+sql = "CREATE TABLE PEOPLE (ID int generated by default as identity (start with 1 increment by 1) not null,FNAME varchar(255), LNAME varchar(255), SHOE_SIZE int);"
+
+connection.execute(sql) { |execute,execute_err|
+  if (execute_err == nil)
+    puts "Table created !"
+  else
+    # Failed!
+  end
+}
+
+
+----
+
+=== Using transactions
+
+To use transactions first set auto-commit to false with `link:yardoc/VertxSql/SQLConnection.html#set_auto_commit-instance_method[setAutoCommit]`.
+
+You then do your transactional operations and when you want to commit or rollback use
+`link:yardoc/VertxSql/SQLConnection.html#commit-instance_method[commit]` or
+`link:yardoc/VertxSql/SQLConnection.html#rollback-instance_method[rollback]`.
+
+Once the commit/rollback is complete the handler will be called and the next transaction will be automatically started.
+
+[source,java]
+----
+
+# Do stuff with connection - updates etc
+
+# Now commit
+
+connection.commit() { |res,res_err|
+  if (res_err == nil)
+    # Committed OK!
+  else
+    # Failed!
+  end
+}
+
+
+----
+
+=== Closing connections
+
+When you've done with the connection you should return it to the pool with `link:yardoc/VertxSql/SQLConnection.html#close-instance_method[close]`.
