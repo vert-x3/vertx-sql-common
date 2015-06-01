@@ -60,8 +60,18 @@ public class SQLConnection {
    * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
    * @return 
    */
-  public SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) {
-    this.delegate.query(sql, resultHandler);
+  public SQLConnection query(String sql, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
+    this.delegate.query(sql, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
+        AsyncResult<Map<String, Object>> f
+        if (event.succeeded()) {
+          f = InternalHelper.<Map<String, Object>>result(event.result()?.toJson()?.getMap())
+        } else {
+          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+        }
+        resultHandler.handle(f)
+      }
+    });
     return this;
   }
   /**
@@ -71,8 +81,18 @@ public class SQLConnection {
    * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
    * @return 
    */
-  public SQLConnection queryWithParams(String sql, List<Object> params, Handler<AsyncResult<ResultSet>> resultHandler) {
-    this.delegate.queryWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, resultHandler);
+  public SQLConnection queryWithParams(String sql, List<Object> params, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
+    this.delegate.queryWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
+        AsyncResult<Map<String, Object>> f
+        if (event.succeeded()) {
+          f = InternalHelper.<Map<String, Object>>result(event.result()?.toJson()?.getMap())
+        } else {
+          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+        }
+        resultHandler.handle(f)
+      }
+    });
     return this;
   }
   /**
@@ -82,8 +102,18 @@ public class SQLConnection {
    * @param resultHandler the handler which is called once the operation completes.
    * @return 
    */
-  public SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) {
-    this.delegate.update(sql, resultHandler);
+  public SQLConnection update(String sql, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
+    this.delegate.update(sql, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
+        AsyncResult<Map<String, Object>> f
+        if (event.succeeded()) {
+          f = InternalHelper.<Map<String, Object>>result(event.result()?.toJson()?.getMap())
+        } else {
+          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+        }
+        resultHandler.handle(f)
+      }
+    });
     return this;
   }
   /**
@@ -94,8 +124,18 @@ public class SQLConnection {
    * @param resultHandler the handler which is called once the operation completes.
    * @return 
    */
-  public SQLConnection updateWithParams(String sql, List<Object> params, Handler<AsyncResult<UpdateResult>> resultHandler) {
-    this.delegate.updateWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, resultHandler);
+  public SQLConnection updateWithParams(String sql, List<Object> params, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
+    this.delegate.updateWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
+        AsyncResult<Map<String, Object>> f
+        if (event.succeeded()) {
+          f = InternalHelper.<Map<String, Object>>result(event.result()?.toJson()?.getMap())
+        } else {
+          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+        }
+        resultHandler.handle(f)
+      }
+    });
     return this;
   }
   /**
