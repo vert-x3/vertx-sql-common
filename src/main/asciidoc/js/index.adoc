@@ -26,7 +26,7 @@ connection.setAutoCommit(false, function (res, res_err) {
     // OK!
   } else {
     // Failed!
-  };
+  }
 });
 
 ----
@@ -48,7 +48,7 @@ connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", function (res
     var resultSet = res;
   } else {
     // Failed!
-  };
+  }
 });
 
 ----
@@ -92,10 +92,10 @@ var rows = resultSet.rows;
 
 Array.prototype.forEach.call(rows, function(row) {
 
-  var id = row."ID";
-  var fName = row."FNAME";
-  var lName = row."LNAME";
-  var shoeSize = row."SHOE_SIZE";
+  var id = row.ID;
+  var fName = row.FNAME;
+  var lName = row.LNAME;
+  var shoeSize = row.SHOE_SIZE;
 
 });
 
@@ -126,7 +126,7 @@ connection.queryWithParams(query, params, function (res, res_err) {
     var resultSet = res;
   } else {
     // Failed!
-  };
+  }
 });
 
 
@@ -191,7 +191,7 @@ connection.updateWithParams(update, params, function (res, res_err) {
 
     // Failed!
 
-  };
+  }
 });
 
 
@@ -215,7 +215,7 @@ connection.execute(sql, function (execute, execute_err) {
     console.log("Table created !");
   } else {
     // Failed!
-  };
+  }
 });
 
 
@@ -243,7 +243,7 @@ connection.commit(function (res, res_err) {
     // Committed OK!
   } else {
     // Failed!
-  };
+  }
 });
 
 

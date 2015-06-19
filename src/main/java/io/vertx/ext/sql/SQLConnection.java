@@ -110,6 +110,11 @@ public interface SQLConnection {
   void close(Handler<AsyncResult<Void>> handler);
 
   /**
+   * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
+   */
+  void close();
+
+  /**
    * Commits all changes made since the previous commit/rollback.
    *
    * @param handler the handler called when this operation completes.

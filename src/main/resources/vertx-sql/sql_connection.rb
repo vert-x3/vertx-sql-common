@@ -87,7 +87,9 @@ module VertxSql
     # @yield the handler called when this operation completes.
     # @return [void]
     def close
-      if block_given?
+      if !block_given?
+        return @j_del.java_method(:close, []).call()
+      elsif block_given?
         return @j_del.java_method(:close, [Java::IoVertxCore::Handler.java_class]).call((Proc.new { |ar| yield(ar.failed ? ar.cause : nil) }))
       end
       raise ArgumentError, "Invalid arguments when calling close()"

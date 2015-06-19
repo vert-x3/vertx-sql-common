@@ -203,6 +203,13 @@ public class SQLConnection {
   }
 
   /**
+   * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
+   */
+  public void close() { 
+    this.delegate.close();
+  }
+
+  /**
    * Commits all changes made since the previous commit/rollback.
    * @param handler the handler called when this operation completes.
    * @return 
@@ -244,6 +251,6 @@ public class SQLConnection {
 
 
   public static SQLConnection newInstance(io.vertx.ext.sql.SQLConnection arg) {
-    return new SQLConnection(arg);
+    return arg != null ? new SQLConnection(arg) : null;
   }
 }

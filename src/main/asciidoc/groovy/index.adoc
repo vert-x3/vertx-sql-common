@@ -92,10 +92,10 @@ def rows = resultSet.rows
 
 rows.each { row ->
 
-  def id = row."ID"
-  def fName = row."FNAME"
-  def lName = row."LNAME"
-  def shoeSize = row."SHOE_SIZE"
+  def id = row.ID
+  def fName = row.FNAME
+  def lName = row.LNAME
+  def shoeSize = row.SHOE_SIZE
 
 }
 

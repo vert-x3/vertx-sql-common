@@ -65,7 +65,7 @@ public class SQLConnection {
       public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
         AsyncResult<Map<String, Object>> f
         if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result(event.result()?.toJson()?.getMap())
+          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
         } else {
           f = InternalHelper.<Map<String, Object>>failure(event.cause())
         }
@@ -86,7 +86,7 @@ public class SQLConnection {
       public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
         AsyncResult<Map<String, Object>> f
         if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result(event.result()?.toJson()?.getMap())
+          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
         } else {
           f = InternalHelper.<Map<String, Object>>failure(event.cause())
         }
@@ -107,7 +107,7 @@ public class SQLConnection {
       public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
         AsyncResult<Map<String, Object>> f
         if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result(event.result()?.toJson()?.getMap())
+          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
         } else {
           f = InternalHelper.<Map<String, Object>>failure(event.cause())
         }
@@ -129,7 +129,7 @@ public class SQLConnection {
       public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
         AsyncResult<Map<String, Object>> f
         if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result(event.result()?.toJson()?.getMap())
+          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
         } else {
           f = InternalHelper.<Map<String, Object>>failure(event.cause())
         }
@@ -144,6 +144,12 @@ public class SQLConnection {
    */
   public void close(Handler<AsyncResult<Void>> handler) {
     this.delegate.close(handler);
+  }
+  /**
+   * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
+   */
+  public void close() {
+    this.delegate.close();
   }
   /**
    * Commits all changes made since the previous commit/rollback.

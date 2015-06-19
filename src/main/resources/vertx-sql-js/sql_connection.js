@@ -173,14 +173,16 @@ var SQLConnection = function(j_val) {
    @public
    @param handler {function} the handler called when this operation completes. 
    */
-  this.close = function(handler) {
+  this.close = function() {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
+    if (__args.length === 0) {
+      j_sQLConnection["close()"]();
+    }  else if (__args.length === 1 && typeof __args[0] === 'function') {
       j_sQLConnection["close(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        handler(null, null);
+        __args[0](null, null);
       } else {
-        handler(null, ar.cause());
+        __args[0](null, ar.cause());
       }
     });
     } else utils.invalidArgs();
