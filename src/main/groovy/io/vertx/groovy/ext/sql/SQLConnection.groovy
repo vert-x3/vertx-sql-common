@@ -27,9 +27,9 @@ import io.vertx.core.Handler
 */
 @CompileStatic
 public class SQLConnection {
-  final def io.vertx.ext.sql.SQLConnection delegate;
-  public SQLConnection(io.vertx.ext.sql.SQLConnection delegate) {
-    this.delegate = delegate;
+  private final def io.vertx.ext.sql.SQLConnection delegate;
+  public SQLConnection(Object delegate) {
+    this.delegate = (io.vertx.ext.sql.SQLConnection) delegate;
   }
   public Object getDelegate() {
     return delegate;

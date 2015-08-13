@@ -28,7 +28,7 @@ import io.vertx.core.json.JsonArray;
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 @VertxGen
-public interface SQLConnection {
+public interface SQLConnection extends AutoCloseable {
 
   /**
    * Sets the auto commit flag for this connection. True by default.
