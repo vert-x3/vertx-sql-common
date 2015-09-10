@@ -160,8 +160,8 @@
  */
 @Document(fileName = "index.adoc")
 
-@GenModule(name = "vertx-sql")
+@ModuleGen(name = "vertx-sql", groupPackage = "io.vertx")
 package io.vertx.ext.sql;
 
-import io.vertx.codegen.annotations.GenModule;
+import io.vertx.codegen.annotations.ModuleGen;
 import io.vertx.docgen.Document;
