@@ -1,0 +1,7 @@
+Regular Expression to match ?parameters 
+
+((?:[a-z][a-z]+)) 
+
+Needs some more testing/hardening.  
+
+

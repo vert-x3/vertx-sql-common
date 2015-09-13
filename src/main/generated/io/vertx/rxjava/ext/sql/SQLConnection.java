@@ -135,6 +135,30 @@ public class SQLConnection {
   }
 
   /**
+   * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params This is an array of {"name": "value"} pairs of named parameters to pass to the query.
+   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet. CK TODO: what should be the behavior if size of array does not match input SQL? Exception or error result to resultHandler?
+   * @return 
+   */
+  public SQLConnection queryWithNamedParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) { 
+    this.delegate.queryWithNamedParams(sql, params, resultHandler);
+    return this;
+  }
+
+  /**
+   * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params This is an array of {"name": "value"} pairs of named parameters to pass to the query.
+   * @return 
+   */
+  public Observable<ResultSet> queryWithNamedParamsObservable(String sql, JsonArray params) { 
+    io.vertx.rx.java.ObservableFuture<ResultSet> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
+    queryWithNamedParams(sql, params, resultHandler.toHandler());
+    return resultHandler;
+  }
+
+  /**
    * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement.
    * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
@@ -181,6 +205,32 @@ public class SQLConnection {
   public Observable<UpdateResult> updateWithParamsObservable(String sql, JsonArray params) { 
     io.vertx.rx.java.ObservableFuture<UpdateResult> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
     updateWithParams(sql, params, resultHandler.toHandler());
+    return resultHandler;
+  }
+
+  /**
+   * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement with the given parameters
+   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params these are the parameters to fill the statement.
+   * @param resultHandler the handler which is called once the operation completes.
+   * @return 
+   */
+  public SQLConnection updateWithNamedParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) { 
+    this.delegate.updateWithNamedParams(sql, params, resultHandler);
+    return this;
+  }
+
+  /**
+   * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement with the given parameters
+   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params these are the parameters to fill the statement.
+   * @return 
+   */
+  public Observable<UpdateResult> updateWithNamedParamsObservable(String sql, JsonArray params) { 
+    io.vertx.rx.java.ObservableFuture<UpdateResult> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
+    updateWithNamedParams(sql, params, resultHandler.toHandler());
     return resultHandler;
   }
 
