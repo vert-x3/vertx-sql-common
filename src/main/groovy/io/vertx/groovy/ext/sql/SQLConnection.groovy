@@ -96,6 +96,27 @@ public class SQLConnection {
     return this;
   }
   /**
+   * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params This is an array of {"name": "value"} pairs of named parameters to pass to the query.
+   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet. CK TODO: what should be the behavior if size of array does not match input SQL? Exception or error result to resultHandler?
+   * @return 
+   */
+  public SQLConnection queryWithNamedParams(String sql, List<Object> params, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
+    this.delegate.queryWithNamedParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
+        AsyncResult<Map<String, Object>> f
+        if (event.succeeded()) {
+          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+        } else {
+          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+        }
+        resultHandler.handle(f)
+      }
+    });
+    return this;
+  }
+  /**
    * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement.
    * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
@@ -126,6 +147,28 @@ public class SQLConnection {
    */
   public SQLConnection updateWithParams(String sql, List<Object> params, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
     this.delegate.updateWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
+        AsyncResult<Map<String, Object>> f
+        if (event.succeeded()) {
+          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+        } else {
+          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+        }
+        resultHandler.handle(f)
+      }
+    });
+    return this;
+  }
+  /**
+   * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement with the given parameters
+   * @param sql the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params these are the parameters to fill the statement.
+   * @param resultHandler the handler which is called once the operation completes.
+   * @return 
+   */
+  public SQLConnection updateWithNamedParams(String sql, List<Object> params, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
+    this.delegate.updateWithNamedParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
       public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
         AsyncResult<Map<String, Object>> f
         if (event.succeeded()) {

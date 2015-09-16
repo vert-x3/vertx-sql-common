@@ -58,6 +58,18 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling query_with_params(sql,params)"
     end
+    #  Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
+    # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+    # @param [Array<String,Object>] params This is an array of {"name": "value"} pairs of named parameters to pass to the query.
+    # @yield the handler which is called once the operation completes. It will return a ResultSet. CK TODO: what should be the behavior if size of array does not match input SQL? Exception or error result to resultHandler?
+    # @return [self]
+    def query_with_named_params(sql=nil,params=nil)
+      if sql.class == String && params.class == Array && block_given?
+        @j_del.java_method(:queryWithNamedParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling query_with_named_params(sql,params)"
+    end
     #  Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
     #  statement.
     # @param [String] sql the SQL to execute. For example <code>INSERT INTO table ...</code>
@@ -82,6 +94,19 @@ module VertxSql
         return self
       end
       raise ArgumentError, "Invalid arguments when calling update_with_params(sql,params)"
+    end
+    #  Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+    #  statement with the given parameters
+    # @param [String] sql the SQL to execute. For example <code>INSERT INTO table ...</code>
+    # @param [Array<String,Object>] params these are the parameters to fill the statement.
+    # @yield the handler which is called once the operation completes.
+    # @return [self]
+    def update_with_named_params(sql=nil,params=nil)
+      if sql.class == String && params.class == Array && block_given?
+        @j_del.java_method(:updateWithNamedParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling update_with_named_params(sql,params)"
     end
     #  Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
     # @yield the handler called when this operation completes.

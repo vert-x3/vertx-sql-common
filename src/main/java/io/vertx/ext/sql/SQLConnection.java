@@ -28,7 +28,7 @@ import io.vertx.core.json.JsonArray;
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 @VertxGen
-public interface SQLConnection {
+public interface SQLConnection extends AutoCloseable {
 
   /**
    * Sets the auto commit flag for this connection. True by default.
@@ -76,6 +76,21 @@ public interface SQLConnection {
   SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
+   * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
+   *
+   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params  This is an array of {"name": "value"} pairs of named parameters to pass to the query.  
+   * @param resultHandler  the handler which is called once the operation completes. It will return a ResultSet.
+   * CK TODO: what should be the behavior if size of array does not match input SQL?  
+   * Exception or error result to resultHandler?
+   *
+   * @see java.sql.Statement#executeQuery(String)
+   * @see java.sql.PreparedStatement#executeQuery(String)
+   */
+  @Fluent
+  SQLConnection queryWithNamedParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
+
+  /**
    * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement.
    *
@@ -101,6 +116,21 @@ public interface SQLConnection {
    */
   @Fluent
   SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
+
+  /**
+   * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement with the given parameters
+   *
+   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params  these are the parameters to fill the statement.
+   * @param resultHandler  the handler which is called once the operation completes.
+   *
+   * @see java.sql.Statement#executeUpdate(String)
+   * @see java.sql.PreparedStatement#executeUpdate(String)
+   */
+  @Fluent
+  SQLConnection updateWithNamedParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
+
 
   /**
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
