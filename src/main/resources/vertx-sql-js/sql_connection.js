@@ -20,6 +20,8 @@ var utils = require('vertx-js/util/utils');
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
 var JSQLConnection = io.vertx.ext.sql.SQLConnection;
+var UpdateResult = io.vertx.ext.sql.UpdateResult;
+var ResultSet = io.vertx.ext.sql.ResultSet;
 
 /**
  Represents a connection to a SQL database
@@ -88,7 +90,7 @@ var SQLConnection = function(j_val) {
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
       j_sQLConnection["query(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
-        resultHandler(utils.convReturnJson(ar.result().toJson()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
         resultHandler(null, ar.cause());
       }
@@ -111,7 +113,30 @@ var SQLConnection = function(j_val) {
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
       j_sQLConnection["queryWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
-        resultHandler(utils.convReturnJson(ar.result().toJson()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        resultHandler(null, ar.cause());
+      }
+    });
+      return that;
+    } else utils.invalidArgs();
+  };
+
+  /**
+   Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
+
+   @public
+   @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
+   @param params {todo} This is an array of {"name": "value"} pairs of named parameters to pass to the query. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. CK TODO: what should be the behavior if size of array does not match input SQL? Exception or error result to resultHandler? 
+   @return {SQLConnection}
+   */
+  this.queryWithNamedParams = function(sql, params, resultHandler) {
+    var __args = arguments;
+    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
+      j_sQLConnection["queryWithNamedParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
+      if (ar.succeeded()) {
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
         resultHandler(null, ar.cause());
       }
@@ -157,7 +182,7 @@ var SQLConnection = function(j_val) {
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
       j_sQLConnection["update(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
-        resultHandler(utils.convReturnJson(ar.result().toJson()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
         resultHandler(null, ar.cause());
       }
@@ -181,7 +206,31 @@ var SQLConnection = function(j_val) {
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
       j_sQLConnection["updateWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
-        resultHandler(utils.convReturnJson(ar.result().toJson()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        resultHandler(null, ar.cause());
+      }
+    });
+      return that;
+    } else utils.invalidArgs();
+  };
+
+  /**
+   Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   statement with the given parameters
+
+   @public
+   @param sql {string} the SQL to execute. For example <code>INSERT INTO table ...</code> 
+   @param params {todo} these are the parameters to fill the statement. 
+   @param resultHandler {function} the handler which is called once the operation completes. 
+   @return {SQLConnection}
+   */
+  this.updateWithNamedParams = function(sql, params, resultHandler) {
+    var __args = arguments;
+    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
+      j_sQLConnection["updateWithNamedParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
+      if (ar.succeeded()) {
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
         resultHandler(null, ar.cause());
       }
