@@ -12,9 +12,9 @@ To use this project, add the following dependency to the _dependencies_ section 
 [source,xml,subs="+attributes"]
 ----
 <dependency>
-  <groupId>{maven-groupId}</groupId>
-  <artifactId>{maven-artifactId}</artifactId>
-  <version>{maven-version}</version>
+  <groupId>io.vertx</groupId>
+  <artifactId>vertx-sql-common</artifactId>
+  <version>3.1.0-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -22,7 +22,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 
 [source,groovy,subs="+attributes"]
 ----
-compile {maven-groupId}:{maven-artifactId}:{maven-version}
+compile io.vertx:vertx-sql-common:3.1.0-SNAPSHOT
 ----
 
 == The SQL Connection
@@ -57,7 +57,7 @@ To execute a query use `link:groovydoc/io/vertx/groovy/ext/sql/SQLConnection.htm
 
 The query string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:../cheatsheet/ResultSet.html[ResultSet]` when the query has
+The handler will be called with the results, represented by `link:../dataobjects.html#ResultSet[ResultSet]` when the query has
 been run.
 
 [source,java]
@@ -73,10 +73,10 @@ connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", { res ->
 
 ----
 
-The `link:../cheatsheet/ResultSet.html[ResultSet]` instance represents the results of a query.
+The `link:../dataobjects.html#ResultSet[ResultSet]` instance represents the results of a query.
 
-The list of column names are available with `link:../cheatsheet/ResultSet.html#columnNames[getColumnNames]`, and the actual results
-available with `link:../cheatsheet/ResultSet.html#results[getResults]`
+The list of column names are available with `link:../dataobjects.html#ResultSet#getColumnNames()[getColumnNames]`, and the actual results
+available with `link:../dataobjects.html#ResultSet#getResults()[getResults]`
 
 The results are a list of `JsonArray` instances, one for each row of the results.
 
@@ -99,9 +99,9 @@ results.each { row ->
 
 ----
 
-You can also retrieve the rows as a list of Json object instances with `link:../cheatsheet/ResultSet.html#rows[getRows]` -
+You can also retrieve the rows as a list of Json object instances with `link:../dataobjects.html#ResultSet#getRows()[getRows]` -
 this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
-column names - if that's the case you should use `link:../cheatsheet/ResultSet.html#results[getResults]` instead.
+column names - if that's the case you should use `link:../dataobjects.html#ResultSet#getResults()[getResults]` instead.
 
 Here's an example of iterating through the results as Json object instances:
 
@@ -158,11 +158,11 @@ To execute an operation which updates the database use `link:groovydoc/io/vertx/
 
 The update string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:../cheatsheet/UpdateResult.html[UpdateResult]` when the update has
+The handler will be called with the results, represented by `link:../dataobjects.html#UpdateResult[UpdateResult]` when the update has
 been run.
 
-The update result holds the number of rows updated with `link:../cheatsheet/UpdateResult.html#updated[getUpdated]`, and
-if the update generated keys, they are available with `link:../cheatsheet/UpdateResult.html#keys[getKeys]`.
+The update result holds the number of rows updated with `link:../dataobjects.html#UpdateResult#getUpdated()[getUpdated]`, and
+if the update generated keys, they are available with `link:../dataobjects.html#UpdateResult#getKeys()[getKeys]`.
 
 [source,java]
 ----
