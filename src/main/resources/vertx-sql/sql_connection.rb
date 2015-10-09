@@ -83,6 +83,30 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling update_with_params(sql,params)"
     end
+    #  Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+    # @param [String] sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+    # @yield the handler which is called once the operation completes. It will return a ResultSet.
+    # @return [self]
+    def call(sql=nil)
+      if sql.class == String && block_given?
+        @j_del.java_method(:call, [Java::java.lang.String.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling call(sql)"
+    end
+    #  Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+    # @param [String] sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+    # @param [Array<String,Object>] params these are the parameters to fill the statement.
+    # @param [Array<String,Object>] outputs these are the outputs to fill the statement.
+    # @yield the handler which is called once the operation completes. It will return a ResultSet.
+    # @return [self]
+    def call_with_params(sql=nil,params=nil,outputs=nil)
+      if sql.class == String && params.class == Array && outputs.class == Array && block_given?
+        @j_del.java_method(:callWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),::Vertx::Util::Utils.to_json_array(outputs),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling call_with_params(sql,params,outputs)"
+    end
     #  Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
     # @yield the handler called when this operation completes.
     # @return [void]

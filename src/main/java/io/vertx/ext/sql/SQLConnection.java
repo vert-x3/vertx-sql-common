@@ -103,6 +103,30 @@ public interface SQLConnection extends AutoCloseable {
   SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
 
   /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   *
+   * @param sql  the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param resultHandler  the handler which is called once the operation completes. It will return a ResultSet.
+   *
+   * @see java.sql.CallableStatement#execute(String)
+   */
+  @Fluent
+  SQLConnection call(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
+
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   *
+   * @param sql  the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param params  these are the parameters to fill the statement.
+   * @param outputs  these are the outputs to fill the statement.
+   * @param resultHandler  the handler which is called once the operation completes. It will return a ResultSet.
+   *
+   * @see java.sql.CallableStatement#execute(String)
+   */
+  @Fluent
+  SQLConnection callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> resultHandler);
+
+  /**
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
    *
    * @param handler the handler called when this operation completes.

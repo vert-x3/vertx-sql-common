@@ -185,6 +185,54 @@ public class SQLConnection {
   }
 
   /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @return 
+   */
+  public SQLConnection call(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
+    this.delegate.call(sql, resultHandler);
+    return this;
+  }
+
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @return 
+   */
+  public Observable<ResultSet> callObservable(String sql) { 
+    io.vertx.rx.java.ObservableFuture<ResultSet> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
+    call(sql, resultHandler.toHandler());
+    return resultHandler;
+  }
+
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param params these are the parameters to fill the statement.
+   * @param outputs these are the outputs to fill the statement.
+   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @return 
+   */
+  public SQLConnection callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> resultHandler) { 
+    this.delegate.callWithParams(sql, params, outputs, resultHandler);
+    return this;
+  }
+
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param params these are the parameters to fill the statement.
+   * @param outputs these are the outputs to fill the statement.
+   * @return 
+   */
+  public Observable<ResultSet> callWithParamsObservable(String sql, JsonArray params, JsonArray outputs) { 
+    io.vertx.rx.java.ObservableFuture<ResultSet> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
+    callWithParams(sql, params, outputs, resultHandler.toHandler());
+    return resultHandler;
+  }
+
+  /**
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
    * @param handler the handler called when this operation completes.
    */
