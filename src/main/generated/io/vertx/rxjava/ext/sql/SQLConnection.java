@@ -91,7 +91,7 @@ public class SQLConnection {
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
    * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @param resultHandler the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
    * @return 
    */
   public SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
@@ -114,7 +114,7 @@ public class SQLConnection {
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
    * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
    * @param params these are the parameters to fill the statement.
-   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @param resultHandler the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
    * @return 
    */
   public SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) { 
@@ -187,7 +187,7 @@ public class SQLConnection {
   /**
    * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
    * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
-   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @param resultHandler the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
    * @return 
    */
   public SQLConnection call(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
@@ -211,7 +211,7 @@ public class SQLConnection {
    * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
    * @param params these are the parameters to fill the statement.
    * @param outputs these are the outputs to fill the statement.
-   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @param resultHandler the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
    * @return 
    */
   public SQLConnection callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> resultHandler) { 

@@ -125,6 +125,48 @@
  * {@link examples.Examples#example5}
  * ----
  *
+ * === Callable statements
+ *
+ * To execute a callable statement (either SQL functions or SQL procedures) you can use
+ * {@link io.vertx.ext.sql.SQLConnection#callWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}.
+ *
+ * This takes the callable statement using the standard JDBC format `{ call func_proc_name() }`, optionally including
+ * parameter place holders e.g.: `{ call func_proc_name(?, ?) }`, a {@link io.vertx.core.json.JsonArray} containing the
+ * parameter values and finally a {@link io.vertx.core.json.JsonArray} containing the
+ * output types e.g.: `[null, 'VARCHAR']`.
+ *
+ * A SQL function returns some output using the `return` keyword, and in this case one can call it like this:
+ *
+ * [source,java]
+ * ----
+ * {@link examples.Examples#example8}
+ * ----
+ *
+ * When working with Procedures you and still return values from your procedures via its arguments, in the case you do
+ * not return anything the usage is as follows:
+ *
+ * [source,java]
+ * ----
+ * {@link examples.Examples#example9}
+ * ----
+ *
+ * However you can also return values like this:
+ *
+ * [source,java]
+ * ----
+ * {@link examples.Examples#example10}
+ * ----
+ *
+ * Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a
+ * String describing the type you want to receive.
+ *
+ * To avoid ambiguation the implementations are expected to follow the following rules:
+ *
+ * * When a place holder in the `IN` array is `NOT NULL` it will be taken
+ * * When the `IN` value is NULL a check is performed on the OUT
+ *   * When the `OUT` value is not null it will be registered as a output parameter
+ *   * When the `OUT` is also null it is expected that the IN value is the `NULL` value.
+ *
  * === Executing other operations
  *
  * To execute any other database operation, e.g. a `CREATE TABLE` you can use

@@ -217,6 +217,83 @@ connection.updateWithParams(update, params, { res ->
 
 ----
 
+=== Callable statements
+
+To execute a callable statement (either SQL functions or SQL procedures) you can use
+`link:groovydoc/io/vertx/groovy/ext/sql/SQLConnection.html#callWithParams(java.lang.String,%20io.vertx.core.json.JsonArray,%20io.vertx.core.json.JsonArray,%20io.vertx.core.Handler)[callWithParams]`.
+
+This takes the callable statement using the standard JDBC format `{ call func_proc_name() }`, optionally including
+parameter place holders e.g.: `{ call func_proc_name(?, ?) }`, a `JsonArray` containing the
+parameter values and finally a `JsonArray` containing the
+output types e.g.: `[null, 'VARCHAR']`.
+
+A SQL function returns some output using the `return` keyword, and in this case one can call it like this:
+
+[source,java]
+----
+// Assume that there is a SQL function like this:
+//
+// create function one_hour_ago() returns timestamp
+//    return now() - 1 hour;
+
+// note that you do not need to declare the output for functions
+def func = "{ call one_hour_ago() }"
+
+connection.call(func, { res ->
+
+  if (res.succeeded()) {
+    def result = res.result()
+  } else {
+    // Failed!
+  }
+})
+
+----
+
+When working with Procedures you and still return values from your procedures via its arguments, in the case you do
+not return anything the usage is as follows:
+
+[source,java]
+----
+// Assume that there is a SQL procedure like this:
+//
+// create procedure new_customer(firstname varchar(50), lastname varchar(50))
+//   modifies sql data
+//   insert into customers values (default, firstname, lastname, current_timestamp);
+
+def func = "{ call new_customer(?, ?) }"
+
+connection.callWithParams(func, [
+  "John",
+  "Doe"
+], null, { res ->
+
+  if (res.succeeded()) {
+    // Success!
+  } else {
+    // Failed!
+  }
+})
+
+----
+
+However you can also return values like this:
+
+[source,java]
+----
+Code not translatable
+----
+
+Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a
+String describing the type you want to receive.
+
+To avoid ambiguation the implementations are expected to follow the following rules:
+
+* When a place holder in the `IN` array is `NOT NULL` it will be taken
+* When the `IN` value is NULL a check is performed on the OUT
+  * When the `OUT` value is not null it will be registered as a output parameter
+  * When the `OUT` is also null it is expected that the IN value is the `NULL` value.
+
 === Executing other operations
 
 To execute any other database operation, e.g. a `CREATE TABLE` you can use

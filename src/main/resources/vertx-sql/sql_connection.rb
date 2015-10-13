@@ -37,7 +37,7 @@ module VertxSql
     end
     #  Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
     # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-    # @yield the handler which is called once the operation completes. It will return a ResultSet.
+    # @yield the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
     # @return [self]
     def query(sql=nil)
       if sql.class == String && block_given?
@@ -49,7 +49,7 @@ module VertxSql
     #  Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
     # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
     # @param [Array<String,Object>] params these are the parameters to fill the statement.
-    # @yield the handler which is called once the operation completes. It will return a ResultSet.
+    # @yield the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
     # @return [self]
     def query_with_params(sql=nil,params=nil)
       if sql.class == String && params.class == Array && block_given?
@@ -85,7 +85,7 @@ module VertxSql
     end
     #  Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
     # @param [String] sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
-    # @yield the handler which is called once the operation completes. It will return a ResultSet.
+    # @yield the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
     # @return [self]
     def call(sql=nil)
       if sql.class == String && block_given?
@@ -98,7 +98,7 @@ module VertxSql
     # @param [String] sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
     # @param [Array<String,Object>] params these are the parameters to fill the statement.
     # @param [Array<String,Object>] outputs these are the outputs to fill the statement.
-    # @yield the handler which is called once the operation completes. It will return a ResultSet.
+    # @yield the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
     # @return [self]
     def call_with_params(sql=nil,params=nil,outputs=nil)
       if sql.class == String && params.class == Array && outputs.class == Array && block_given?

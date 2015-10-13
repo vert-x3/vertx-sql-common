@@ -82,7 +82,7 @@ var SQLConnection = function(j_val) {
 
    @public
    @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
-   @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
   this.query = function(sql, resultHandler) {
@@ -105,7 +105,7 @@ var SQLConnection = function(j_val) {
    @public
    @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
    @param params {todo} these are the parameters to fill the statement. 
-   @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
   this.queryWithParams = function(sql, params, resultHandler) {
@@ -174,7 +174,7 @@ var SQLConnection = function(j_val) {
 
    @public
    @param sql {string} the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>. 
-   @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
   this.call = function(sql, resultHandler) {
@@ -198,7 +198,7 @@ var SQLConnection = function(j_val) {
    @param sql {string} the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>. 
    @param params {todo} these are the parameters to fill the statement. 
    @param outputs {todo} these are the outputs to fill the statement. 
-   @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
   this.callWithParams = function(sql, params, outputs, resultHandler) {
