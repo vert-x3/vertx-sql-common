@@ -16,12 +16,12 @@
 
 /** @module vertx-sql-js/sql_connection */
 var utils = require('vertx-js/util/utils');
+var UpdateResult = require('vertx-sql-js/update_result');
 var ResultSet = require('vertx-sql-js/result_set');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
 var JSQLConnection = io.vertx.ext.sql.SQLConnection;
-var UpdateResult = io.vertx.ext.sql.UpdateResult;
 
 /**
  Represents a connection to a SQL database
@@ -136,7 +136,7 @@ var SQLConnection = function(j_val) {
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
       j_sQLConnection["update(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
-        resultHandler(utils.convReturnDataObject(ar.result()), null);
+        resultHandler(utils.convReturnVertxGen(ar.result(), UpdateResult), null);
       } else {
         resultHandler(null, ar.cause());
       }
@@ -160,7 +160,7 @@ var SQLConnection = function(j_val) {
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
       j_sQLConnection["updateWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
-        resultHandler(utils.convReturnDataObject(ar.result()), null);
+        resultHandler(utils.convReturnVertxGen(ar.result(), UpdateResult), null);
       } else {
         resultHandler(null, ar.cause());
       }

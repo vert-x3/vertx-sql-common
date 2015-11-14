@@ -82,6 +82,12 @@ public class ResultSet {
     return ret;
   }
 
+  public List<JsonObject> getRows() { 
+    List<JsonObject> ret = this.delegate.getRows();
+;
+    return ret;
+  }
+
   /**
    * Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
    * the column values.
@@ -90,9 +96,14 @@ public class ResultSet {
    * overwrite the other if using this method. If that's the case use {@link io.vertx.ext.sql.ResultSet} instead.
    * @return the rows represented as JSON object instances
    */
-  public List<JsonObject> getRows() { 
-    List<JsonObject> ret = this.delegate.getRows();
+  public List<JsonObject> rows() { 
+    List<JsonObject> ret = this.delegate.rows();
 ;
+    return ret;
+  }
+
+  public int getNumRows() { 
+    int ret = this.delegate.getNumRows();
     return ret;
   }
 
@@ -100,8 +111,13 @@ public class ResultSet {
    * Return the number of rows in the result set
    * @return the number of rows
    */
-  public int getNumRows() { 
-    int ret = this.delegate.getNumRows();
+  public int numRows() { 
+    int ret = this.delegate.numRows();
+    return ret;
+  }
+
+  public int getNumColumns() { 
+    int ret = this.delegate.getNumColumns();
     return ret;
   }
 
@@ -109,8 +125,8 @@ public class ResultSet {
    * Return the number of columns in the result set
    * @return the number of columns
    */
-  public int getNumColumns() { 
-    int ret = this.delegate.getNumColumns();
+  public int numColumns() { 
+    int ret = this.delegate.numColumns();
     return ret;
   }
 

@@ -64,6 +64,10 @@ public class ResultSet {
     def ret = this.delegate.columnNames();
     return ret;
   }
+  public List<Map<String, Object>> getRows() {
+    def ret = this.delegate.getRows()?.collect({underpants -> InternalHelper.wrapObject(underpants)});
+    return ret;
+  }
   /**
    * Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
    * the column values.
@@ -72,24 +76,32 @@ public class ResultSet {
    * overwrite the other if using this method. If that's the case use {@link io.vertx.groovy.ext.sql.ResultSet#getResults} instead.
    * @return the rows represented as JSON object instances
    */
-  public List<Map<String, Object>> getRows() {
-    def ret = this.delegate.getRows()?.collect({underpants -> InternalHelper.wrapObject(underpants)});
+  public List<Map<String, Object>> rows() {
+    def ret = this.delegate.rows()?.collect({underpants -> InternalHelper.wrapObject(underpants)});
+    return ret;
+  }
+  public int getNumRows() {
+    def ret = this.delegate.getNumRows();
     return ret;
   }
   /**
    * Return the number of rows in the result set
    * @return the number of rows
    */
-  public int getNumRows() {
-    def ret = this.delegate.getNumRows();
+  public int numRows() {
+    def ret = this.delegate.numRows();
+    return ret;
+  }
+  public int getNumColumns() {
+    def ret = this.delegate.getNumColumns();
     return ret;
   }
   /**
    * Return the number of columns in the result set
    * @return the number of columns
    */
-  public int getNumColumns() {
-    def ret = this.delegate.getNumColumns();
+  public int numColumns() {
+    def ret = this.delegate.numColumns();
     return ret;
   }
 }

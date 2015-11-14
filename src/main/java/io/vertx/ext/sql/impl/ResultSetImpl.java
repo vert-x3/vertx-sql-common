@@ -130,6 +130,11 @@ public class ResultSetImpl implements ResultSet {
     return rows;
   }
 
+  @Override
+  public List<JsonObject> rows() {
+    return getRows();
+  }
+
   /**
    * Return the number of rows in the result set
    *
@@ -139,6 +144,11 @@ public class ResultSetImpl implements ResultSet {
     return results.size();
   }
 
+  @Override
+  public int numRows() {
+    return getNumRows();
+  }
+
   /**
    * Return the number of columns in the result set
    *
@@ -146,6 +156,11 @@ public class ResultSetImpl implements ResultSet {
    */
   public int getNumColumns() {
     return columnNames.size();
+  }
+
+  @Override
+  public int numColumns() {
+    return getNumColumns();
   }
 
   @Override

@@ -42,6 +42,9 @@ public interface ResultSet {
    */
   List<String> columnNames();
 
+  @Deprecated
+  List<JsonObject> getRows();
+
   /**
    * Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
    * the column values.
@@ -51,20 +54,26 @@ public interface ResultSet {
    *
    * @return  the rows represented as JSON object instances
    */
-  List<JsonObject> getRows();
+  List<JsonObject> rows();
+
+  @Deprecated
+  int getNumRows();
 
   /**
    * Return the number of rows in the result set
    *
    * @return the number of rows
    */
-  int getNumRows();
+  int numRows();
+
+  @Deprecated
+  int getNumColumns();
 
   /**
    * Return the number of columns in the result set
    *
    * @return the number of columns
    */
-  int getNumColumns();
+  int numColumns();
 
 }

@@ -1,7 +1,6 @@
 package io.vertx.ext.sql.test;
 
 import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.UpdateResult;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,25 +23,16 @@ public class UpdateResultTest {
   public void before() {
 
     keys = new JsonArray(Arrays.asList("foo", "bar", "wibble"));
-    ur = new UpdateResult(updated, keys);
+    ur = UpdateResult.create(updated, keys);
   }
 
 
   @Test
   public void testUpdateResult() {
 
-    assertEquals(updated, ur.getUpdated());
-    assertEquals(keys.size(), ur.getKeys().size());
-    assertEquals(keys, ur.getKeys());
-
-  }
-
-  @Test
-  public void testJson() {
-
-    JsonObject json = ur.toJson();
-    UpdateResult ur2 = new UpdateResult(json);
-    assertEquals(ur, ur2);
+    assertEquals(updated, ur.updated());
+    assertEquals(keys.size(), ur.keys().size());
+    assertEquals(keys, ur.keys());
 
   }
 }

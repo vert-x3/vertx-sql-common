@@ -86,6 +86,19 @@ var ResultSet = function(j_val) {
   };
 
   /**
+
+   @public
+
+   @return {Array.<Object>}
+   */
+  this.getRows = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnListSetJson(j_resultSet["getRows()"]());
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
    Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
    the column values.
    <p>
@@ -96,10 +109,23 @@ var ResultSet = function(j_val) {
 
    @return {Array.<Object>} the rows represented as JSON object instances
    */
-  this.getRows = function() {
+  this.rows = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return utils.convReturnListSetJson(j_resultSet["getRows()"]());
+      return utils.convReturnListSetJson(j_resultSet["rows()"]());
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {number}
+   */
+  this.getNumRows = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return j_resultSet["getNumRows()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -110,10 +136,23 @@ var ResultSet = function(j_val) {
 
    @return {number} the number of rows
    */
-  this.getNumRows = function() {
+  this.numRows = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return j_resultSet["getNumRows()"]();
+      return j_resultSet["numRows()"]();
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {number}
+   */
+  this.getNumColumns = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return j_resultSet["getNumColumns()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -124,10 +163,10 @@ var ResultSet = function(j_val) {
 
    @return {number} the number of columns
    */
-  this.getNumColumns = function() {
+  this.numColumns = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return j_resultSet["getNumColumns()"]();
+      return j_resultSet["numColumns()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

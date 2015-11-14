@@ -158,11 +158,11 @@ To execute an operation which updates the database use `link:groovydoc/io/vertx/
 
 The update string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:../dataobjects.html#UpdateResult[UpdateResult]` when the update has
+The handler will be called with the results, represented by `link:groovydoc/io/vertx/groovy/ext/sql/UpdateResult.html[UpdateResult]` when the update has
 been run.
 
-The update result holds the number of rows updated with `link:../dataobjects.html#UpdateResult#getUpdated()[getUpdated]`, and
-if the update generated keys, they are available with `link:../dataobjects.html#UpdateResult#getKeys()[getKeys]`.
+The update result holds the number of rows updated with `link:groovydoc/io/vertx/groovy/ext/sql/UpdateResult.html#getUpdated()[getUpdated]`, and
+if the update generated keys, they are available with `link:groovydoc/io/vertx/groovy/ext/sql/UpdateResult.html#getKeys()[getKeys]`.
 
 [source,java]
 ----
@@ -205,7 +205,7 @@ connection.updateWithParams(update, params, { res ->
 
     def updateResult = res.result()
 
-    println("No. of rows updated: ${updateResult.updated}")
+    println("No. of rows updated: ${updateResult.getUpdated()}")
 
   } else {
 

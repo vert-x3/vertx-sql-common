@@ -55,33 +55,54 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling column_names()"
     end
-    #  Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
-    #  the column values.
-    #  <p>
-    #  Beware that it's legal for a query result in SQL to contain duplicate column names, in which case one will
-    #  overwrite the other if using this method. If that's the case use {::VertxSql::ResultSet#get_results} instead.
-    # @return [Array<Hash{String => Object}>] the rows represented as JSON object instances
+    # @return [Array<Hash{String => Object}>]
     def get_rows
       if !block_given?
         return @j_del.java_method(:getRows, []).call().to_a.map { |elt| elt != nil ? JSON.parse(elt.encode) : nil }
       end
       raise ArgumentError, "Invalid arguments when calling get_rows()"
     end
-    #  Return the number of rows in the result set
-    # @return [Fixnum] the number of rows
+    #  Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
+    #  the column values.
+    #  <p>
+    #  Beware that it's legal for a query result in SQL to contain duplicate column names, in which case one will
+    #  overwrite the other if using this method. If that's the case use {::VertxSql::ResultSet#get_results} instead.
+    # @return [Array<Hash{String => Object}>] the rows represented as JSON object instances
+    def rows
+      if !block_given?
+        return @j_del.java_method(:rows, []).call().to_a.map { |elt| elt != nil ? JSON.parse(elt.encode) : nil }
+      end
+      raise ArgumentError, "Invalid arguments when calling rows()"
+    end
+    # @return [Fixnum]
     def get_num_rows
       if !block_given?
         return @j_del.java_method(:getNumRows, []).call()
       end
       raise ArgumentError, "Invalid arguments when calling get_num_rows()"
     end
-    #  Return the number of columns in the result set
-    # @return [Fixnum] the number of columns
+    #  Return the number of rows in the result set
+    # @return [Fixnum] the number of rows
+    def num_rows
+      if !block_given?
+        return @j_del.java_method(:numRows, []).call()
+      end
+      raise ArgumentError, "Invalid arguments when calling num_rows()"
+    end
+    # @return [Fixnum]
     def get_num_columns
       if !block_given?
         return @j_del.java_method(:getNumColumns, []).call()
       end
       raise ArgumentError, "Invalid arguments when calling get_num_columns()"
+    end
+    #  Return the number of columns in the result set
+    # @return [Fixnum] the number of columns
+    def num_columns
+      if !block_given?
+        return @j_del.java_method(:numColumns, []).call()
+      end
+      raise ArgumentError, "Invalid arguments when calling num_columns()"
     end
   end
 end

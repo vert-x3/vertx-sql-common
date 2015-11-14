@@ -20,7 +20,6 @@ import java.util.Map;
 import io.vertx.lang.rxjava.InternalHelper;
 import rx.Observable;
 import io.vertx.core.json.JsonArray;
-import io.vertx.ext.sql.UpdateResult;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -161,7 +160,17 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) { 
-    this.delegate.update(sql, resultHandler);
+    this.delegate.update(sql, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
+        AsyncResult<UpdateResult> f;
+        if (event.succeeded()) {
+          f = InternalHelper.<UpdateResult>result(new UpdateResult(event.result()));
+        } else {
+          f = InternalHelper.<UpdateResult>failure(event.cause());
+        }
+        resultHandler.handle(f);
+      }
+    });
     return this;
   }
 
@@ -186,7 +195,17 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) { 
-    this.delegate.updateWithParams(sql, params, resultHandler);
+    this.delegate.updateWithParams(sql, params, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
+        AsyncResult<UpdateResult> f;
+        if (event.succeeded()) {
+          f = InternalHelper.<UpdateResult>result(new UpdateResult(event.result()));
+        } else {
+          f = InternalHelper.<UpdateResult>failure(event.cause());
+        }
+        resultHandler.handle(f);
+      }
+    });
     return this;
   }
 

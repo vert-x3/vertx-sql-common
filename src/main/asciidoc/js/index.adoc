@@ -158,11 +158,11 @@ To execute an operation which updates the database use `link:jsdoc/sql_connectio
 
 The update string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:../dataobjects.html#UpdateResult[UpdateResult]` when the update has
+The handler will be called with the results, represented by `link:jsdoc/update_result-UpdateResult.html[UpdateResult]` when the update has
 been run.
 
-The update result holds the number of rows updated with `link:../dataobjects.html#UpdateResult#getUpdated[getUpdated]`, and
-if the update generated keys, they are available with `link:../dataobjects.html#UpdateResult#getKeys[getKeys]`.
+The update result holds the number of rows updated with `link:jsdoc/update_result-UpdateResult.html#getUpdated[getUpdated]`, and
+if the update generated keys, they are available with `link:jsdoc/update_result-UpdateResult.html#getKeys[getKeys]`.
 
 [source,java]
 ----
@@ -205,7 +205,7 @@ connection.updateWithParams(update, params, function (res, res_err) {
 
     var updateResult = res;
 
-    console.log("No. of rows updated: " + updateResult.updated);
+    console.log("No. of rows updated: " + updateResult.getUpdated());
 
   } else {
 
