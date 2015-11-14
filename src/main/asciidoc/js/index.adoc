@@ -14,7 +14,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 <dependency>
   <groupId>io.vertx</groupId>
   <artifactId>vertx-sql-common</artifactId>
-  <version>3.1.0</version>
+  <version>3.2.0-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -22,7 +22,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 
 [source,groovy,subs="+attributes"]
 ----
-compile io.vertx:vertx-sql-common:3.1.0
+compile io.vertx:vertx-sql-common:3.2.0-SNAPSHOT
 ----
 
 == The SQL Connection
@@ -57,7 +57,7 @@ To execute a query use `link:jsdoc/sql_connection-SQLConnection.html#query[query
 
 The query string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:../dataobjects.html#ResultSet[ResultSet]` when the query has
+The handler will be called with the results, represented by `link:jsdoc/result_set-ResultSet.html[ResultSet]` when the query has
 been run.
 
 [source,java]
@@ -73,19 +73,19 @@ connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", function (res
 
 ----
 
-The `link:../dataobjects.html#ResultSet[ResultSet]` instance represents the results of a query.
+The `link:jsdoc/result_set-ResultSet.html[ResultSet]` instance represents the results of a query.
 
-The list of column names are available with `link:../dataobjects.html#ResultSet#getColumnNames[getColumnNames]`, and the actual results
-available with `link:../dataobjects.html#ResultSet#getResults[getResults]`
+The list of column names are available with `link:jsdoc/result_set-ResultSet.html#getColumnNames[getColumnNames]`, and the actual results
+available with `link:jsdoc/result_set-ResultSet.html#getResults[getResults]`
 
 The results are a list of `JsonArray` instances, one for each row of the results.
 
 [source,java]
 ----
 
-var columnNames = resultSet.columnNames;
+var columnNames = resultSet.getColumnNames();
 
-var results = resultSet.results;
+var results = resultSet.getResults();
 
 Array.prototype.forEach.call(results, function(row) {
 
@@ -99,16 +99,16 @@ Array.prototype.forEach.call(results, function(row) {
 
 ----
 
-You can also retrieve the rows as a list of Json object instances with `link:../dataobjects.html#ResultSet#getRows[getRows]` -
+You can also retrieve the rows as a list of Json object instances with `link:jsdoc/result_set-ResultSet.html#getRows[getRows]` -
 this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
-column names - if that's the case you should use `link:../dataobjects.html#ResultSet#getResults[getResults]` instead.
+column names - if that's the case you should use `link:jsdoc/result_set-ResultSet.html#getResults[getResults]` instead.
 
 Here's an example of iterating through the results as Json object instances:
 
 [source,java]
 ----
 
-var rows = resultSet.rows;
+var rows = resultSet.getRows();
 
 Array.prototype.forEach.call(rows, function(row) {
 
@@ -158,18 +158,18 @@ To execute an operation which updates the database use `link:jsdoc/sql_connectio
 
 The update string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:../dataobjects.html#UpdateResult[UpdateResult]` when the update has
+The handler will be called with the results, represented by `link:jsdoc/update_result-UpdateResult.html[UpdateResult]` when the update has
 been run.
 
-The update result holds the number of rows updated with `link:../dataobjects.html#UpdateResult#getUpdated[getUpdated]`, and
-if the update generated keys, they are available with `link:../dataobjects.html#UpdateResult#getKeys[getKeys]`.
+The update result holds the number of rows updated with `link:jsdoc/update_result-UpdateResult.html#getUpdated[getUpdated]`, and
+if the update generated keys, they are available with `link:jsdoc/update_result-UpdateResult.html#getKeys[getKeys]`.
 
 [source,java]
 ----
 
-var columnNames = resultSet.columnNames;
+var columnNames = resultSet.getColumnNames();
 
-var results = resultSet.results;
+var results = resultSet.getResults();
 
 Array.prototype.forEach.call(results, function(row) {
 
@@ -205,7 +205,7 @@ connection.updateWithParams(update, params, function (res, res_err) {
 
     var updateResult = res;
 
-    console.log("No. of rows updated: " + updateResult.updated);
+    console.log("No. of rows updated: " + updateResult.getUpdated());
 
   } else {
 

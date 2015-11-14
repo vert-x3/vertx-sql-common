@@ -37,21 +37,21 @@ public class ResultSetTest {
       results.add(result);
     }
 
-    rs = new ResultSet(columnNames, results);
+    rs = ResultSet.create(columnNames, results);
   }
 
 
   @Test
   public void testResultSet() {
 
-    assertEquals(numRows, rs.getNumRows());
-    assertEquals(columnNames.size(), rs.getNumColumns());
-    assertEquals(columnNames.size(), rs.getColumnNames().size());
-    assertEquals(columnNames, rs.getColumnNames());
-    assertEquals(results, rs.getResults());
+    assertEquals(numRows, rs.numRows());
+    assertEquals(columnNames.size(), rs.numColumns());
+    assertEquals(columnNames.size(), rs.columnNames().size());
+    assertEquals(columnNames, rs.columnNames());
+    assertEquals(results, rs.results());
 
-    List<JsonObject> rows = rs.getRows();
-    assertEquals(numRows, rs.getRows().size());
+    List<JsonObject> rows = rs.rows();
+    assertEquals(numRows, rs.rows().size());
     int index = 0;
     for (JsonObject row: rows) {
       JsonArray result = results.get(index);
@@ -64,15 +64,6 @@ public class ResultSetTest {
       }
       index++;
     }
-
-  }
-
-  @Test
-  public void testJson() {
-
-    JsonObject json = rs.toJson();
-    ResultSet rs2 = new ResultSet(json);
-    assertEquals(rs, rs2);
 
   }
 }
