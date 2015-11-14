@@ -21,7 +21,6 @@ import io.vertx.lang.rxjava.InternalHelper;
 import rx.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.sql.UpdateResult;
-import io.vertx.ext.sql.ResultSet;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -95,7 +94,17 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    this.delegate.query(sql, resultHandler);
+    this.delegate.query(sql, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
+        AsyncResult<ResultSet> f;
+        if (event.succeeded()) {
+          f = InternalHelper.<ResultSet>result(new ResultSet(event.result()));
+        } else {
+          f = InternalHelper.<ResultSet>failure(event.cause());
+        }
+        resultHandler.handle(f);
+      }
+    });
     return this;
   }
 
@@ -118,7 +127,17 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    this.delegate.queryWithParams(sql, params, resultHandler);
+    this.delegate.queryWithParams(sql, params, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
+        AsyncResult<ResultSet> f;
+        if (event.succeeded()) {
+          f = InternalHelper.<ResultSet>result(new ResultSet(event.result()));
+        } else {
+          f = InternalHelper.<ResultSet>failure(event.cause());
+        }
+        resultHandler.handle(f);
+      }
+    });
     return this;
   }
 

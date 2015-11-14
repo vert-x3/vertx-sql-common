@@ -14,7 +14,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 <dependency>
   <groupId>io.vertx</groupId>
   <artifactId>vertx-sql-common</artifactId>
-  <version>3.1.0</version>
+  <version>3.2.0-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -22,7 +22,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 
 [source,groovy,subs="+attributes"]
 ----
-compile io.vertx:vertx-sql-common:3.1.0
+compile io.vertx:vertx-sql-common:3.2.0-SNAPSHOT
 ----
 
 == The SQL Connection
@@ -57,7 +57,7 @@ To execute a query use `link:yardoc/VertxSql/SQLConnection.html#query-instance_m
 
 The query string is raw SQL that is passed through without changes to the actual database.
 
-The handler will be called with the results, represented by `link:../dataobjects.html#ResultSet[ResultSet]` when the query has
+The handler will be called with the results, represented by `link:yardoc/VertxSql/ResultSet.html[ResultSet]` when the query has
 been run.
 
 [source,java]
@@ -73,19 +73,19 @@ connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE") { |res_err,re
 
 ----
 
-The `link:../dataobjects.html#ResultSet[ResultSet]` instance represents the results of a query.
+The `link:yardoc/VertxSql/ResultSet.html[ResultSet]` instance represents the results of a query.
 
-The list of column names are available with `link:../dataobjects.html#ResultSet#get_column_names-instance_method[getColumnNames]`, and the actual results
-available with `link:../dataobjects.html#ResultSet#get_results-instance_method[getResults]`
+The list of column names are available with `link:yardoc/VertxSql/ResultSet.html#get_column_names-instance_method[getColumnNames]`, and the actual results
+available with `link:yardoc/VertxSql/ResultSet.html#get_results-instance_method[getResults]`
 
 The results are a list of `link:unavailable[JsonArray]` instances, one for each row of the results.
 
 [source,java]
 ----
 
-columnNames = resultSet['columnNames']
+columnNames = resultSet.get_column_names()
 
-results = resultSet['results']
+results = resultSet.get_results()
 
 results.each do |row|
 
@@ -99,16 +99,16 @@ end
 
 ----
 
-You can also retrieve the rows as a list of Json object instances with `link:../dataobjects.html#ResultSet#get_rows-instance_method[getRows]` -
+You can also retrieve the rows as a list of Json object instances with `link:yardoc/VertxSql/ResultSet.html#get_rows-instance_method[getRows]` -
 this can give you a somewhat simpler API to work with, but please be aware that SQL results can contain duplicate
-column names - if that's the case you should use `link:../dataobjects.html#ResultSet#get_results-instance_method[getResults]` instead.
+column names - if that's the case you should use `link:yardoc/VertxSql/ResultSet.html#get_results-instance_method[getResults]` instead.
 
 Here's an example of iterating through the results as Json object instances:
 
 [source,java]
 ----
 
-rows = resultSet['rows']
+rows = resultSet.get_rows()
 
 rows.each do |row|
 
@@ -167,9 +167,9 @@ if the update generated keys, they are available with `link:../dataobjects.html#
 [source,java]
 ----
 
-columnNames = resultSet['columnNames']
+columnNames = resultSet.get_column_names()
 
-results = resultSet['results']
+results = resultSet.get_results()
 
 results.each do |row|
 

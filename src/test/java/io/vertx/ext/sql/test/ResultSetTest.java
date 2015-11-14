@@ -37,7 +37,7 @@ public class ResultSetTest {
       results.add(result);
     }
 
-    rs = new ResultSet(columnNames, results);
+    rs = ResultSet.create(columnNames, results);
   }
 
 
@@ -64,15 +64,6 @@ public class ResultSetTest {
       }
       index++;
     }
-
-  }
-
-  @Test
-  public void testJson() {
-
-    JsonObject json = rs.toJson();
-    ResultSet rs2 = new ResultSet(json);
-    assertEquals(rs, rs2);
 
   }
 }

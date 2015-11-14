@@ -1,3 +1,4 @@
+require 'vertx-sql/result_set'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.sql.SQLConnection
 module VertxSql
@@ -41,7 +42,7 @@ module VertxSql
     # @return [self]
     def query(sql=nil)
       if sql.class == String && block_given?
-        @j_del.java_method(:query, [Java::java.lang.String.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+        @j_del.java_method(:query, [Java::java.lang.String.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ::Vertx::Util::Utils.safe_create(ar.result,::VertxSql::ResultSet) : nil) }))
         return self
       end
       raise ArgumentError, "Invalid arguments when calling query(sql)"
@@ -53,7 +54,7 @@ module VertxSql
     # @return [self]
     def query_with_params(sql=nil,params=nil)
       if sql.class == String && params.class == Array && block_given?
-        @j_del.java_method(:queryWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
+        @j_del.java_method(:queryWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ::Vertx::Util::Utils.safe_create(ar.result,::VertxSql::ResultSet) : nil) }))
         return self
       end
       raise ArgumentError, "Invalid arguments when calling query_with_params(sql,params)"
