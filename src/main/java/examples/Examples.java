@@ -154,4 +154,60 @@ public class Examples {
 
   }
 
+  public void example8(SQLConnection connection) {
+    // Assume that there is a SQL function like this:
+    //
+    // create function one_hour_ago() returns timestamp
+    //    return now() - 1 hour;
+
+    // note that you do not need to declare the output for functions
+    String func = "{ call one_hour_ago() }";
+
+    connection.call(func, res -> {
+
+      if (res.succeeded()) {
+        ResultSet result = res.result();
+      } else {
+        // Failed!
+      }
+    });
+  }
+
+  public void example9(SQLConnection connection) {
+    // Assume that there is a SQL procedure like this:
+    //
+    // create procedure new_customer(firstname varchar(50), lastname varchar(50))
+    //   modifies sql data
+    //   insert into customers values (default, firstname, lastname, current_timestamp);
+
+    String func = "{ call new_customer(?, ?) }";
+
+    connection.callWithParams(func, new JsonArray().add("John").add("Doe"), null, res -> {
+
+      if (res.succeeded()) {
+        // Success!
+      } else {
+        // Failed!
+      }
+    });
+  }
+
+  public void example10(SQLConnection connection) {
+    // Assume that there is a SQL procedure like this:
+    //
+    // create procedure customer_lastname(IN firstname varchar(50), OUT lastname varchar(50))
+    //   modifies sql data
+    //   select lastname into lastname from customers where firstname = firstname;
+
+    String func = "{ call customer_lastname(?, ?) }";
+
+    connection.callWithParams(func, new JsonArray().add("John"), new JsonArray().addNull().add("VARCHAR"), res-> {
+
+      if (res.succeeded()) {
+        ResultSet result = res.result();
+      } else {
+        // Failed!
+      }
+    });
+  }
 }

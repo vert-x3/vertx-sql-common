@@ -82,7 +82,7 @@ var SQLConnection = function(j_val) {
 
    @public
    @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
-   @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
   this.query = function(sql, resultHandler) {
@@ -105,7 +105,7 @@ var SQLConnection = function(j_val) {
    @public
    @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
    @param params {todo} these are the parameters to fill the statement. 
-   @param resultHandler {function} the handler which is called once the operation completes. It will return a ResultSet. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
   this.queryWithParams = function(sql, params, resultHandler) {
@@ -159,6 +159,52 @@ var SQLConnection = function(j_val) {
     var __args = arguments;
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
       j_sQLConnection["updateWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
+      if (ar.succeeded()) {
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        resultHandler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+
+   @public
+   @param sql {string} the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
+   @return {SQLConnection}
+   */
+  this.call = function(sql, resultHandler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["call(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
+      if (ar.succeeded()) {
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
+      } else {
+        resultHandler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+
+   @public
+   @param sql {string} the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>. 
+   @param params {todo} these are the parameters to fill the statement. 
+   @param outputs {todo} these are the outputs to fill the statement. 
+   @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
+   @return {SQLConnection}
+   */
+  this.callWithParams = function(sql, params, outputs, resultHandler) {
+    var __args = arguments;
+    if (__args.length === 4 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array && typeof __args[3] === 'function') {
+      j_sQLConnection["callWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), utils.convParamJsonArray(outputs), function(ar) {
       if (ar.succeeded()) {
         resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {

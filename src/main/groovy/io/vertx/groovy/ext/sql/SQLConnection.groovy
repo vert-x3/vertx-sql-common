@@ -58,7 +58,7 @@ public class SQLConnection {
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
    * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
-   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @param resultHandler the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
    * @return 
    */
   public SQLConnection query(String sql, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
@@ -79,7 +79,7 @@ public class SQLConnection {
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
    * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
    * @param params these are the parameters to fill the statement.
-   * @param resultHandler the handler which is called once the operation completes. It will return a ResultSet.
+   * @param resultHandler the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
    * @return 
    */
   public SQLConnection queryWithParams(String sql, List<Object> params, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
@@ -128,6 +128,48 @@ public class SQLConnection {
   public SQLConnection updateWithParams(String sql, List<Object> params, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
     this.delegate.updateWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
       public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
+        AsyncResult<Map<String, Object>> f
+        if (event.succeeded()) {
+          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+        } else {
+          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+        }
+        resultHandler.handle(f)
+      }
+    });
+    return this;
+  }
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param resultHandler the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
+   * @return 
+   */
+  public SQLConnection call(String sql, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
+    this.delegate.call(sql, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
+        AsyncResult<Map<String, Object>> f
+        if (event.succeeded()) {
+          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+        } else {
+          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+        }
+        resultHandler.handle(f)
+      }
+    });
+    return this;
+  }
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param params these are the parameters to fill the statement.
+   * @param outputs these are the outputs to fill the statement.
+   * @param resultHandler the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
+   * @return 
+   */
+  public SQLConnection callWithParams(String sql, List<Object> params, List<Object> outputs, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
+    this.delegate.callWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, outputs != null ? new io.vertx.core.json.JsonArray(outputs) : null, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
         AsyncResult<Map<String, Object>> f
         if (event.succeeded()) {
           f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
