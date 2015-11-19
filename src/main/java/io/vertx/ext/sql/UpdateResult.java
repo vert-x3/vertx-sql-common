@@ -12,7 +12,7 @@ import io.vertx.core.json.JsonObject;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject
+@DataObject(generateConverter = true)
 public class UpdateResult {
 
   private int updated;
@@ -41,8 +41,7 @@ public class UpdateResult {
    */
   @SuppressWarnings("unchecked")
   public UpdateResult(JsonObject json) {
-    this.updated = json.getInteger("updated");
-    keys = json.getJsonArray("keys");
+    UpdateResultConverter.fromJson(json, this);
   }
 
   /**
@@ -63,8 +62,7 @@ public class UpdateResult {
    */
   public JsonObject toJson() {
     JsonObject obj = new JsonObject();
-    obj.put("updated", updated);
-    obj.put("keys", keys);
+    UpdateResultConverter.toJson(this, obj);
     return obj;
   }
 
@@ -77,6 +75,11 @@ public class UpdateResult {
     return updated;
   }
 
+  public UpdateResult setUpdated(int updated) {
+    this.updated = updated;
+    return this;
+  }
+
   /**
    * Get any generated keys
    *
@@ -84,6 +87,11 @@ public class UpdateResult {
    */
   public JsonArray getKeys() {
     return keys;
+  }
+
+  public UpdateResult setKeys(JsonArray keys) {
+    this.keys = keys;
+    return this;
   }
 
   @Override

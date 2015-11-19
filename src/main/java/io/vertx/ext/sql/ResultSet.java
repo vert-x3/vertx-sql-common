@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject
+@DataObject(generateConverter = true)
 public class ResultSet {
 
   private List<String> columnNames;
@@ -56,14 +56,7 @@ public class ResultSet {
    */
   @SuppressWarnings("unchecked")
   public ResultSet(JsonObject json) {
-    JsonArray arr = json.getJsonArray("columnNames");
-    if (arr != null) {
-      this.columnNames = arr.getList();
-    }
-    arr = json.getJsonArray("results");
-    if (arr != null) {
-      results = arr.getList();
-    }
+    ResultSetConverter.fromJson(json, this);
   }
 
   /**
@@ -73,8 +66,7 @@ public class ResultSet {
    */
   public JsonObject toJson() {
     JsonObject obj = new JsonObject();
-    obj.put("columnNames", new JsonArray(columnNames));
-    obj.put("results", new JsonArray(results));
+    ResultSetConverter.toJson(this, obj);
     return obj;
   }
 
@@ -87,6 +79,11 @@ public class ResultSet {
     return results;
   }
 
+  public ResultSet setResults(List<JsonArray> results) {
+    this.results = results;
+    return this;
+  }
+
   /**
    * Get the column names
    *
@@ -94,6 +91,11 @@ public class ResultSet {
    */
   public List<String> getColumnNames() {
     return columnNames;
+  }
+
+  public ResultSet setColumnNames(List<String> columnNames) {
+    this.columnNames = columnNames;
+    return this;
   }
 
   /**
