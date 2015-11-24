@@ -42,7 +42,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example1}
+ * {@link examples.SQLExamples#example1}
  * ----
  *
  * === Executing queries
@@ -56,7 +56,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example2}
+ * {@link examples.SQLExamples#example2}
  * ----
  *
  * The {@link io.vertx.ext.sql.ResultSet} instance represents the results of a query.
@@ -68,7 +68,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example3}
+ * {@link examples.SQLExamples#example3}
  * ----
  *
  * You can also retrieve the rows as a list of Json object instances with {@link io.vertx.ext.sql.ResultSet#getRows()} -
@@ -79,7 +79,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example3__1}
+ * {@link examples.SQLExamples#example3__1}
  * ----
  *
  * === Prepared statement queries
@@ -92,7 +92,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example3_1}
+ * {@link examples.SQLExamples#example3_1}
  * ----
  *
  * === Executing INSERT, UPDATE or DELETE
@@ -109,7 +109,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example3}
+ * {@link examples.SQLExamples#example3}
  * ----
  *
  * === Prepared statement updates
@@ -122,7 +122,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example5}
+ * {@link examples.SQLExamples#example5}
  * ----
  *
  * === Callable statements
@@ -139,7 +139,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example8}
+ * {@link examples.SQLExamples#example8}
  * ----
  *
  * When working with Procedures you and still return values from your procedures via its arguments, in the case you do
@@ -147,14 +147,14 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example9}
+ * {@link examples.SQLExamples#example9}
  * ----
  *
  * However you can also return values like this:
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example10}
+ * {@link examples.SQLExamples#example10}
  * ----
  *
  * Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a
@@ -177,7 +177,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example6}
+ * {@link examples.SQLExamples#example6}
  * ----
  *
  * === Using transactions
@@ -192,7 +192,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.Examples#example7}
+ * {@link examples.SQLExamples#example7}
  * ----
  *
  * === Closing connections

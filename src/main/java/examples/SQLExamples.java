@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class Examples {
+public class SQLExamples {
 
   public void example1(SQLConnection connection) {
     connection.setAutoCommit(false, res -> {
