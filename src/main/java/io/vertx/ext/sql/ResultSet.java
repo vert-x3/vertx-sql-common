@@ -21,6 +21,7 @@ public class ResultSet {
   private List<String> columnNames;
   private List<JsonArray> results;
   private List<JsonObject> rows;
+  private JsonArray output;
 
   /**
    * Default constructor
@@ -36,6 +37,7 @@ public class ResultSet {
   public ResultSet(ResultSet other) {
     this.columnNames = other.columnNames;
     this.results = other.results;
+    this.output = other.output;
   }
 
   /**
@@ -81,6 +83,20 @@ public class ResultSet {
 
   public ResultSet setResults(List<JsonArray> results) {
     this.results = results;
+    return this;
+  }
+
+  /**
+   * Get the registered outputs
+   *
+   * @return the outputs
+   */
+  public JsonArray getOutput() {
+    return output;
+  }
+
+  public ResultSet setOutput(JsonArray output) {
+    this.output = output;
     return this;
   }
 

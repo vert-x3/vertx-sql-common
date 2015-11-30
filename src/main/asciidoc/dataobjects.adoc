@@ -52,6 +52,10 @@ Return the number of columns in the result set
 +++
 Return the number of rows in the result set
 +++
+|[[output]]`output`|`Json array`|
++++
+Get the registered outputs
++++
 |[[results]]`results`|`Array of Json array`|
 +++
 Get the results

@@ -264,6 +264,8 @@ To avoid ambiguation the implementations are expected to follow the following ru
   * When the `OUT` value is not null it will be registered as a output parameter
   * When the `OUT` is also null it is expected that the IN value is the `NULL` value.
 
+The registered `OUT` parameters will be available as an array in the result set under the output property.
+
 === Executing other operations
 
 To execute any other database operation, e.g. a `CREATE TABLE` you can use

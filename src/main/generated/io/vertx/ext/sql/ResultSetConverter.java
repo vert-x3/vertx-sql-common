@@ -35,6 +35,9 @@ public class ResultSetConverter {
       });
       obj.setColumnNames(list);
     }
+    if (json.getValue("output") instanceof JsonArray) {
+      obj.setOutput(((JsonArray)json.getValue("output")).copy());
+    }
     if (json.getValue("results") instanceof JsonArray) {
       java.util.ArrayList<io.vertx.core.json.JsonArray> list = new java.util.ArrayList<>();
       json.getJsonArray("results").forEach( item -> {
@@ -57,6 +60,9 @@ public class ResultSetConverter {
     }
     json.put("numColumns", obj.getNumColumns());
     json.put("numRows", obj.getNumRows());
+    if (obj.getOutput() != null) {
+      json.put("output", obj.getOutput());
+    }
     if (obj.getResults() != null) {
       json.put("results", new JsonArray(
           obj.getResults().
