@@ -153,4 +153,43 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection rollback(Handler<AsyncResult<Void>> handler);
+
+  /**
+   * Batch a simple SQL string to be executed at a later stage.
+   * @param sqlStatement sql statement
+   */
+  @Fluent
+  SQLConnection batch(String sqlStatement);
+
+  /**
+   * Batch a prepared statement to be executed at a later stage.
+   * @param sqlStatement sql statement
+   * @param args the prepared statement arguments
+   */
+  @Fluent
+  SQLConnection batchWithParams(String sqlStatement, JsonArray args);
+
+  /**
+   * Batch a callable statement to be executed at a later stage.
+   * @param sqlStatement sql statement
+   * @param inArgs the callable statement input arguments
+   * @param outArgs the callable statement output arguments
+   */
+  @Fluent
+  SQLConnection batchCallableWithParams(String sqlStatement, JsonArray inArgs, JsonArray outArgs);
+
+  /**
+   * Clears any batch state.
+   */
+  @Fluent
+  SQLConnection clearBatch();
+
+  /**
+   * execute the batch where the async result contains a array of Integers.
+   * These are the same as the return value of an update statement.
+   *
+   * @param handler the result handler
+   */
+  @Fluent
+  SQLConnection executeBatch(Handler<AsyncResult<JsonArray>> handler);
 }

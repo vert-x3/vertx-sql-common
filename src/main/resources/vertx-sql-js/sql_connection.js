@@ -278,6 +278,91 @@ var SQLConnection = function(j_val) {
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
+  /**
+   Batch a simple SQL string to be executed at a later stage.
+
+   @public
+   @param sqlStatement {string} sql statement 
+   @return {SQLConnection}
+   */
+  this.batch = function(sqlStatement) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'string') {
+      j_sQLConnection["batch(java.lang.String)"](sqlStatement);
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Batch a prepared statement to be executed at a later stage.
+
+   @public
+   @param sqlStatement {string} sql statement 
+   @param args {todo} the prepared statement arguments 
+   @return {SQLConnection}
+   */
+  this.batchWithParams = function(sqlStatement, args) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array) {
+      j_sQLConnection["batchWithParams(java.lang.String,io.vertx.core.json.JsonArray)"](sqlStatement, utils.convParamJsonArray(args));
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Batch a callable statement to be executed at a later stage.
+
+   @public
+   @param sqlStatement {string} sql statement 
+   @param inArgs {todo} the callable statement input arguments 
+   @param outArgs {todo} the callable statement output arguments 
+   @return {SQLConnection}
+   */
+  this.batchCallableWithParams = function(sqlStatement, inArgs, outArgs) {
+    var __args = arguments;
+    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array) {
+      j_sQLConnection["batchCallableWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.json.JsonArray)"](sqlStatement, utils.convParamJsonArray(inArgs), utils.convParamJsonArray(outArgs));
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Clears any batch state.
+
+   @public
+
+   @return {SQLConnection}
+   */
+  this.clearBatch = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      j_sQLConnection["clearBatch()"]();
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   execute the batch where the async result contains a array of Integers.
+   These are the same as the return value of an update statement.
+
+   @public
+   @param handler {function} the result handler 
+   @return {SQLConnection}
+   */
+  this.executeBatch = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_sQLConnection["executeBatch(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnJson(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.

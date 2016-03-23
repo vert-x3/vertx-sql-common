@@ -297,6 +297,70 @@ public class SQLConnection {
     return handler;
   }
 
+  /**
+   * Batch a simple SQL string to be executed at a later stage.
+   * @param sqlStatement sql statement
+   * @return 
+   */
+  public SQLConnection batch(String sqlStatement) { 
+    this.delegate.batch(sqlStatement);
+    return this;
+  }
+
+  /**
+   * Batch a prepared statement to be executed at a later stage.
+   * @param sqlStatement sql statement
+   * @param args the prepared statement arguments
+   * @return 
+   */
+  public SQLConnection batchWithParams(String sqlStatement, JsonArray args) { 
+    this.delegate.batchWithParams(sqlStatement, args);
+    return this;
+  }
+
+  /**
+   * Batch a callable statement to be executed at a later stage.
+   * @param sqlStatement sql statement
+   * @param inArgs the callable statement input arguments
+   * @param outArgs the callable statement output arguments
+   * @return 
+   */
+  public SQLConnection batchCallableWithParams(String sqlStatement, JsonArray inArgs, JsonArray outArgs) { 
+    this.delegate.batchCallableWithParams(sqlStatement, inArgs, outArgs);
+    return this;
+  }
+
+  /**
+   * Clears any batch state.
+   * @return 
+   */
+  public SQLConnection clearBatch() { 
+    this.delegate.clearBatch();
+    return this;
+  }
+
+  /**
+   * execute the batch where the async result contains a array of Integers.
+   * These are the same as the return value of an update statement.
+   * @param handler the result handler
+   * @return 
+   */
+  public SQLConnection executeBatch(Handler<AsyncResult<JsonArray>> handler) { 
+    this.delegate.executeBatch(handler);
+    return this;
+  }
+
+  /**
+   * execute the batch where the async result contains a array of Integers.
+   * These are the same as the return value of an update statement.
+   * @return 
+   */
+  public Observable<JsonArray> executeBatchObservable() { 
+    io.vertx.rx.java.ObservableFuture<JsonArray> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    executeBatch(handler.toHandler());
+    return handler;
+  }
+
 
   public static SQLConnection newInstance(io.vertx.ext.sql.SQLConnection arg) {
     return arg != null ? new SQLConnection(arg) : null;

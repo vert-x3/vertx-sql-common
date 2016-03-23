@@ -138,5 +138,58 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling rollback()"
     end
+    #  Batch a simple SQL string to be executed at a later stage.
+    # @param [String] sqlStatement sql statement
+    # @return [self]
+    def batch(sqlStatement=nil)
+      if sqlStatement.class == String && !block_given?
+        @j_del.java_method(:batch, [Java::java.lang.String.java_class]).call(sqlStatement)
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling batch(sqlStatement)"
+    end
+    #  Batch a prepared statement to be executed at a later stage.
+    # @param [String] sqlStatement sql statement
+    # @param [Array<String,Object>] args the prepared statement arguments
+    # @return [self]
+    def batch_with_params(sqlStatement=nil,args=nil)
+      if sqlStatement.class == String && args.class == Array && !block_given?
+        @j_del.java_method(:batchWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class]).call(sqlStatement,::Vertx::Util::Utils.to_json_array(args))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling batch_with_params(sqlStatement,args)"
+    end
+    #  Batch a callable statement to be executed at a later stage.
+    # @param [String] sqlStatement sql statement
+    # @param [Array<String,Object>] inArgs the callable statement input arguments
+    # @param [Array<String,Object>] outArgs the callable statement output arguments
+    # @return [self]
+    def batch_callable_with_params(sqlStatement=nil,inArgs=nil,outArgs=nil)
+      if sqlStatement.class == String && inArgs.class == Array && outArgs.class == Array && !block_given?
+        @j_del.java_method(:batchCallableWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCoreJson::JsonArray.java_class]).call(sqlStatement,::Vertx::Util::Utils.to_json_array(inArgs),::Vertx::Util::Utils.to_json_array(outArgs))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling batch_callable_with_params(sqlStatement,inArgs,outArgs)"
+    end
+    #  Clears any batch state.
+    # @return [self]
+    def clear_batch
+      if !block_given?
+        @j_del.java_method(:clearBatch, []).call()
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling clear_batch()"
+    end
+    #  execute the batch where the async result contains a array of Integers.
+    #  These are the same as the return value of an update statement.
+    # @yield the result handler
+    # @return [self]
+    def execute_batch
+      if block_given?
+        @j_del.java_method(:executeBatch, [Java::IoVertxCore::Handler.java_class]).call((Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.encode) : nil : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling execute_batch()"
+    end
   end
 end

@@ -212,4 +212,62 @@ public class SQLConnection {
     this.delegate.rollback(handler);
     return this;
   }
+  /**
+   * Batch a simple SQL string to be executed at a later stage.
+   * @param sqlStatement sql statement
+   * @return 
+   */
+  public SQLConnection batch(String sqlStatement) {
+    this.delegate.batch(sqlStatement);
+    return this;
+  }
+  /**
+   * Batch a prepared statement to be executed at a later stage.
+   * @param sqlStatement sql statement
+   * @param args the prepared statement arguments
+   * @return 
+   */
+  public SQLConnection batchWithParams(String sqlStatement, List<Object> args) {
+    this.delegate.batchWithParams(sqlStatement, args != null ? new io.vertx.core.json.JsonArray(args) : null);
+    return this;
+  }
+  /**
+   * Batch a callable statement to be executed at a later stage.
+   * @param sqlStatement sql statement
+   * @param inArgs the callable statement input arguments
+   * @param outArgs the callable statement output arguments
+   * @return 
+   */
+  public SQLConnection batchCallableWithParams(String sqlStatement, List<Object> inArgs, List<Object> outArgs) {
+    this.delegate.batchCallableWithParams(sqlStatement, inArgs != null ? new io.vertx.core.json.JsonArray(inArgs) : null, outArgs != null ? new io.vertx.core.json.JsonArray(outArgs) : null);
+    return this;
+  }
+  /**
+   * Clears any batch state.
+   * @return 
+   */
+  public SQLConnection clearBatch() {
+    this.delegate.clearBatch();
+    return this;
+  }
+  /**
+   * execute the batch where the async result contains a array of Integers.
+   * These are the same as the return value of an update statement.
+   * @param handler the result handler
+   * @return 
+   */
+  public SQLConnection executeBatch(Handler<AsyncResult<List<Object>>> handler) {
+    this.delegate.executeBatch(new Handler<AsyncResult<io.vertx.core.json.JsonArray>>() {
+      public void handle(AsyncResult<io.vertx.core.json.JsonArray> event) {
+        AsyncResult<List<Object>> f
+        if (event.succeeded()) {
+          f = InternalHelper.<List<Object>>result((List<Object>)InternalHelper.wrapObject(event.result()))
+        } else {
+          f = InternalHelper.<List<Object>>failure(event.cause())
+        }
+        handler.handle(f)
+      }
+    });
+    return this;
+  }
 }
