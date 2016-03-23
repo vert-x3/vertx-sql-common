@@ -153,4 +153,21 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection rollback(Handler<AsyncResult<Void>> handler);
+
+  /**
+   * Attempts to change the transaction isolation level for this Connection object to the one given.
+   *
+   * The constants defined in the interface Connection are the possible transaction isolation levels.
+   *
+   * @param isolation the level of isolation
+   */
+  @Fluent
+  SQLConnection setTransactionIsolation(TransactionIsolation isolation);
+
+  /**
+   * Attempts to return the transaction isolation level for this Connection object to the one given.
+   *
+   * @return  level of isolation
+   */
+  TransactionIsolation getTransactionIsolation();
 }

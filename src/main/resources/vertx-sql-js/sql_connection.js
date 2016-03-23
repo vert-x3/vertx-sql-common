@@ -278,6 +278,37 @@ var SQLConnection = function(j_val) {
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
+  /**
+   Attempts to change the transaction isolation level for this Connection object to the one given.
+  
+   The constants defined in the interface Connection are the possible transaction isolation levels.
+
+   @public
+   @param isolation {Object} the level of isolation 
+   @return {SQLConnection}
+   */
+  this.setTransactionIsolation = function(isolation) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'string') {
+      j_sQLConnection["setTransactionIsolation(io.vertx.ext.sql.TransactionIsolation)"](io.vertx.ext.sql.TransactionIsolation.valueOf(__args[0]));
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Attempts to return the transaction isolation level for this Connection object to the one given.
+
+   @public
+
+   @return {Object} level of isolation
+   */
+  this.getTransactionIsolation = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return utils.convReturnEnum(j_sQLConnection["getTransactionIsolation()"]());
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.

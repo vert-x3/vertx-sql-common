@@ -22,6 +22,7 @@ import rx.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.sql.UpdateResult;
 import io.vertx.ext.sql.ResultSet;
+import io.vertx.ext.sql.TransactionIsolation;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -295,6 +296,27 @@ public class SQLConnection {
     io.vertx.rx.java.ObservableFuture<Void> handler = io.vertx.rx.java.RxHelper.observableFuture();
     rollback(handler.toHandler());
     return handler;
+  }
+
+  /**
+   * Attempts to change the transaction isolation level for this Connection object to the one given.
+   *
+   * The constants defined in the interface Connection are the possible transaction isolation levels.
+   * @param isolation the level of isolation
+   * @return 
+   */
+  public SQLConnection setTransactionIsolation(TransactionIsolation isolation) { 
+    this.delegate.setTransactionIsolation(isolation);
+    return this;
+  }
+
+  /**
+   * Attempts to return the transaction isolation level for this Connection object to the one given.
+   * @return level of isolation
+   */
+  public TransactionIsolation getTransactionIsolation() { 
+    TransactionIsolation ret = this.delegate.getTransactionIsolation();
+    return ret;
   }
 
 
