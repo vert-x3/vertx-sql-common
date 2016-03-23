@@ -212,4 +212,15 @@ public class SQLConnection {
     this.delegate.rollback(handler);
     return this;
   }
+  /**
+   * Sets a connection wide query timeout.
+   *
+   * It can be over written at any time and becomes active on the next query call.
+   * @param timeoutInSeconds the max amount of seconds the query can take to execute.
+   * @return 
+   */
+  public SQLConnection setQueryTimeout(int timeoutInSeconds) {
+    this.delegate.setQueryTimeout(timeoutInSeconds);
+    return this;
+  }
 }

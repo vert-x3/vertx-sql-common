@@ -297,6 +297,18 @@ public class SQLConnection {
     return handler;
   }
 
+  /**
+   * Sets a connection wide query timeout.
+   *
+   * It can be over written at any time and becomes active on the next query call.
+   * @param timeoutInSeconds the max amount of seconds the query can take to execute.
+   * @return 
+   */
+  public SQLConnection setQueryTimeout(int timeoutInSeconds) { 
+    this.delegate.setQueryTimeout(timeoutInSeconds);
+    return this;
+  }
+
 
   public static SQLConnection newInstance(io.vertx.ext.sql.SQLConnection arg) {
     return arg != null ? new SQLConnection(arg) : null;

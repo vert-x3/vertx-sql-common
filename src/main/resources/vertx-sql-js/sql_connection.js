@@ -278,6 +278,23 @@ var SQLConnection = function(j_val) {
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
+  /**
+   Sets a connection wide query timeout.
+  
+   It can be over written at any time and becomes active on the next query call.
+
+   @public
+   @param timeoutInSeconds {number} the max amount of seconds the query can take to execute. 
+   @return {SQLConnection}
+   */
+  this.setQueryTimeout = function(timeoutInSeconds) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] ==='number') {
+      j_sQLConnection["setQueryTimeout(int)"](timeoutInSeconds);
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.
