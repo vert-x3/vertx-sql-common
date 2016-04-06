@@ -142,19 +142,22 @@ module VertxSql
     # 
     #  The constants defined in the interface Connection are the possible transaction isolation levels.
     # @param [:READ_UNCOMMITTED,:READ_COMMITTED,:REPEATABLE_READ,:SERIALIZABLE,:NONE] isolation the level of isolation
+    # @yield the handler called when this operation completes.
     # @return [self]
     def set_transaction_isolation(isolation=nil)
-      if isolation.class == Symbol && !block_given?
-        @j_del.java_method(:setTransactionIsolation, [Java::IoVertxExtSql::TransactionIsolation.java_class]).call(Java::IoVertxExtSql::TransactionIsolation.valueOf(isolation))
+      if isolation.class == Symbol && block_given?
+        @j_del.java_method(:setTransactionIsolation, [Java::IoVertxExtSql::TransactionIsolation.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::IoVertxExtSql::TransactionIsolation.valueOf(isolation),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil) }))
         return self
       end
       raise ArgumentError, "Invalid arguments when calling set_transaction_isolation(isolation)"
     end
     #  Attempts to return the transaction isolation level for this Connection object to the one given.
-    # @return [:READ_UNCOMMITTED,:READ_COMMITTED,:REPEATABLE_READ,:SERIALIZABLE,:NONE] level of isolation
+    # @yield the handler called when this operation completes.
+    # @return [self]
     def get_transaction_isolation
-      if !block_given?
-        return @j_del.java_method(:getTransactionIsolation, []).call().name.intern
+      if block_given?
+        @j_del.java_method(:getTransactionIsolation, [Java::IoVertxCore::Handler.java_class]).call(nil)
+        return self
       end
       raise ArgumentError, "Invalid arguments when calling get_transaction_isolation()"
     end

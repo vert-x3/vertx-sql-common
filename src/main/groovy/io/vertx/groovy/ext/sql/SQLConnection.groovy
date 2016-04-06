@@ -218,18 +218,20 @@ public class SQLConnection {
    *
    * The constants defined in the interface Connection are the possible transaction isolation levels.
    * @param isolation the level of isolation
+   * @param handler the handler called when this operation completes.
    * @return 
    */
-  public SQLConnection setTransactionIsolation(TransactionIsolation isolation) {
-    this.delegate.setTransactionIsolation(isolation);
+  public SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler) {
+    this.delegate.setTransactionIsolation(isolation, handler);
     return this;
   }
   /**
    * Attempts to return the transaction isolation level for this Connection object to the one given.
-   * @return level of isolation
+   * @param handler the handler called when this operation completes.
+   * @return 
    */
-  public TransactionIsolation getTransactionIsolation() {
-    def ret = this.delegate.getTransactionIsolation();
-    return ret;
+  public SQLConnection getTransactionIsolation(Handler<AsyncResult<TransactionIsolation>> handler) {
+    this.delegate.getTransactionIsolation(null /* Handler<AsyncResult<io.vertx.ext.sql.TransactionIsolation>> with kind ENUM not yet implemented */);
+    return this;
   }
 }

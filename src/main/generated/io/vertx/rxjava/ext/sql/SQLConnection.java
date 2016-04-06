@@ -303,20 +303,45 @@ public class SQLConnection {
    *
    * The constants defined in the interface Connection are the possible transaction isolation levels.
    * @param isolation the level of isolation
+   * @param handler the handler called when this operation completes.
    * @return 
    */
-  public SQLConnection setTransactionIsolation(TransactionIsolation isolation) { 
-    this.delegate.setTransactionIsolation(isolation);
+  public SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler) { 
+    this.delegate.setTransactionIsolation(isolation, handler);
+    return this;
+  }
+
+  /**
+   * Attempts to change the transaction isolation level for this Connection object to the one given.
+   *
+   * The constants defined in the interface Connection are the possible transaction isolation levels.
+   * @param isolation the level of isolation
+   * @return 
+   */
+  public Observable<Void> setTransactionIsolationObservable(TransactionIsolation isolation) { 
+    io.vertx.rx.java.ObservableFuture<Void> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    setTransactionIsolation(isolation, handler.toHandler());
+    return handler;
+  }
+
+  /**
+   * Attempts to return the transaction isolation level for this Connection object to the one given.
+   * @param handler the handler called when this operation completes.
+   * @return 
+   */
+  public SQLConnection getTransactionIsolation(Handler<AsyncResult<TransactionIsolation>> handler) { 
+    this.delegate.getTransactionIsolation(null /* Handler<AsyncResult<io.vertx.ext.sql.TransactionIsolation>> with kind ENUM not yet implemented */);
     return this;
   }
 
   /**
    * Attempts to return the transaction isolation level for this Connection object to the one given.
-   * @return level of isolation
+   * @return 
    */
-  public TransactionIsolation getTransactionIsolation() { 
-    TransactionIsolation ret = this.delegate.getTransactionIsolation();
-    return ret;
+  public Observable<TransactionIsolation> getTransactionIsolationObservable() { 
+    io.vertx.rx.java.ObservableFuture<TransactionIsolation> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    getTransactionIsolation(handler.toHandler());
+    return handler;
   }
 
 

@@ -285,12 +285,19 @@ var SQLConnection = function(j_val) {
 
    @public
    @param isolation {Object} the level of isolation 
+   @param handler {function} the handler called when this operation completes. 
    @return {SQLConnection}
    */
-  this.setTransactionIsolation = function(isolation) {
+  this.setTransactionIsolation = function(isolation, handler) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'string') {
-      j_sQLConnection["setTransactionIsolation(io.vertx.ext.sql.TransactionIsolation)"](io.vertx.ext.sql.TransactionIsolation.valueOf(__args[0]));
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["setTransactionIsolation(io.vertx.ext.sql.TransactionIsolation,io.vertx.core.Handler)"](io.vertx.ext.sql.TransactionIsolation.valueOf(__args[0]), function(ar) {
+      if (ar.succeeded()) {
+        handler(null, null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
       return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -299,13 +306,20 @@ var SQLConnection = function(j_val) {
    Attempts to return the transaction isolation level for this Connection object to the one given.
 
    @public
-
-   @return {Object} level of isolation
+   @param handler {function} the handler called when this operation completes. 
+   @return {SQLConnection}
    */
-  this.getTransactionIsolation = function() {
+  this.getTransactionIsolation = function(handler) {
     var __args = arguments;
-    if (__args.length === 0) {
-      return utils.convReturnEnum(j_sQLConnection["getTransactionIsolation()"]());
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_sQLConnection["getTransactionIsolation(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnEnum(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
