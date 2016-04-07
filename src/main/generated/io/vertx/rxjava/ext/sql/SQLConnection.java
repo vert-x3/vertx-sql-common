@@ -304,7 +304,7 @@ public class SQLConnection {
    * @param handler the result handler
    * @return 
    */
-  public SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<JsonArray>> handler) { 
+  public SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<List<Integer>>> handler) { 
     this.delegate.batch(sqlStatements, handler);
     return this;
   }
@@ -314,8 +314,8 @@ public class SQLConnection {
    * @param sqlStatements sql statement
    * @return 
    */
-  public Observable<JsonArray> batchObservable(List<String> sqlStatements) { 
-    io.vertx.rx.java.ObservableFuture<JsonArray> handler = io.vertx.rx.java.RxHelper.observableFuture();
+  public Observable<List<Integer>> batchObservable(List<String> sqlStatements) { 
+    io.vertx.rx.java.ObservableFuture<List<Integer>> handler = io.vertx.rx.java.RxHelper.observableFuture();
     batch(sqlStatements, handler.toHandler());
     return handler;
   }
@@ -328,7 +328,7 @@ public class SQLConnection {
    * @param handler the result handler
    * @return 
    */
-  public SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<JsonArray>> handler) { 
+  public SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<List<Integer>>> handler) { 
     this.delegate.batchWithParams(sqlStatement, args, handler);
     return this;
   }
@@ -340,8 +340,8 @@ public class SQLConnection {
    * @param args the prepared statement arguments
    * @return 
    */
-  public Observable<JsonArray> batchWithParamsObservable(String sqlStatement, List<JsonArray> args) { 
-    io.vertx.rx.java.ObservableFuture<JsonArray> handler = io.vertx.rx.java.RxHelper.observableFuture();
+  public Observable<List<Integer>> batchWithParamsObservable(String sqlStatement, List<JsonArray> args) { 
+    io.vertx.rx.java.ObservableFuture<List<Integer>> handler = io.vertx.rx.java.RxHelper.observableFuture();
     batchWithParams(sqlStatement, args, handler.toHandler());
     return handler;
   }

@@ -219,18 +219,8 @@ public class SQLConnection {
    * @param handler the result handler
    * @return 
    */
-  public SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<List<Object>>> handler) {
-    this.delegate.batch(sqlStatements, new Handler<AsyncResult<io.vertx.core.json.JsonArray>>() {
-      public void handle(AsyncResult<io.vertx.core.json.JsonArray> event) {
-        AsyncResult<List<Object>> f
-        if (event.succeeded()) {
-          f = InternalHelper.<List<Object>>result((List<Object>)InternalHelper.wrapObject(event.result()))
-        } else {
-          f = InternalHelper.<List<Object>>failure(event.cause())
-        }
-        handler.handle(f)
-      }
-    });
+  public SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<List<Integer>>> handler) {
+    this.delegate.batch(sqlStatements, handler);
     return this;
   }
   /**
@@ -241,18 +231,8 @@ public class SQLConnection {
    * @param handler the result handler
    * @return 
    */
-  public SQLConnection batchWithParams(String sqlStatement, List<List<Object>> args, Handler<AsyncResult<List<Object>>> handler) {
-    this.delegate.batchWithParams(sqlStatement, args.collect({underpants -> new JsonArray(underpants)}), new Handler<AsyncResult<io.vertx.core.json.JsonArray>>() {
-      public void handle(AsyncResult<io.vertx.core.json.JsonArray> event) {
-        AsyncResult<List<Object>> f
-        if (event.succeeded()) {
-          f = InternalHelper.<List<Object>>result((List<Object>)InternalHelper.wrapObject(event.result()))
-        } else {
-          f = InternalHelper.<List<Object>>failure(event.cause())
-        }
-        handler.handle(f)
-      }
-    });
+  public SQLConnection batchWithParams(String sqlStatement, List<List<Object>> args, Handler<AsyncResult<List<Integer>>> handler) {
+    this.delegate.batchWithParams(sqlStatement, args.collect({underpants -> new JsonArray(underpants)}), handler);
     return this;
   }
   /**

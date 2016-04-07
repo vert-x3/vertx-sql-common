@@ -144,7 +144,7 @@ module VertxSql
     # @return [self]
     def batch(sqlStatements=nil)
       if sqlStatements.class == Array && block_given?
-        @j_del.java_method(:batch, [Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatements.map { |element| element },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.encode) : nil : nil) }))
+        @j_del.java_method(:batch, [Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatements.map { |element| element },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result.to_a.map { |elt| elt } : nil) }))
         return self
       end
       raise ArgumentError, "Invalid arguments when calling batch(sqlStatements)"
@@ -157,7 +157,7 @@ module VertxSql
     # @return [self]
     def batch_with_params(sqlStatement=nil,args=nil)
       if sqlStatement.class == String && args.class == Array && block_given?
-        @j_del.java_method(:batchWithParams, [Java::java.lang.String.java_class,Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatement,args.map { |element| ::Vertx::Util::Utils.to_json_array(element) },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.encode) : nil : nil) }))
+        @j_del.java_method(:batchWithParams, [Java::java.lang.String.java_class,Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatement,args.map { |element| ::Vertx::Util::Utils.to_json_array(element) },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result.to_a.map { |elt| elt } : nil) }))
         return self
       end
       raise ArgumentError, "Invalid arguments when calling batch_with_params(sqlStatement,args)"

@@ -163,7 +163,7 @@ public interface SQLConnection extends AutoCloseable {
    * @param handler the result handler
    */
   @Fluent
-  SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<JsonArray>> handler);
+  SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<List<Integer>>> handler);
 
   /**
    * Batch a prepared statement with all entries from the args list. Each entry is a batch.
@@ -174,7 +174,7 @@ public interface SQLConnection extends AutoCloseable {
    * @param handler the result handler
    */
   @Fluent
-  SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<JsonArray>> handler);
+  SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<List<Integer>>> handler);
 
   /**
    * Batch a callable statement with all entries from the args list. Each entry is a batch.

@@ -291,7 +291,7 @@ var SQLConnection = function(j_val) {
     if (__args.length === 2 && typeof __args[0] === 'object' && __args[0] instanceof Array && typeof __args[1] === 'function') {
       j_sQLConnection["batch(java.util.List,io.vertx.core.Handler)"](sqlStatements, function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnJson(ar.result()), null);
+        handler(ar.result(), null);
       } else {
         handler(null, ar.cause());
       }
@@ -315,7 +315,7 @@ var SQLConnection = function(j_val) {
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
       j_sQLConnection["batchWithParams(java.lang.String,java.util.List,io.vertx.core.Handler)"](sqlStatement, utils.convParamListJsonArray(args), function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnJson(ar.result()), null);
+        handler(ar.result(), null);
       } else {
         handler(null, ar.cause());
       }
