@@ -22,6 +22,8 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 
+import java.util.List;
+
 /**
  * Represents a connection to a SQL database
  *
@@ -155,41 +157,35 @@ public interface SQLConnection extends AutoCloseable {
   SQLConnection rollback(Handler<AsyncResult<Void>> handler);
 
   /**
-   * Batch a simple SQL string to be executed at a later stage.
-   * @param sqlStatement sql statement
-   */
-  @Fluent
-  SQLConnection batch(String sqlStatement);
-
-  /**
-   * Batch a prepared statement to be executed at a later stage.
-   * @param sqlStatement sql statement
-   * @param args the prepared statement arguments
-   */
-  @Fluent
-  SQLConnection batchWithParams(String sqlStatement, JsonArray args);
-
-  /**
-   * Batch a callable statement to be executed at a later stage.
-   * @param sqlStatement sql statement
-   * @param inArgs the callable statement input arguments
-   * @param outArgs the callable statement output arguments
-   */
-  @Fluent
-  SQLConnection batchCallableWithParams(String sqlStatement, JsonArray inArgs, JsonArray outArgs);
-
-  /**
-   * Clears any batch state.
-   */
-  @Fluent
-  SQLConnection clearBatch();
-
-  /**
-   * execute the batch where the async result contains a array of Integers.
-   * These are the same as the return value of an update statement.
+   * Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
    *
+   * @param sqlStatements sql statement
    * @param handler the result handler
    */
   @Fluent
-  SQLConnection executeBatch(Handler<AsyncResult<JsonArray>> handler);
+  SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<JsonArray>> handler);
+
+  /**
+   * Batch a prepared statement with all entries from the args list. Each entry is a batch.
+   * The operation completes with the execution of the batch where the async result contains a array of Integers.
+   *
+   * @param sqlStatement sql statement
+   * @param args the prepared statement arguments
+   * @param handler the result handler
+   */
+  @Fluent
+  SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<JsonArray>> handler);
+
+  /**
+   * Batch a callable statement with all entries from the args list. Each entry is a batch.
+   * The size of the lists inArgs and outArgs MUST be the equal.
+   * The operation completes with the execution of the batch where the async result contains a array of Integers.
+   *
+   * @param sqlStatement sql statement
+   * @param inArgs the callable statement input arguments
+   * @param outArgs the callable statement output arguments
+   * @param handler the result handler
+   */
+  @Fluent
+  SQLConnection batchCallableWithParams(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs, Handler<AsyncResult<List<Integer>>> handler);
 }

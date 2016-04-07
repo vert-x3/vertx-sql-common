@@ -20,6 +20,7 @@ import java.util.Map;
 import io.vertx.lang.rxjava.InternalHelper;
 import rx.Observable;
 import io.vertx.core.json.JsonArray;
+import java.util.List;
 import io.vertx.ext.sql.UpdateResult;
 import io.vertx.ext.sql.ResultSet;
 import io.vertx.core.AsyncResult;
@@ -298,66 +299,80 @@ public class SQLConnection {
   }
 
   /**
-   * Batch a simple SQL string to be executed at a later stage.
-   * @param sqlStatement sql statement
+   * Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
+   * @param sqlStatements sql statement
+   * @param handler the result handler
    * @return 
    */
-  public SQLConnection batch(String sqlStatement) { 
-    this.delegate.batch(sqlStatement);
+  public SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<JsonArray>> handler) { 
+    this.delegate.batch(sqlStatements, handler);
     return this;
   }
 
   /**
-   * Batch a prepared statement to be executed at a later stage.
+   * Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
+   * @param sqlStatements sql statement
+   * @return 
+   */
+  public Observable<JsonArray> batchObservable(List<String> sqlStatements) { 
+    io.vertx.rx.java.ObservableFuture<JsonArray> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    batch(sqlStatements, handler.toHandler());
+    return handler;
+  }
+
+  /**
+   * Batch a prepared statement with all entries from the args list. Each entry is a batch.
+   * The operation completes with the execution of the batch where the async result contains a array of Integers.
+   * @param sqlStatement sql statement
+   * @param args the prepared statement arguments
+   * @param handler the result handler
+   * @return 
+   */
+  public SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<JsonArray>> handler) { 
+    this.delegate.batchWithParams(sqlStatement, args, handler);
+    return this;
+  }
+
+  /**
+   * Batch a prepared statement with all entries from the args list. Each entry is a batch.
+   * The operation completes with the execution of the batch where the async result contains a array of Integers.
    * @param sqlStatement sql statement
    * @param args the prepared statement arguments
    * @return 
    */
-  public SQLConnection batchWithParams(String sqlStatement, JsonArray args) { 
-    this.delegate.batchWithParams(sqlStatement, args);
+  public Observable<JsonArray> batchWithParamsObservable(String sqlStatement, List<JsonArray> args) { 
+    io.vertx.rx.java.ObservableFuture<JsonArray> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    batchWithParams(sqlStatement, args, handler.toHandler());
+    return handler;
+  }
+
+  /**
+   * Batch a callable statement with all entries from the args list. Each entry is a batch.
+   * The size of the lists inArgs and outArgs MUST be the equal.
+   * The operation completes with the execution of the batch where the async result contains a array of Integers.
+   * @param sqlStatement sql statement
+   * @param inArgs the callable statement input arguments
+   * @param outArgs the callable statement output arguments
+   * @param handler the result handler
+   * @return 
+   */
+  public SQLConnection batchCallableWithParams(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs, Handler<AsyncResult<List<Integer>>> handler) { 
+    this.delegate.batchCallableWithParams(sqlStatement, inArgs, outArgs, handler);
     return this;
   }
 
   /**
-   * Batch a callable statement to be executed at a later stage.
+   * Batch a callable statement with all entries from the args list. Each entry is a batch.
+   * The size of the lists inArgs and outArgs MUST be the equal.
+   * The operation completes with the execution of the batch where the async result contains a array of Integers.
    * @param sqlStatement sql statement
    * @param inArgs the callable statement input arguments
    * @param outArgs the callable statement output arguments
    * @return 
    */
-  public SQLConnection batchCallableWithParams(String sqlStatement, JsonArray inArgs, JsonArray outArgs) { 
-    this.delegate.batchCallableWithParams(sqlStatement, inArgs, outArgs);
-    return this;
-  }
-
-  /**
-   * Clears any batch state.
-   * @return 
-   */
-  public SQLConnection clearBatch() { 
-    this.delegate.clearBatch();
-    return this;
-  }
-
-  /**
-   * execute the batch where the async result contains a array of Integers.
-   * These are the same as the return value of an update statement.
-   * @param handler the result handler
-   * @return 
-   */
-  public SQLConnection executeBatch(Handler<AsyncResult<JsonArray>> handler) { 
-    this.delegate.executeBatch(handler);
-    return this;
-  }
-
-  /**
-   * execute the batch where the async result contains a array of Integers.
-   * These are the same as the return value of an update statement.
-   * @return 
-   */
-  public Observable<JsonArray> executeBatchObservable() { 
-    io.vertx.rx.java.ObservableFuture<JsonArray> handler = io.vertx.rx.java.RxHelper.observableFuture();
-    executeBatch(handler.toHandler());
+  public Observable<List<Integer>> batchCallableWithParamsObservable(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs) { 
+    io.vertx.rx.java.ObservableFuture<List<Integer>> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    batchCallableWithParams(sqlStatement, inArgs, outArgs, handler.toHandler());
     return handler;
   }
 
