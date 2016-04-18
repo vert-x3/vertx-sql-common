@@ -42,7 +42,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) {
-    this.delegate.setAutoCommit(autoCommit, resultHandler);
+    delegate.setAutoCommit(autoCommit, resultHandler);
     return this;
   }
   /**
@@ -52,7 +52,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler) {
-    this.delegate.execute(sql, resultHandler);
+    delegate.execute(sql, resultHandler);
     return this;
   }
   /**
@@ -62,17 +62,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection query(String sql, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
-    this.delegate.query(sql, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
-        AsyncResult<Map<String, Object>> f
-        if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+    delegate.query(sql, resultHandler != null ? new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture((Map<String, Object>)InternalHelper.wrapObject(ar.result()?.toJson())));
         } else {
-          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
         }
-        resultHandler.handle(f)
       }
-    });
+    } : null);
     return this;
   }
   /**
@@ -83,17 +81,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection queryWithParams(String sql, List<Object> params, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
-    this.delegate.queryWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
-        AsyncResult<Map<String, Object>> f
-        if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+    delegate.queryWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, resultHandler != null ? new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture((Map<String, Object>)InternalHelper.wrapObject(ar.result()?.toJson())));
         } else {
-          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
         }
-        resultHandler.handle(f)
       }
-    });
+    } : null);
     return this;
   }
   /**
@@ -104,17 +100,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection update(String sql, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
-    this.delegate.update(sql, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
-        AsyncResult<Map<String, Object>> f
-        if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+    delegate.update(sql, resultHandler != null ? new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture((Map<String, Object>)InternalHelper.wrapObject(ar.result()?.toJson())));
         } else {
-          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
         }
-        resultHandler.handle(f)
       }
-    });
+    } : null);
     return this;
   }
   /**
@@ -126,17 +120,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection updateWithParams(String sql, List<Object> params, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
-    this.delegate.updateWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> event) {
-        AsyncResult<Map<String, Object>> f
-        if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+    delegate.updateWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, resultHandler != null ? new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture((Map<String, Object>)InternalHelper.wrapObject(ar.result()?.toJson())));
         } else {
-          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
         }
-        resultHandler.handle(f)
       }
-    });
+    } : null);
     return this;
   }
   /**
@@ -146,17 +138,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection call(String sql, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
-    this.delegate.call(sql, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
-        AsyncResult<Map<String, Object>> f
-        if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+    delegate.call(sql, resultHandler != null ? new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture((Map<String, Object>)InternalHelper.wrapObject(ar.result()?.toJson())));
         } else {
-          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
         }
-        resultHandler.handle(f)
       }
-    });
+    } : null);
     return this;
   }
   /**
@@ -176,17 +166,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection callWithParams(String sql, List<Object> params, List<Object> outputs, Handler<AsyncResult<Map<String, Object>>> resultHandler) {
-    this.delegate.callWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, outputs != null ? new io.vertx.core.json.JsonArray(outputs) : null, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> event) {
-        AsyncResult<Map<String, Object>> f
-        if (event.succeeded()) {
-          f = InternalHelper.<Map<String, Object>>result((Map<String, Object>)InternalHelper.wrapObject(event.result()?.toJson()))
+    delegate.callWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, outputs != null ? new io.vertx.core.json.JsonArray(outputs) : null, resultHandler != null ? new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture((Map<String, Object>)InternalHelper.wrapObject(ar.result()?.toJson())));
         } else {
-          f = InternalHelper.<Map<String, Object>>failure(event.cause())
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
         }
-        resultHandler.handle(f)
       }
-    });
+    } : null);
     return this;
   }
   /**
@@ -194,13 +182,13 @@ public class SQLConnection {
    * @param handler the handler called when this operation completes.
    */
   public void close(Handler<AsyncResult<Void>> handler) {
-    this.delegate.close(handler);
+    delegate.close(handler);
   }
   /**
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
    */
   public void close() {
-    this.delegate.close();
+    delegate.close();
   }
   /**
    * Commits all changes made since the previous commit/rollback.
@@ -208,7 +196,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection commit(Handler<AsyncResult<Void>> handler) {
-    this.delegate.commit(handler);
+    delegate.commit(handler);
     return this;
   }
   /**
@@ -217,7 +205,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection rollback(Handler<AsyncResult<Void>> handler) {
-    this.delegate.rollback(handler);
+    delegate.rollback(handler);
     return this;
   }
 }

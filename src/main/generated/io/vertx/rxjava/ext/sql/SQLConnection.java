@@ -17,7 +17,6 @@
 package io.vertx.rxjava.ext.sql;
 
 import java.util.Map;
-import io.vertx.lang.rxjava.InternalHelper;
 import rx.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.sql.UpdateResult;
@@ -51,7 +50,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) { 
-    this.delegate.setAutoCommit(autoCommit, resultHandler);
+    delegate.setAutoCommit(autoCommit, new Handler<AsyncResult<java.lang.Void>>() {
+      public void handle(AsyncResult<java.lang.Void> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
@@ -73,7 +80,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler) { 
-    this.delegate.execute(sql, resultHandler);
+    delegate.execute(sql, new Handler<AsyncResult<java.lang.Void>>() {
+      public void handle(AsyncResult<java.lang.Void> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
@@ -95,7 +110,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    this.delegate.query(sql, resultHandler);
+    delegate.query(sql, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
@@ -118,7 +141,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    this.delegate.queryWithParams(sql, params, resultHandler);
+    delegate.queryWithParams(sql, params, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
@@ -142,7 +173,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) { 
-    this.delegate.update(sql, resultHandler);
+    delegate.update(sql, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
@@ -167,7 +206,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) { 
-    this.delegate.updateWithParams(sql, params, resultHandler);
+    delegate.updateWithParams(sql, params, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
@@ -191,7 +238,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection call(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    this.delegate.call(sql, resultHandler);
+    delegate.call(sql, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
@@ -223,7 +278,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    this.delegate.callWithParams(sql, params, outputs, resultHandler);
+    delegate.callWithParams(sql, params, outputs, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
+        if (ar.succeeded()) {
+          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
@@ -253,7 +316,15 @@ public class SQLConnection {
    * @param handler the handler called when this operation completes.
    */
   public void close(Handler<AsyncResult<Void>> handler) { 
-    this.delegate.close(handler);
+    delegate.close(new Handler<AsyncResult<java.lang.Void>>() {
+      public void handle(AsyncResult<java.lang.Void> ar) {
+        if (ar.succeeded()) {
+          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
   }
 
   /**
@@ -270,7 +341,7 @@ public class SQLConnection {
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
    */
   public void close() { 
-    this.delegate.close();
+    delegate.close();
   }
 
   /**
@@ -279,7 +350,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection commit(Handler<AsyncResult<Void>> handler) { 
-    this.delegate.commit(handler);
+    delegate.commit(new Handler<AsyncResult<java.lang.Void>>() {
+      public void handle(AsyncResult<java.lang.Void> ar) {
+        if (ar.succeeded()) {
+          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
@@ -299,7 +378,15 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection rollback(Handler<AsyncResult<Void>> handler) { 
-    this.delegate.rollback(handler);
+    delegate.rollback(new Handler<AsyncResult<java.lang.Void>>() {
+      public void handle(AsyncResult<java.lang.Void> ar) {
+        if (ar.succeeded()) {
+          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
     return this;
   }
 
