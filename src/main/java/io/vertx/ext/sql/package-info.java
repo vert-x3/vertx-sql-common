@@ -109,7 +109,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.SQLExamples#example3}
+ * {@link examples.SQLExamples#example4}
  * ----
  *
  * === Prepared statement updates

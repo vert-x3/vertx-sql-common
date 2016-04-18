@@ -1,30 +1,5 @@
 = Cheatsheets
 
-[[UpdateResult]]
-== UpdateResult
-
-++++
- Represents the result of an update/insert/delete operation on the database.
- <p>
- The number of rows updated is available with link and any generated
- keys are available with link.
-++++
-'''
-
-[cols=">25%,^25%,50%"]
-[frame="topbot"]
-|===
-^|Name | Type ^| Description
-|[[keys]]`keys`|`Json array`|
-+++
-Get any generated keys
-+++
-|[[updated]]`updated`|`Number (int)`|
-+++
-Get the number of rows updated
-+++
-|===
-
 [[ResultSet]]
 == ResultSet
 
@@ -67,6 +42,31 @@ Get the rows - each row represented as a JsonObject where the keys are the colum
  <p>
  Beware that it's legal for a query result in SQL to contain duplicate column names, in which case one will
  overwrite the other if using this method. If that's the case use link instead.
++++
+|===
+
+[[UpdateResult]]
+== UpdateResult
+
+++++
+ Represents the result of an update/insert/delete operation on the database.
+ <p>
+ The number of rows updated is available with link and any generated
+ keys are available with link.
+++++
+'''
+
+[cols=">25%,^25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[keys]]`keys`|`Json array`|
++++
+Get any generated keys
++++
+|[[updated]]`updated`|`Number (int)`|
++++
+Get the number of rows updated
 +++
 |===
 

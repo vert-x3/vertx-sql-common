@@ -152,18 +152,17 @@ if the update generated keys, they are available with `link:../../apidocs/io/ver
 
 [source,java]
 ----
-List<String> columnNames = resultSet.getColumnNames();
+connection.update("INSERT INTO PEOPLE VALUES (null, 'john', 'smith', 9)", res -> {
+  if (res.succeeded()) {
 
-List<JsonArray> results = resultSet.getResults();
+    UpdateResult result = res.result();
+    System.out.println("Updated no. of rows: " + result.getUpdated());
+    System.out.println("Generated keys: " + result.getKeys());
 
-for (JsonArray row: results) {
-
-  String id = row.getString(0);
-  String fName = row.getString(1);
-  String lName = row.getString(2);
-  int shoeSize = row.getInteger(3);
-
-}
+  } else {
+    // Failed!
+  }
+});
 ----
 
 === Prepared statement updates
