@@ -5,7 +5,9 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the results of a SQL query.
@@ -128,10 +130,11 @@ public class ResultSet {
       rows = new ArrayList<>(results.size());
       int cols = columnNames.size();
       for (JsonArray result: results) {
-        JsonObject row = new JsonObject();
+        Map<String, Object> rowMap = new HashMap<>(cols);
         for (int i = 0; i < cols; i++) {
-          row.put(columnNames.get(i), result.getValue(i));
+          rowMap.put(columnNames.get(i), result.getValue(i));
         }
+        JsonObject row = new JsonObject(rowMap);
         rows.add(row);
       }
     }
