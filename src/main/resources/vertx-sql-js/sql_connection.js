@@ -289,7 +289,7 @@ var SQLConnection = function(j_val) {
   this.batch = function(sqlStatements, handler) {
     var __args = arguments;
     if (__args.length === 2 && typeof __args[0] === 'object' && __args[0] instanceof Array && typeof __args[1] === 'function') {
-      j_sQLConnection["batch(java.util.List,io.vertx.core.Handler)"](sqlStatements, function(ar) {
+      j_sQLConnection["batch(java.util.List,io.vertx.core.Handler)"](utils.convParamListBasicOther(sqlStatements), function(ar) {
       if (ar.succeeded()) {
         handler(ar.result(), null);
       } else {

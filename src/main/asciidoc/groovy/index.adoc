@@ -296,6 +296,56 @@ To avoid ambiguation the implementations are expected to follow the following ru
 
 The registered `OUT` parameters will be available as an array in the result set under the output property.
 
+=== Batch operations
+
+The SQL common interface also defines how to execute batch operations. There are 3 types of batch operations:
+
+* Batched statements `link:../../groovydoc/io/vertx/groovy/ext/sql/SQLConnection.html#batch(java.util.List,%20io.vertx.core.Handler)[batch]`
+* Batched prepared statements `link:../../groovydoc/io/vertx/groovy/ext/sql/SQLConnection.html#batchWithParams(java.lang.String,%20java.util.List,%20io.vertx.core.Handler)[batchWithParams]`
+* Batched callable statements `link:../../groovydoc/io/vertx/groovy/ext/sql/SQLConnection.html#batchCallableWithParams(java.lang.String,%20java.util.List,%20java.util.List,%20io.vertx.core.Handler)[batchCallableWithParams]`
+
+A batches statement will exeucte a list of sql statements as for example:
+
+[source,java]
+----
+// Batch values
+def batch = []
+batch.add("INSERT INTO emp (NAME) VALUES ('JOE')")
+batch.add("INSERT INTO emp (NAME) VALUES ('JANE')")
+
+connection.batch(batch, { res ->
+  if (res.succeeded()) {
+    def result = res.result()
+  } else {
+    // Failed!
+  }
+})
+
+----
+
+While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
+
+[source,java]
+----
+// Batch values
+def batch = []
+batch.add([
+  "joe"
+])
+batch.add([
+  "jane"
+])
+
+connection.batchWithParams("INSERT INTO emp (name) VALUES (?)", batch, { res ->
+  if (res.succeeded()) {
+    def result = res.result()
+  } else {
+    // Failed!
+  }
+})
+
+----
+
 === Executing other operations
 
 To execute any other database operation, e.g. a `CREATE TABLE` you can use

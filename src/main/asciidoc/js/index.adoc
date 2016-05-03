@@ -296,6 +296,56 @@ To avoid ambiguation the implementations are expected to follow the following ru
 
 The registered `OUT` parameters will be available as an array in the result set under the output property.
 
+=== Batch operations
+
+The SQL common interface also defines how to execute batch operations. There are 3 types of batch operations:
+
+* Batched statements `link:../../jsdoc/sql_connection-SQLConnection.html#batch[batch]`
+* Batched prepared statements `link:../../jsdoc/sql_connection-SQLConnection.html#batchWithParams[batchWithParams]`
+* Batched callable statements `link:../../jsdoc/sql_connection-SQLConnection.html#batchCallableWithParams[batchCallableWithParams]`
+
+A batches statement will exeucte a list of sql statements as for example:
+
+[source,java]
+----
+// Batch values
+var batch = [];
+batch.push("INSERT INTO emp (NAME) VALUES ('JOE')");
+batch.push("INSERT INTO emp (NAME) VALUES ('JANE')");
+
+connection.batch(batch, function (res, res_err) {
+  if (res_err == null) {
+    var result = res;
+  } else {
+    // Failed!
+  }
+});
+
+----
+
+While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
+
+[source,java]
+----
+// Batch values
+var batch = [];
+batch.push([
+  "joe"
+]);
+batch.push([
+  "jane"
+]);
+
+connection.batchWithParams("INSERT INTO emp (name) VALUES (?)", batch, function (res, res_err) {
+  if (res_err == null) {
+    var result = res;
+  } else {
+    // Failed!
+  }
+});
+
+----
+
 === Executing other operations
 
 To execute any other database operation, e.g. a `CREATE TABLE` you can use

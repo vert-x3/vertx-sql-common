@@ -296,6 +296,56 @@ To avoid ambiguation the implementations are expected to follow the following ru
 
 The registered `OUT` parameters will be available as an array in the result set under the output property.
 
+=== Batch operations
+
+The SQL common interface also defines how to execute batch operations. There are 3 types of batch operations:
+
+* Batched statements `link:../../yardoc/VertxSql/SQLConnection.html#batch-instance_method[batch]`
+* Batched prepared statements `link:../../yardoc/VertxSql/SQLConnection.html#batch_with_params-instance_method[batchWithParams]`
+* Batched callable statements `link:../../yardoc/VertxSql/SQLConnection.html#batch_callable_with_params-instance_method[batchCallableWithParams]`
+
+A batches statement will exeucte a list of sql statements as for example:
+
+[source,java]
+----
+# Batch values
+batch = Array.new
+batch.push("INSERT INTO emp (NAME) VALUES ('JOE')")
+batch.push("INSERT INTO emp (NAME) VALUES ('JANE')")
+
+connection.batch(batch) { |res_err,res|
+  if (res_err == nil)
+    result = res
+  else
+    # Failed!
+  end
+}
+
+----
+
+While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
+
+[source,java]
+----
+# Batch values
+batch = Array.new
+batch.push([
+  "joe"
+])
+batch.push([
+  "jane"
+])
+
+connection.batch_with_params("INSERT INTO emp (name) VALUES (?)", batch) { |res_err,res|
+  if (res_err == nil)
+    result = res
+  else
+    # Failed!
+  end
+}
+
+----
+
 === Executing other operations
 
 To execute any other database operation, e.g. a `CREATE TABLE` you can use
