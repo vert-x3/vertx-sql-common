@@ -264,6 +264,14 @@ public class SQLConnection {
 
   /**
    * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   *
+   * The index of params and outputs are important for both arrays, for example when dealing with a prodecure that
+   * takes the first 2 arguments as input values and the 3 arg as an output then the arrays should be like:
+   *
+   * <pre>
+   *   params = [VALUE1, VALUE2, null]
+   *   outputs = [null, null, "VARCHAR"]
+   * </pre>
    * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
    * @param params these are the parameters to fill the statement.
    * @param outputs these are the outputs to fill the statement.
@@ -285,6 +293,14 @@ public class SQLConnection {
 
   /**
    * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   *
+   * The index of params and outputs are important for both arrays, for example when dealing with a prodecure that
+   * takes the first 2 arguments as input values and the 3 arg as an output then the arrays should be like:
+   *
+   * <pre>
+   *   params = [VALUE1, VALUE2, null]
+   *   outputs = [null, null, "VARCHAR"]
+   * </pre>
    * @param sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
    * @param params these are the parameters to fill the statement.
    * @param outputs these are the outputs to fill the statement.

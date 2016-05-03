@@ -109,7 +109,7 @@
  *
  * [source,java]
  * ----
- * {@link examples.SQLExamples#example3}
+ * {@link examples.SQLExamples#example4}
  * ----
  *
  * === Prepared statement updates
@@ -134,6 +134,9 @@
  * parameter place holders e.g.: `{ call func_proc_name(?, ?) }`, a {@link io.vertx.core.json.JsonArray} containing the
  * parameter values and finally a {@link io.vertx.core.json.JsonArray} containing the
  * output types e.g.: `[null, 'VARCHAR']`.
+ *
+ * Note that the index of the output type is as important as the params array. If the return value is the second
+ * argument then the output array must contain a null value as the first element.
  *
  * A SQL function returns some output using the `return` keyword, and in this case one can call it like this:
  *
