@@ -146,5 +146,17 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling rollback()"
     end
+    #  Sets a connection wide query timeout.
+    # 
+    #  It can be over written at any time and becomes active on the next query call.
+    # @param [Fixnum] timeoutInSeconds the max amount of seconds the query can take to execute.
+    # @return [self]
+    def set_query_timeout(timeoutInSeconds=nil)
+      if timeoutInSeconds.class == Fixnum && !block_given?
+        @j_del.java_method(:setQueryTimeout, [Java::int.java_class]).call(timeoutInSeconds)
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling set_query_timeout(timeoutInSeconds)"
+    end
   end
 end
