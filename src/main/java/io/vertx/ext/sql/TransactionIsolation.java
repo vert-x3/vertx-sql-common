@@ -15,11 +15,14 @@
  */
 package io.vertx.ext.sql;
 
+import io.vertx.codegen.annotations.VertxGen;
+
 /**
  * Represents a Transaction Isolation Level
  *
  * @author <a href="mailto:plopes@redhat.com">Paulo Lopes</a>
  */
+@VertxGen
 public enum TransactionIsolation {
   READ_UNCOMMITTED,
   READ_COMMITTED,
