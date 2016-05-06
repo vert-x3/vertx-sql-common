@@ -284,7 +284,28 @@ However you can also return values like this:
 
 [source,java]
 ----
-Code not translatable
+// Assume that there is a SQL procedure like this:
+//
+// create procedure customer_lastname(IN firstname varchar(50), OUT lastname varchar(50))
+//   modifies sql data
+//   select lastname into lastname from customers where firstname = firstname;
+
+def func = "{ call customer_lastname(?, ?) }"
+
+connection.callWithParams(func, [
+  "John"
+], [
+  null,
+  "VARCHAR"
+], { res ->
+
+  if (res.succeeded()) {
+    def result = res.result()
+  } else {
+    // Failed!
+  }
+})
+
 ----
 
 Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a

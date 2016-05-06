@@ -172,4 +172,23 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection setQueryTimeout(int timeoutInSeconds);
+
+  /**
+   * Attempts to change the transaction isolation level for this Connection object to the one given.
+   *
+   * The constants defined in the interface Connection are the possible transaction isolation levels.
+   *
+   * @param isolation the level of isolation
+   * @param handler the handler called when this operation completes.
+   */
+  @Fluent
+  SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler);
+
+  /**
+   * Attempts to return the transaction isolation level for this Connection object to the one given.
+   *
+   * @param handler the handler called when this operation completes.
+   */
+  @Fluent
+  SQLConnection getTransactionIsolation(Handler<AsyncResult<TransactionIsolation>> handler);
 }
