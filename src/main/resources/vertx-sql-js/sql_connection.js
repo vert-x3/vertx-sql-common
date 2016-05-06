@@ -193,6 +193,14 @@ var SQLConnection = function(j_val) {
 
   /**
    Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+  
+   The index of params and outputs are important for both arrays, for example when dealing with a prodecure that
+   takes the first 2 arguments as input values and the 3 arg as an output then the arrays should be like:
+  
+   <pre>
+     params = [VALUE1, VALUE2, null]
+     outputs = [null, null, "VARCHAR"]
+   </pre>
 
    @public
    @param sql {string} the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>. 
@@ -279,46 +287,18 @@ var SQLConnection = function(j_val) {
   };
 
   /**
-   Attempts to change the transaction isolation level for this Connection object to the one given.
+   Sets a connection wide query timeout.
   
-   The constants defined in the interface Connection are the possible transaction isolation levels.
+   It can be over written at any time and becomes active on the next query call.
 
    @public
-   @param isolation {Object} the level of isolation 
-   @param handler {function} the handler called when this operation completes. 
+   @param timeoutInSeconds {number} the max amount of seconds the query can take to execute. 
    @return {SQLConnection}
    */
-  this.setTransactionIsolation = function(isolation, handler) {
+  this.setQueryTimeout = function(timeoutInSeconds) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sQLConnection["setTransactionIsolation(io.vertx.ext.sql.TransactionIsolation,io.vertx.core.Handler)"](io.vertx.ext.sql.TransactionIsolation.valueOf(__args[0]), function(ar) {
-      if (ar.succeeded()) {
-        handler(null, null);
-      } else {
-        handler(null, ar.cause());
-      }
-    });
-      return that;
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-   Attempts to return the transaction isolation level for this Connection object to the one given.
-
-   @public
-   @param handler {function} the handler called when this operation completes. 
-   @return {SQLConnection}
-   */
-  this.getTransactionIsolation = function(handler) {
-    var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_sQLConnection["getTransactionIsolation(io.vertx.core.Handler)"](function(ar) {
-      if (ar.succeeded()) {
-        handler(utils.convReturnEnum(ar.result()), null);
-      } else {
-        handler(null, ar.cause());
-      }
-    });
+    if (__args.length === 1 && typeof __args[0] ==='number') {
+      j_sQLConnection["setQueryTimeout(int)"](timeoutInSeconds);
       return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };

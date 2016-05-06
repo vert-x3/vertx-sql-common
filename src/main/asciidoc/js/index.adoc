@@ -167,18 +167,18 @@ if the update generated keys, they are available with `link:../dataobjects.html#
 [source,java]
 ----
 
-var columnNames = resultSet.columnNames;
+connection.update("INSERT INTO PEOPLE VALUES (null, 'john', 'smith', 9)", function (res, res_err) {
+  if (res_err == null) {
 
-var results = resultSet.results;
+    var result = res;
+    console.log("Updated no. of rows: " + result.updated);
+    console.log("Generated keys: " + result.keys);
 
-Array.prototype.forEach.call(results, function(row) {
-
-  var id = row[0];
-  var fName = row[1];
-  var lName = row[2];
-  var shoeSize = row[3];
-
+  } else {
+    // Failed!
+  }
 });
+
 
 
 ----
@@ -226,6 +226,9 @@ This takes the callable statement using the standard JDBC format `{ call func_pr
 parameter place holders e.g.: `{ call func_proc_name(?, ?) }`, a `JsonArray` containing the
 parameter values and finally a `JsonArray` containing the
 output types e.g.: `[null, 'VARCHAR']`.
+
+Note that the index of the output type is as important as the params array. If the return value is the second
+argument then the output array must contain a null value as the first element.
 
 A SQL function returns some output using the `return` keyword, and in this case one can call it like this:
 

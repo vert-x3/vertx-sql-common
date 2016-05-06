@@ -167,18 +167,18 @@ if the update generated keys, they are available with `link:../dataobjects.html#
 [source,java]
 ----
 
-def columnNames = resultSet.columnNames
+connection.update("INSERT INTO PEOPLE VALUES (null, 'john', 'smith', 9)", { res ->
+  if (res.succeeded()) {
 
-def results = resultSet.results
+    def result = res.result()
+    println("Updated no. of rows: ${result.updated}")
+    println("Generated keys: ${result.keys}")
 
-results.each { row ->
+  } else {
+    // Failed!
+  }
+})
 
-  def id = row[0]
-  def fName = row[1]
-  def lName = row[2]
-  def shoeSize = row[3]
-
-}
 
 
 ----
@@ -226,6 +226,9 @@ This takes the callable statement using the standard JDBC format `{ call func_pr
 parameter place holders e.g.: `{ call func_proc_name(?, ?) }`, a `JsonArray` containing the
 parameter values and finally a `JsonArray` containing the
 output types e.g.: `[null, 'VARCHAR']`.
+
+Note that the index of the output type is as important as the params array. If the return value is the second
+argument then the output array must contain a null value as the first element.
 
 A SQL function returns some output using the `return` keyword, and in this case one can call it like this:
 

@@ -95,6 +95,14 @@ module VertxSql
       raise ArgumentError, "Invalid arguments when calling call(sql)"
     end
     #  Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+    # 
+    #  The index of params and outputs are important for both arrays, for example when dealing with a prodecure that
+    #  takes the first 2 arguments as input values and the 3 arg as an output then the arrays should be like:
+    # 
+    #  <pre>
+    #    params = [VALUE1, VALUE2, null]
+    #    outputs = [null, null, "VARCHAR"]
+    #  </pre>
     # @param [String] sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
     # @param [Array<String,Object>] params these are the parameters to fill the statement.
     # @param [Array<String,Object>] outputs these are the outputs to fill the statement.
@@ -138,28 +146,17 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling rollback()"
     end
-    #  Attempts to change the transaction isolation level for this Connection object to the one given.
+    #  Sets a connection wide query timeout.
     # 
-    #  The constants defined in the interface Connection are the possible transaction isolation levels.
-    # @param [:READ_UNCOMMITTED,:READ_COMMITTED,:REPEATABLE_READ,:SERIALIZABLE,:NONE] isolation the level of isolation
-    # @yield the handler called when this operation completes.
+    #  It can be over written at any time and becomes active on the next query call.
+    # @param [Fixnum] timeoutInSeconds the max amount of seconds the query can take to execute.
     # @return [self]
-    def set_transaction_isolation(isolation=nil)
-      if isolation.class == Symbol && block_given?
-        @j_del.java_method(:setTransactionIsolation, [Java::IoVertxExtSql::TransactionIsolation.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::IoVertxExtSql::TransactionIsolation.valueOf(isolation),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil) }))
+    def set_query_timeout(timeoutInSeconds=nil)
+      if timeoutInSeconds.class == Fixnum && !block_given?
+        @j_del.java_method(:setQueryTimeout, [Java::int.java_class]).call(timeoutInSeconds)
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling set_transaction_isolation(isolation)"
-    end
-    #  Attempts to return the transaction isolation level for this Connection object to the one given.
-    # @yield the handler called when this operation completes.
-    # @return [self]
-    def get_transaction_isolation
-      if block_given?
-        @j_del.java_method(:getTransactionIsolation, [Java::IoVertxCore::Handler.java_class]).call(nil)
-        return self
-      end
-      raise ArgumentError, "Invalid arguments when calling get_transaction_isolation()"
+      raise ArgumentError, "Invalid arguments when calling set_query_timeout(timeoutInSeconds)"
     end
   end
 end

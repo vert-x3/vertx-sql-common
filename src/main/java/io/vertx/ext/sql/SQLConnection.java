@@ -116,6 +116,14 @@ public interface SQLConnection extends AutoCloseable {
   /**
    * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
    *
+   * The index of params and outputs are important for both arrays, for example when dealing with a prodecure that
+   * takes the first 2 arguments as input values and the 3 arg as an output then the arrays should be like:
+   *
+   * <pre>
+   *   params = [VALUE1, VALUE2, null]
+   *   outputs = [null, null, "VARCHAR"]
+   * </pre>
+   *
    * @param sql  the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
    * @param params  these are the parameters to fill the statement.
    * @param outputs  these are the outputs to fill the statement.
@@ -153,6 +161,17 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection rollback(Handler<AsyncResult<Void>> handler);
+
+
+  /**
+   * Sets a connection wide query timeout.
+   *
+   * It can be over written at any time and becomes active on the next query call.
+   *
+   * @param timeoutInSeconds the max amount of seconds the query can take to execute.
+   */
+  @Fluent
+  SQLConnection setQueryTimeout(int timeoutInSeconds);
 
   /**
    * Attempts to change the transaction isolation level for this Connection object to the one given.
