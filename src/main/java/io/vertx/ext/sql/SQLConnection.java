@@ -164,6 +164,17 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection rollback(Handler<AsyncResult<Void>> handler);
 
+
+  /**
+   * Sets a connection wide query timeout.
+   *
+   * It can be over written at any time and becomes active on the next query call.
+   *
+   * @param timeoutInSeconds the max amount of seconds the query can take to execute.
+   */
+  @Fluent
+  SQLConnection setQueryTimeout(int timeoutInSeconds);
+
   /**
    * Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
    *

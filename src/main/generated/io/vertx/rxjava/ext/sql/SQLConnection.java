@@ -19,7 +19,6 @@ package io.vertx.rxjava.ext.sql;
 import java.util.Map;
 import rx.Observable;
 import io.vertx.core.json.JsonArray;
-import java.util.List;
 import io.vertx.ext.sql.UpdateResult;
 import io.vertx.ext.sql.ResultSet;
 import io.vertx.core.AsyncResult;
@@ -402,105 +401,15 @@ public class SQLConnection {
   }
 
   /**
-   * Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
-   * @param sqlStatements sql statement
-   * @param handler the result handler
+   * Sets a connection wide query timeout.
+   *
+   * It can be over written at any time and becomes active on the next query call.
+   * @param timeoutInSeconds the max amount of seconds the query can take to execute.
    * @return 
    */
-  public SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<List<Integer>>> handler) { 
-    delegate.batch(sqlStatements, new Handler<AsyncResult<java.util.List<java.lang.Integer>>>() {
-      public void handle(AsyncResult<java.util.List<java.lang.Integer>> ar) {
-        if (ar.succeeded()) {
-          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+  public SQLConnection setQueryTimeout(int timeoutInSeconds) { 
+    this.delegate.setQueryTimeout(timeoutInSeconds);
     return this;
-  }
-
-  /**
-   * Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
-   * @param sqlStatements sql statement
-   * @return 
-   */
-  public Observable<List<Integer>> batchObservable(List<String> sqlStatements) { 
-    io.vertx.rx.java.ObservableFuture<List<Integer>> handler = io.vertx.rx.java.RxHelper.observableFuture();
-    batch(sqlStatements, handler.toHandler());
-    return handler;
-  }
-
-  /**
-   * Batch a prepared statement with all entries from the args list. Each entry is a batch.
-   * The operation completes with the execution of the batch where the async result contains a array of Integers.
-   * @param sqlStatement sql statement
-   * @param args the prepared statement arguments
-   * @param handler the result handler
-   * @return 
-   */
-  public SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<List<Integer>>> handler) { 
-    delegate.batchWithParams(sqlStatement, args, new Handler<AsyncResult<java.util.List<java.lang.Integer>>>() {
-      public void handle(AsyncResult<java.util.List<java.lang.Integer>> ar) {
-        if (ar.succeeded()) {
-          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
-    return this;
-  }
-
-  /**
-   * Batch a prepared statement with all entries from the args list. Each entry is a batch.
-   * The operation completes with the execution of the batch where the async result contains a array of Integers.
-   * @param sqlStatement sql statement
-   * @param args the prepared statement arguments
-   * @return 
-   */
-  public Observable<List<Integer>> batchWithParamsObservable(String sqlStatement, List<JsonArray> args) { 
-    io.vertx.rx.java.ObservableFuture<List<Integer>> handler = io.vertx.rx.java.RxHelper.observableFuture();
-    batchWithParams(sqlStatement, args, handler.toHandler());
-    return handler;
-  }
-
-  /**
-   * Batch a callable statement with all entries from the args list. Each entry is a batch.
-   * The size of the lists inArgs and outArgs MUST be the equal.
-   * The operation completes with the execution of the batch where the async result contains a array of Integers.
-   * @param sqlStatement sql statement
-   * @param inArgs the callable statement input arguments
-   * @param outArgs the callable statement output arguments
-   * @param handler the result handler
-   * @return 
-   */
-  public SQLConnection batchCallableWithParams(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs, Handler<AsyncResult<List<Integer>>> handler) { 
-    delegate.batchCallableWithParams(sqlStatement, inArgs, outArgs, new Handler<AsyncResult<java.util.List<java.lang.Integer>>>() {
-      public void handle(AsyncResult<java.util.List<java.lang.Integer>> ar) {
-        if (ar.succeeded()) {
-          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
-    return this;
-  }
-
-  /**
-   * Batch a callable statement with all entries from the args list. Each entry is a batch.
-   * The size of the lists inArgs and outArgs MUST be the equal.
-   * The operation completes with the execution of the batch where the async result contains a array of Integers.
-   * @param sqlStatement sql statement
-   * @param inArgs the callable statement input arguments
-   * @param outArgs the callable statement output arguments
-   * @return 
-   */
-  public Observable<List<Integer>> batchCallableWithParamsObservable(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs) { 
-    io.vertx.rx.java.ObservableFuture<List<Integer>> handler = io.vertx.rx.java.RxHelper.observableFuture();
-    batchCallableWithParams(sqlStatement, inArgs, outArgs, handler.toHandler());
-    return handler;
   }
 
 

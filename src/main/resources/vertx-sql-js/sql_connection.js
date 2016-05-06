@@ -287,73 +287,18 @@ var SQLConnection = function(j_val) {
   };
 
   /**
-   Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
+   Sets a connection wide query timeout.
+  
+   It can be over written at any time and becomes active on the next query call.
 
    @public
-   @param sqlStatements {Array.<string>} sql statement 
-   @param handler {function} the result handler 
+   @param timeoutInSeconds {number} the max amount of seconds the query can take to execute. 
    @return {SQLConnection}
    */
-  this.batch = function(sqlStatements, handler) {
+  this.setQueryTimeout = function(timeoutInSeconds) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] === 'object' && __args[0] instanceof Array && typeof __args[1] === 'function') {
-      j_sQLConnection["batch(java.util.List,io.vertx.core.Handler)"](utils.convParamListBasicOther(sqlStatements), function(ar) {
-      if (ar.succeeded()) {
-        handler(ar.result(), null);
-      } else {
-        handler(null, ar.cause());
-      }
-    });
-      return that;
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-   Batch a prepared statement with all entries from the args list. Each entry is a batch.
-   The operation completes with the execution of the batch where the async result contains a array of Integers.
-
-   @public
-   @param sqlStatement {string} sql statement 
-   @param args {Array.<todo>} the prepared statement arguments 
-   @param handler {function} the result handler 
-   @return {SQLConnection}
-   */
-  this.batchWithParams = function(sqlStatement, args, handler) {
-    var __args = arguments;
-    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sQLConnection["batchWithParams(java.lang.String,java.util.List,io.vertx.core.Handler)"](sqlStatement, utils.convParamListJsonArray(args), function(ar) {
-      if (ar.succeeded()) {
-        handler(ar.result(), null);
-      } else {
-        handler(null, ar.cause());
-      }
-    });
-      return that;
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-   Batch a callable statement with all entries from the args list. Each entry is a batch.
-   The size of the lists inArgs and outArgs MUST be the equal.
-   The operation completes with the execution of the batch where the async result contains a array of Integers.
-
-   @public
-   @param sqlStatement {string} sql statement 
-   @param inArgs {Array.<todo>} the callable statement input arguments 
-   @param outArgs {Array.<todo>} the callable statement output arguments 
-   @param handler {function} the result handler 
-   @return {SQLConnection}
-   */
-  this.batchCallableWithParams = function(sqlStatement, inArgs, outArgs, handler) {
-    var __args = arguments;
-    if (__args.length === 4 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array && typeof __args[3] === 'function') {
-      j_sQLConnection["batchCallableWithParams(java.lang.String,java.util.List,java.util.List,io.vertx.core.Handler)"](sqlStatement, utils.convParamListJsonArray(inArgs), utils.convParamListJsonArray(outArgs), function(ar) {
-      if (ar.succeeded()) {
-        handler(ar.result(), null);
-      } else {
-        handler(null, ar.cause());
-      }
-    });
+    if (__args.length === 1 && typeof __args[0] ==='number') {
+      j_sQLConnection["setQueryTimeout(int)"](timeoutInSeconds);
       return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
