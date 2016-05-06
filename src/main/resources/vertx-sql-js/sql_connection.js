@@ -303,6 +303,51 @@ var SQLConnection = function(j_val) {
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
+  /**
+   Attempts to change the transaction isolation level for this Connection object to the one given.
+  
+   The constants defined in the interface Connection are the possible transaction isolation levels.
+
+   @public
+   @param isolation {Object} the level of isolation 
+   @param handler {function} the handler called when this operation completes. 
+   @return {SQLConnection}
+   */
+  this.setTransactionIsolation = function(isolation, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["setTransactionIsolation(io.vertx.ext.sql.TransactionIsolation,io.vertx.core.Handler)"](io.vertx.ext.sql.TransactionIsolation.valueOf(isolation), function(ar) {
+      if (ar.succeeded()) {
+        handler(null, null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Attempts to return the transaction isolation level for this Connection object to the one given.
+
+   @public
+   @param handler {function} the handler called when this operation completes. 
+   @return {SQLConnection}
+   */
+  this.getTransactionIsolation = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_sQLConnection["getTransactionIsolation(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnEnum(ar.result()), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.

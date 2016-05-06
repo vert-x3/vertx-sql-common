@@ -284,7 +284,28 @@ However you can also return values like this:
 
 [source,java]
 ----
-Code not translatable
+// Assume that there is a SQL procedure like this:
+//
+// create procedure customer_lastname(IN firstname varchar(50), OUT lastname varchar(50))
+//   modifies sql data
+//   select lastname into lastname from customers where firstname = firstname;
+
+var func = "{ call customer_lastname(?, ?) }";
+
+connection.callWithParams(func, [
+  "John"
+], [
+  null,
+  "VARCHAR"
+], function (res, res_err) {
+
+  if (res_err == null) {
+    var result = res;
+  } else {
+    // Failed!
+  }
+});
+
 ----
 
 Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a

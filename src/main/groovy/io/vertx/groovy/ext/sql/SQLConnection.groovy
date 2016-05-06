@@ -217,7 +217,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection setQueryTimeout(int timeoutInSeconds) {
-    this.delegate.setQueryTimeout(timeoutInSeconds);
+    delegate.setQueryTimeout(timeoutInSeconds);
     return this;
   }
   /**
@@ -229,7 +229,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler) {
-    this.delegate.setTransactionIsolation(isolation, handler);
+    delegate.setTransactionIsolation(isolation, handler);
     return this;
   }
   /**
@@ -238,7 +238,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection getTransactionIsolation(Handler<AsyncResult<TransactionIsolation>> handler) {
-    this.delegate.getTransactionIsolation(null /* Handler<AsyncResult<io.vertx.ext.sql.TransactionIsolation>> with kind ENUM not yet implemented */);
+    delegate.getTransactionIsolation(handler);
     return this;
   }
 }
