@@ -21,6 +21,7 @@ import rx.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.sql.UpdateResult;
 import io.vertx.ext.sql.ResultSet;
+import io.vertx.ext.sql.TransactionIsolation;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -110,15 +111,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    delegate.query(sql, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
-        if (ar.succeeded()) {
-          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.query(sql, resultHandler);
     return this;
   }
 
@@ -141,15 +134,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    delegate.queryWithParams(sql, params, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
-        if (ar.succeeded()) {
-          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.queryWithParams(sql, params, resultHandler);
     return this;
   }
 
@@ -173,15 +158,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler) { 
-    delegate.update(sql, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> ar) {
-        if (ar.succeeded()) {
-          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.update(sql, resultHandler);
     return this;
   }
 
@@ -206,15 +183,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler) { 
-    delegate.updateWithParams(sql, params, new Handler<AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.UpdateResult> ar) {
-        if (ar.succeeded()) {
-          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.updateWithParams(sql, params, resultHandler);
     return this;
   }
 
@@ -238,15 +207,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection call(String sql, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    delegate.call(sql, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
-        if (ar.succeeded()) {
-          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.call(sql, resultHandler);
     return this;
   }
 
@@ -278,15 +239,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> resultHandler) { 
-    delegate.callWithParams(sql, params, outputs, new Handler<AsyncResult<io.vertx.ext.sql.ResultSet>>() {
-      public void handle(AsyncResult<io.vertx.ext.sql.ResultSet> ar) {
-        if (ar.succeeded()) {
-          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.callWithParams(sql, params, outputs, resultHandler);
     return this;
   }
 
@@ -408,8 +361,62 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection setQueryTimeout(int timeoutInSeconds) { 
-    this.delegate.setQueryTimeout(timeoutInSeconds);
+    delegate.setQueryTimeout(timeoutInSeconds);
     return this;
+  }
+
+  /**
+   * Attempts to change the transaction isolation level for this Connection object to the one given.
+   *
+   * The constants defined in the interface Connection are the possible transaction isolation levels.
+   * @param isolation the level of isolation
+   * @param handler the handler called when this operation completes.
+   * @return 
+   */
+  public SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler) { 
+    delegate.setTransactionIsolation(isolation, new Handler<AsyncResult<java.lang.Void>>() {
+      public void handle(AsyncResult<java.lang.Void> ar) {
+        if (ar.succeeded()) {
+          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
+        } else {
+          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
+    return this;
+  }
+
+  /**
+   * Attempts to change the transaction isolation level for this Connection object to the one given.
+   *
+   * The constants defined in the interface Connection are the possible transaction isolation levels.
+   * @param isolation the level of isolation
+   * @return 
+   */
+  public Observable<Void> setTransactionIsolationObservable(TransactionIsolation isolation) { 
+    io.vertx.rx.java.ObservableFuture<Void> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    setTransactionIsolation(isolation, handler.toHandler());
+    return handler;
+  }
+
+  /**
+   * Attempts to return the transaction isolation level for this Connection object to the one given.
+   * @param handler the handler called when this operation completes.
+   * @return 
+   */
+  public SQLConnection getTransactionIsolation(Handler<AsyncResult<TransactionIsolation>> handler) { 
+    delegate.getTransactionIsolation(handler);
+    return this;
+  }
+
+  /**
+   * Attempts to return the transaction isolation level for this Connection object to the one given.
+   * @return 
+   */
+  public Observable<TransactionIsolation> getTransactionIsolationObservable() { 
+    io.vertx.rx.java.ObservableFuture<TransactionIsolation> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    getTransactionIsolation(handler.toHandler());
+    return handler;
   }
 
 
