@@ -22,6 +22,8 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 
+import java.util.List;
+
 /**
  * Represents a connection to a SQL database
  *
@@ -172,6 +174,39 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection setQueryTimeout(int timeoutInSeconds);
+
+  /**
+   * Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
+   *
+   * @param sqlStatements sql statement
+   * @param handler the result handler
+   */
+  @Fluent
+  SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<List<Integer>>> handler);
+
+  /**
+   * Batch a prepared statement with all entries from the args list. Each entry is a batch.
+   * The operation completes with the execution of the batch where the async result contains a array of Integers.
+   *
+   * @param sqlStatement sql statement
+   * @param args the prepared statement arguments
+   * @param handler the result handler
+   */
+  @Fluent
+  SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<List<Integer>>> handler);
+
+  /**
+   * Batch a callable statement with all entries from the args list. Each entry is a batch.
+   * The size of the lists inArgs and outArgs MUST be the equal.
+   * The operation completes with the execution of the batch where the async result contains a array of Integers.
+   *
+   * @param sqlStatement sql statement
+   * @param inArgs the callable statement input arguments
+   * @param outArgs the callable statement output arguments
+   * @param handler the result handler
+   */
+  @Fluent
+  SQLConnection batchCallableWithParams(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs, Handler<AsyncResult<List<Integer>>> handler);
 
   /**
    * Attempts to change the transaction isolation level for this Connection object to the one given.

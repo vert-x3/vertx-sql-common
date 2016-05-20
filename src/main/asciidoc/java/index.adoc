@@ -268,6 +268,48 @@ To avoid ambiguation the implementations are expected to follow the following ru
 
 The registered `OUT` parameters will be available as an array in the result set under the output property.
 
+=== Batch operations
+
+The SQL common interface also defines how to execute batch operations. There are 3 types of batch operations:
+
+* Batched statements `link:../../apidocs/io/vertx/ext/sql/SQLConnection.html#batch-java.util.List-io.vertx.core.Handler-[batch]`
+* Batched prepared statements `link:../../apidocs/io/vertx/ext/sql/SQLConnection.html#batchWithParams-java.lang.String-java.util.List-io.vertx.core.Handler-[batchWithParams]`
+* Batched callable statements `link:../../apidocs/io/vertx/ext/sql/SQLConnection.html#batchCallableWithParams-java.lang.String-java.util.List-java.util.List-io.vertx.core.Handler-[batchCallableWithParams]`
+
+A batches statement will exeucte a list of sql statements as for example:
+
+[source,java]
+----
+List<String> batch = new ArrayList<>();
+batch.add("INSERT INTO emp (NAME) VALUES ('JOE')");
+batch.add("INSERT INTO emp (NAME) VALUES ('JANE')");
+
+connection.batch(batch, res -> {
+  if (res.succeeded()) {
+    List<Integer> result = res.result();
+  } else {
+    // Failed!
+  }
+});
+----
+
+While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
+
+[source,java]
+----
+List<JsonArray> batch = new ArrayList<>();
+batch.add(new JsonArray().add("joe"));
+batch.add(new JsonArray().add("jane"));
+
+connection.batchWithParams("INSERT INTO emp (name) VALUES (?)", batch, res -> {
+  if (res.succeeded()) {
+    List<Integer> result = res.result();
+  } else {
+    // Failed!
+  }
+});
+----
+
 === Executing other operations
 
 To execute any other database operation, e.g. a `CREATE TABLE` you can use

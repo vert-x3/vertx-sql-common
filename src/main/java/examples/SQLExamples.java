@@ -6,6 +6,7 @@ import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLConnection;
 import io.vertx.ext.sql.UpdateResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -205,6 +206,36 @@ public class SQLExamples {
 
       if (res.succeeded()) {
         ResultSet result = res.result();
+      } else {
+        // Failed!
+      }
+    });
+  }
+
+  public void example11(SQLConnection connection) {
+    // Batch values
+    List<JsonArray> batch = new ArrayList<>();
+    batch.add(new JsonArray().add("joe"));
+    batch.add(new JsonArray().add("jane"));
+
+    connection.batchWithParams("INSERT INTO emp (name) VALUES (?)", batch, res -> {
+      if (res.succeeded()) {
+        List<Integer> result = res.result();
+      } else {
+        // Failed!
+      }
+    });
+  }
+
+  public void example12(SQLConnection connection) {
+    // Batch values
+    List<String> batch = new ArrayList<>();
+    batch.add("INSERT INTO emp (NAME) VALUES ('JOE')");
+    batch.add("INSERT INTO emp (NAME) VALUES ('JANE')");
+
+    connection.batch(batch, res -> {
+      if (res.succeeded()) {
+        List<Integer> result = res.result();
       } else {
         // Failed!
       }

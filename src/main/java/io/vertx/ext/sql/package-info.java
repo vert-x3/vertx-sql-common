@@ -172,6 +172,28 @@
  *
  * The registered `OUT` parameters will be available as an array in the result set under the output property.
  *
+ * === Batch operations
+ *
+ * The SQL common interface also defines how to execute batch operations. There are 3 types of batch operations:
+ *
+ * * Batched statements {@link io.vertx.ext.sql.SQLConnection#batch(java.util.List, io.vertx.core.Handler)}
+ * * Batched prepared statements {@link io.vertx.ext.sql.SQLConnection#batchWithParams(java.lang.String, java.util.List, io.vertx.core.Handler)}
+ * * Batched callable statements {@link io.vertx.ext.sql.SQLConnection#batchCallableWithParams(java.lang.String, java.util.List, java.util.List, io.vertx.core.Handler)}
+ *
+ * A batches statement will exeucte a list of sql statements as for example:
+ *
+ * [source,java]
+ * ----
+ * {@link examples.SQLExamples#example12}
+ * ----
+ *
+ * While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
+ *
+ * [source,java]
+ * ----
+ * {@link examples.SQLExamples#example11}
+ * ----
+
  * === Executing other operations
  *
  * To execute any other database operation, e.g. a `CREATE TABLE` you can use
