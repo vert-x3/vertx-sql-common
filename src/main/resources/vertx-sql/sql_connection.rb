@@ -158,6 +158,45 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling set_query_timeout(timeoutInSeconds)"
     end
+    #  Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
+    # @param [Array<String>] sqlStatements sql statement
+    # @yield the result handler
+    # @return [self]
+    def batch(sqlStatements=nil)
+      if sqlStatements.class == Array && block_given?
+        @j_del.java_method(:batch, [Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatements.map { |element| element },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result.to_a.map { |elt| elt } : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling batch(sqlStatements)"
+    end
+    #  Batch a prepared statement with all entries from the args list. Each entry is a batch.
+    #  The operation completes with the execution of the batch where the async result contains a array of Integers.
+    # @param [String] sqlStatement sql statement
+    # @param [Array<Array<String,Object>>] args the prepared statement arguments
+    # @yield the result handler
+    # @return [self]
+    def batch_with_params(sqlStatement=nil,args=nil)
+      if sqlStatement.class == String && args.class == Array && block_given?
+        @j_del.java_method(:batchWithParams, [Java::java.lang.String.java_class,Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatement,args.map { |element| ::Vertx::Util::Utils.to_json_array(element) },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result.to_a.map { |elt| elt } : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling batch_with_params(sqlStatement,args)"
+    end
+    #  Batch a callable statement with all entries from the args list. Each entry is a batch.
+    #  The size of the lists inArgs and outArgs MUST be the equal.
+    #  The operation completes with the execution of the batch where the async result contains a array of Integers.
+    # @param [String] sqlStatement sql statement
+    # @param [Array<Array<String,Object>>] inArgs the callable statement input arguments
+    # @param [Array<Array<String,Object>>] outArgs the callable statement output arguments
+    # @yield the result handler
+    # @return [self]
+    def batch_callable_with_params(sqlStatement=nil,inArgs=nil,outArgs=nil)
+      if sqlStatement.class == String && inArgs.class == Array && outArgs.class == Array && block_given?
+        @j_del.java_method(:batchCallableWithParams, [Java::java.lang.String.java_class,Java::JavaUtil::List.java_class,Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatement,inArgs.map { |element| ::Vertx::Util::Utils.to_json_array(element) },outArgs.map { |element| ::Vertx::Util::Utils.to_json_array(element) },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result.to_a.map { |elt| elt } : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling batch_callable_with_params(sqlStatement,inArgs,outArgs)"
+    end
     #  Attempts to change the transaction isolation level for this Connection object to the one given.
     # 
     #  The constants defined in the interface Connection are the possible transaction isolation levels.
