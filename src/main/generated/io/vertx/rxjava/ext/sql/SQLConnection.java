@@ -52,15 +52,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) { 
-    delegate.setAutoCommit(autoCommit, new Handler<AsyncResult<java.lang.Void>>() {
-      public void handle(AsyncResult<java.lang.Void> ar) {
-        if (ar.succeeded()) {
-          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.setAutoCommit(autoCommit, resultHandler);
     return this;
   }
 
@@ -82,15 +74,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler) { 
-    delegate.execute(sql, new Handler<AsyncResult<java.lang.Void>>() {
-      public void handle(AsyncResult<java.lang.Void> ar) {
-        if (ar.succeeded()) {
-          resultHandler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.execute(sql, resultHandler);
     return this;
   }
 
@@ -270,15 +254,7 @@ public class SQLConnection {
    * @param handler the handler called when this operation completes.
    */
   public void close(Handler<AsyncResult<Void>> handler) { 
-    delegate.close(new Handler<AsyncResult<java.lang.Void>>() {
-      public void handle(AsyncResult<java.lang.Void> ar) {
-        if (ar.succeeded()) {
-          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.close(handler);
   }
 
   /**
@@ -304,15 +280,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection commit(Handler<AsyncResult<Void>> handler) { 
-    delegate.commit(new Handler<AsyncResult<java.lang.Void>>() {
-      public void handle(AsyncResult<java.lang.Void> ar) {
-        if (ar.succeeded()) {
-          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.commit(handler);
     return this;
   }
 
@@ -332,15 +300,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection rollback(Handler<AsyncResult<Void>> handler) { 
-    delegate.rollback(new Handler<AsyncResult<java.lang.Void>>() {
-      public void handle(AsyncResult<java.lang.Void> ar) {
-        if (ar.succeeded()) {
-          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.rollback(handler);
     return this;
   }
 
@@ -453,15 +413,7 @@ public class SQLConnection {
    * @return 
    */
   public SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler) { 
-    delegate.setTransactionIsolation(isolation, new Handler<AsyncResult<java.lang.Void>>() {
-      public void handle(AsyncResult<java.lang.Void> ar) {
-        if (ar.succeeded()) {
-          handler.handle(io.vertx.core.Future.succeededFuture(ar.result()));
-        } else {
-          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
-        }
-      }
-    });
+    delegate.setTransactionIsolation(isolation, handler);
     return this;
   }
 
