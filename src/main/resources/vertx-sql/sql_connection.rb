@@ -1,3 +1,4 @@
+require 'vertx-sql/sql_row_stream'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.sql.SQLConnection
 module VertxSql
@@ -46,6 +47,17 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling query(sql)"
     end
+    #  Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+    # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+    # @yield the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>.
+    # @return [self]
+    def query_stream(sql=nil)
+      if sql.class == String && block_given?
+        @j_del.java_method(:queryStream, [Java::java.lang.String.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ::Vertx::Util::Utils.safe_create(ar.result,::VertxSql::SQLRowStream) : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling query_stream(sql)"
+    end
     #  Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
     # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
     # @param [Array<String,Object>] params these are the parameters to fill the statement.
@@ -57,6 +69,18 @@ module VertxSql
         return self
       end
       raise ArgumentError, "Invalid arguments when calling query_with_params(sql,params)"
+    end
+    #  Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+    # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+    # @param [Array<String,Object>] params these are the parameters to fill the statement.
+    # @yield the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>.
+    # @return [self]
+    def query_stream_with_params(sql=nil,params=nil)
+      if sql.class == String && params.class == Array && block_given?
+        @j_del.java_method(:queryStreamWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ::Vertx::Util::Utils.safe_create(ar.result,::VertxSql::SQLRowStream) : nil) }))
+        return self
+      end
+      raise ArgumentError, "Invalid arguments when calling query_stream_with_params(sql,params)"
     end
     #  Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
     #  statement.

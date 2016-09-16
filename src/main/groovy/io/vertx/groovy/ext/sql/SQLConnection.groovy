@@ -18,11 +18,11 @@ package io.vertx.groovy.ext.sql;
 import groovy.transform.CompileStatic
 import io.vertx.lang.groovy.InternalHelper
 import io.vertx.core.json.JsonObject
+import io.vertx.ext.sql.TransactionIsolation
 import io.vertx.core.json.JsonArray
 import java.util.List
 import io.vertx.ext.sql.UpdateResult
 import io.vertx.ext.sql.ResultSet
-import io.vertx.ext.sql.TransactionIsolation
 import io.vertx.core.AsyncResult
 import io.vertx.core.Handler
 /**
@@ -76,6 +76,24 @@ public class SQLConnection {
     return this;
   }
   /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param handler the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>.
+   * @return 
+   */
+  public SQLConnection queryStream(String sql, Handler<AsyncResult<SQLRowStream>> handler) {
+    delegate.queryStream(sql, handler != null ? new Handler<AsyncResult<io.vertx.ext.sql.SQLRowStream>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.SQLRowStream> ar) {
+        if (ar.succeeded()) {
+          handler.handle(io.vertx.core.Future.succeededFuture(InternalHelper.safeCreate(ar.result(), io.vertx.groovy.ext.sql.SQLRowStream.class)));
+        } else {
+          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    } : null);
+    return this;
+  }
+  /**
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
    * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
    * @param params these are the parameters to fill the statement.
@@ -89,6 +107,25 @@ public class SQLConnection {
           resultHandler.handle(io.vertx.core.Future.succeededFuture((Map<String, Object>)InternalHelper.wrapObject(ar.result()?.toJson())));
         } else {
           resultHandler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    } : null);
+    return this;
+  }
+  /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params these are the parameters to fill the statement.
+   * @param handler the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>.
+   * @return 
+   */
+  public SQLConnection queryStreamWithParams(String sql, List<Object> params, Handler<AsyncResult<SQLRowStream>> handler) {
+    delegate.queryStreamWithParams(sql, params != null ? new io.vertx.core.json.JsonArray(params) : null, handler != null ? new Handler<AsyncResult<io.vertx.ext.sql.SQLRowStream>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.SQLRowStream> ar) {
+        if (ar.succeeded()) {
+          handler.handle(io.vertx.core.Future.succeededFuture(InternalHelper.safeCreate(ar.result(), io.vertx.groovy.ext.sql.SQLRowStream.class)));
+        } else {
+          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
         }
       }
     } : null);
