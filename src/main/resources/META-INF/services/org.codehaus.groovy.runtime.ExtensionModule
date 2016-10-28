@@ -1,0 +1,4 @@
+moduleName = vertx-sql-common-module
+moduleVersion = 1.0
+extensionClasses = io.vertx.groovy.ext.sql.GroovyExtension
+staticExtensionClasses = io.vertx.groovy.ext.sql.GroovyStaticExtension
