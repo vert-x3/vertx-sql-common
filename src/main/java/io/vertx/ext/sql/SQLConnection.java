@@ -65,6 +65,18 @@ public interface SQLConnection extends AutoCloseable {
   SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   *
+   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param handler  the handler which is called once the operation completes. It will return a {@code SQLRowStream}.
+   *
+   * @see java.sql.Statement#executeQuery(String)
+   * @see java.sql.PreparedStatement#executeQuery(String)
+   */
+  @Fluent
+  SQLConnection queryStream(String sql, Handler<AsyncResult<SQLRowStream>> handler);
+
+  /**
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
    *
    * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
@@ -76,6 +88,19 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
+
+  /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   *
+   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params  these are the parameters to fill the statement.
+   * @param handler  the handler which is called once the operation completes. It will return a {@code SQLRowStream}.
+   *
+   * @see java.sql.Statement#executeQuery(String)
+   * @see java.sql.PreparedStatement#executeQuery(String)
+   */
+  @Fluent
+  SQLConnection queryStreamWithParams(String sql, JsonArray params, Handler<AsyncResult<SQLRowStream>> handler);
 
   /**
    * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
