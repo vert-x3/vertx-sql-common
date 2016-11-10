@@ -18,11 +18,11 @@ package io.vertx.rxjava.ext.sql;
 
 import java.util.Map;
 import rx.Observable;
+import io.vertx.ext.sql.TransactionIsolation;
 import io.vertx.core.json.JsonArray;
 import java.util.List;
 import io.vertx.ext.sql.UpdateResult;
 import io.vertx.ext.sql.ResultSet;
-import io.vertx.ext.sql.TransactionIsolation;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -112,6 +112,36 @@ public class SQLConnection {
   }
 
   /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param handler the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>.
+   * @return 
+   */
+  public SQLConnection queryStream(String sql, Handler<AsyncResult<SQLRowStream>> handler) { 
+    delegate.queryStream(sql, new Handler<AsyncResult<io.vertx.ext.sql.SQLRowStream>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.SQLRowStream> ar) {
+        if (ar.succeeded()) {
+          handler.handle(io.vertx.core.Future.succeededFuture(SQLRowStream.newInstance(ar.result())));
+        } else {
+          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
+    return this;
+  }
+
+  /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @return 
+   */
+  public Observable<SQLRowStream> queryStreamObservable(String sql) { 
+    io.vertx.rx.java.ObservableFuture<SQLRowStream> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    queryStream(sql, handler.toHandler());
+    return handler;
+  }
+
+  /**
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
    * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
    * @param params these are the parameters to fill the statement.
@@ -133,6 +163,38 @@ public class SQLConnection {
     io.vertx.rx.java.ObservableFuture<ResultSet> resultHandler = io.vertx.rx.java.RxHelper.observableFuture();
     queryWithParams(sql, params, resultHandler.toHandler());
     return resultHandler;
+  }
+
+  /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params these are the parameters to fill the statement.
+   * @param handler the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>.
+   * @return 
+   */
+  public SQLConnection queryStreamWithParams(String sql, JsonArray params, Handler<AsyncResult<SQLRowStream>> handler) { 
+    delegate.queryStreamWithParams(sql, params, new Handler<AsyncResult<io.vertx.ext.sql.SQLRowStream>>() {
+      public void handle(AsyncResult<io.vertx.ext.sql.SQLRowStream> ar) {
+        if (ar.succeeded()) {
+          handler.handle(io.vertx.core.Future.succeededFuture(SQLRowStream.newInstance(ar.result())));
+        } else {
+          handler.handle(io.vertx.core.Future.failedFuture(ar.cause()));
+        }
+      }
+    });
+    return this;
+  }
+
+  /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   * @param sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params these are the parameters to fill the statement.
+   * @return 
+   */
+  public Observable<SQLRowStream> queryStreamWithParamsObservable(String sql, JsonArray params) { 
+    io.vertx.rx.java.ObservableFuture<SQLRowStream> handler = io.vertx.rx.java.RxHelper.observableFuture();
+    queryStreamWithParams(sql, params, handler.toHandler());
+    return handler;
   }
 
   /**

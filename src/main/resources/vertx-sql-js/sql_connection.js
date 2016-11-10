@@ -16,6 +16,7 @@
 
 /** @module vertx-sql-js/sql_connection */
 var utils = require('vertx-js/util/utils');
+var SQLRowStream = require('vertx-sql-js/sql_row_stream');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -100,6 +101,28 @@ var SQLConnection = function(j_val) {
   };
 
   /**
+   Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+
+   @public
+   @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
+   @param handler {function} the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>. 
+   @return {SQLConnection}
+   */
+  this.queryStream = function(sql, handler) {
+    var __args = arguments;
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["queryStream(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnVertxGen(ar.result(), SQLRowStream), null);
+      } else {
+        handler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
    Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
 
    @public
@@ -116,6 +139,29 @@ var SQLConnection = function(j_val) {
         resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
         resultHandler(null, ar.cause());
+      }
+    });
+      return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+
+   @public
+   @param sql {string} the SQL to execute. For example <code>SELECT * FROM table ...</code>. 
+   @param params {todo} these are the parameters to fill the statement. 
+   @param handler {function} the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>. 
+   @return {SQLConnection}
+   */
+  this.queryStreamWithParams = function(sql, params, handler) {
+    var __args = arguments;
+    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
+      j_sQLConnection["queryStreamWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
+      if (ar.succeeded()) {
+        handler(utils.convReturnVertxGen(ar.result(), SQLRowStream), null);
+      } else {
+        handler(null, ar.cause());
       }
     });
       return that;
