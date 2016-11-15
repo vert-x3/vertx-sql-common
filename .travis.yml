@@ -8,10 +8,6 @@ jdk:
 branches:
   only:
   - master
-env:
-  global:
-  - secure: "Cudmj7pkPPicdjyBUuDWLfykJWO1v9xDIMRLJ2dCbzMh+sCDfo5KosFH7PXRs51Rjt9/Dhq01mXRwslOT/ILYUBvpgOvtSXCZp2Kg2dape6G5JeiEzo8DeerWG/mz7Nj1ScpvXx4YaW6P1xYr+OXEya3NNJI6ZJHHWfyKDEDBQs="
-  - secure: "VZc0+LEaDVUGy71wkeSQ6Sn8inM2PG4n2cx1CIdX8ByvERRrySPu6PCK3ZnZX9pj3a4Z0c4hxlWJzq6Y/tUH+f65Vx+VpDeTug8w8GthfTanJaRRGaGhbqupoB9CdJVsAFUqRBUkVDgy3GmVT9mzNcb5MrNx9Eb2IsM/uDGqIkA="
 before_install:
 - cp .travis.maven.settings.xml $HOME/.m2/settings.xml
 install: true
