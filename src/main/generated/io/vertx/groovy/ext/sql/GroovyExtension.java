@@ -19,6 +19,16 @@ public class GroovyExtension {
     } : null));
     return j_receiver;
   }
+  public static io.vertx.ext.sql.SQLConnection queryStreamWithParams(io.vertx.ext.sql.SQLConnection j_receiver, java.lang.String sql, java.util.List<Object> params, io.vertx.core.Handler<io.vertx.core.AsyncResult<io.vertx.ext.sql.SQLRowStream>> handler) {
+    io.vertx.lang.groovy.ConversionHelper.wrap(j_receiver.queryStreamWithParams(sql,
+      params != null ? io.vertx.lang.groovy.ConversionHelper.toJsonArray(params) : null,
+      handler != null ? new io.vertx.core.Handler<io.vertx.core.AsyncResult<io.vertx.ext.sql.SQLRowStream>>() {
+      public void handle(io.vertx.core.AsyncResult<io.vertx.ext.sql.SQLRowStream> ar) {
+        handler.handle(ar.map(event -> io.vertx.lang.groovy.ConversionHelper.wrap(event)));
+      }
+    } : null));
+    return j_receiver;
+  }
   public static io.vertx.ext.sql.SQLConnection update(io.vertx.ext.sql.SQLConnection j_receiver, java.lang.String sql, io.vertx.core.Handler<io.vertx.core.AsyncResult<java.util.Map<String, Object>>> resultHandler) {
     io.vertx.lang.groovy.ConversionHelper.wrap(j_receiver.update(sql,
       resultHandler != null ? new io.vertx.core.Handler<io.vertx.core.AsyncResult<io.vertx.ext.sql.UpdateResult>>() {
@@ -77,6 +87,10 @@ public class GroovyExtension {
         handler.handle(ar.map(event -> io.vertx.lang.groovy.ConversionHelper.applyIfNotNull(event, list -> list.stream().map(elt -> elt).collect(java.util.stream.Collectors.toList()))));
       }
     } : null));
+    return j_receiver;
+  }
+  public static io.vertx.core.streams.ReadStream<io.vertx.core.json.JsonArray> handler(io.vertx.ext.sql.SQLRowStream j_receiver, io.vertx.core.Handler<java.util.List<Object>> arg0) {
+    io.vertx.lang.groovy.ConversionHelper.wrap(j_receiver.handler(arg0 != null ? event -> arg0.handle(io.vertx.lang.groovy.ConversionHelper.fromJsonArray(event)) : null));
     return j_receiver;
   }
 }
