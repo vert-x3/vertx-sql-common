@@ -10,10 +10,11 @@ branches:
   - master
 env:
   global:
-  - secure: "Cudmj7pkPPicdjyBUuDWLfykJWO1v9xDIMRLJ2dCbzMh+sCDfo5KosFH7PXRs51Rjt9/Dhq01mXRwslOT/ILYUBvpgOvtSXCZp2Kg2dape6G5JeiEzo8DeerWG/mz7Nj1ScpvXx4YaW6P1xYr+OXEya3NNJI6ZJHHWfyKDEDBQs="
-  - secure: "VZc0+LEaDVUGy71wkeSQ6Sn8inM2PG4n2cx1CIdX8ByvERRrySPu6PCK3ZnZX9pj3a4Z0c4hxlWJzq6Y/tUH+f65Vx+VpDeTug8w8GthfTanJaRRGaGhbqupoB9CdJVsAFUqRBUkVDgy3GmVT9mzNcb5MrNx9Eb2IsM/uDGqIkA="
+  - SONATYPE_NEXUS_USERNAME: test_user
+  - SONATYPE_NEXUS_PASSWORD: test_password
 before_install:
 - cp .travis.maven.settings.xml $HOME/.m2/settings.xml
+- mvn help:effective-settings
 install: true
 script:
 - travis_wait 30 mvn -q -Dmaven.test.redirectTestOutputToFile verify -B
@@ -21,5 +22,6 @@ after_success:
 - PROJECT_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:evaluate -Dexpression=project.version -B | grep -v '\[')
 - if [[ "$PROJECT_VERSION" =~ .*SNAPSHOT ]] && [[ "${TRAVIS_BRANCH}" = "master" ]] && [[ "${TRAVIS_PULL_REQUEST}" = "false" ]];
   then
-    mvn deploy -DskipTests -B;
+    mvn help:effective-settings;
+    mvn deploy -DskipTests -B -X;
   fi
