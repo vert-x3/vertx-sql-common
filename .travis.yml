@@ -10,8 +10,8 @@ branches:
   - master
 env:
   global:
-  - secure: l3ublNqqWPEjZh8Dfk92VMPtTY0HZgwLhO2zHyaok7GMXXq9LDUrLu1FYCQC3RG3uouGDQte50+rtl1t3rQRnKNSxsPxtPvMR1gZ/jGDv3slhgWYsdIbAT6zN0pgXXI8n58Ko0796lIFLRPpcMqUgezP1MsbG2XG3tcqAocpR3o=
-  - secure: fAdnOYXeKglxbxZQ2yD4JWrzkwjvstAckbDldkanizKgO7ze6Refxc2UXCauxI35RvDy82FtD6zPtxI6DAYdWAAaFdUzPUi/1ATp0jDHVdkYRGBB2E2FSlI3sQRALyNefijeBpQh35/XZAxl9L02AexjIurcvZB1Rcn5UaaRHkQ=
+  - secure: "Cudmj7pkPPicdjyBUuDWLfykJWO1v9xDIMRLJ2dCbzMh+sCDfo5KosFH7PXRs51Rjt9/Dhq01mXRwslOT/ILYUBvpgOvtSXCZp2Kg2dape6G5JeiEzo8DeerWG/mz7Nj1ScpvXx4YaW6P1xYr+OXEya3NNJI6ZJHHWfyKDEDBQs="
+  - secure: "VZc0+LEaDVUGy71wkeSQ6Sn8inM2PG4n2cx1CIdX8ByvERRrySPu6PCK3ZnZX9pj3a4Z0c4hxlWJzq6Y/tUH+f65Vx+VpDeTug8w8GthfTanJaRRGaGhbqupoB9CdJVsAFUqRBUkVDgy3GmVT9mzNcb5MrNx9Eb2IsM/uDGqIkA="
 before_install:
 - cp .travis.maven.settings.xml $HOME/.m2/settings.xml
 install: true
