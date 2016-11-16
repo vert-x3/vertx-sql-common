@@ -16,6 +16,7 @@ env:
   - secure: Q0tJf6oh/zp7sNlPkco4GSzitIO7iMMFVzC/d/TZsZhaYjjTC6Lo/gy+VAxnxVqvUGQ0XLxC4emxnNzF/70NA4y52uImmi7ZH/TzBDH23M1IDe6+7ohVE32gDpLx+fHWQeT7IBc8PnTvvS4cGznGyMxwIgmrJOzm2AcgXQkHaug=
   - secure: MPH2+FbAjK91pMV9B/Q0Wz8+xJlB53nEJ+Fd0Ndl91zv/DNsLAC8RFKzm0n0uzH3jtfl2oFxalV6Hhd4jBMItCuIdNGeZHdAZFYhi0bmMY05SCaedniuTHrdWxtop+RF1jDMuFjjeW2dZ+Azw/vQffr9DfClR1fasjKom/eV0uQ=
 before_install:
+- gem install travis
 - cp .travis.maven.settings.xml $HOME/.m2/settings.xml
 install: true
 script:
