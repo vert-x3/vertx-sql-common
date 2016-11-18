@@ -14,6 +14,22 @@ module VertxSql
     def j_del
       @j_del
     end
+    @@j_api_type = Object.new
+    def @@j_api_type.accept?(obj)
+      obj.class == SQLConnection
+    end
+    def @@j_api_type.wrap(obj)
+      SQLConnection.new(obj)
+    end
+    def @@j_api_type.unwrap(obj)
+      obj.j_del
+    end
+    def self.j_api_type
+      @@j_api_type
+    end
+    def self.j_class
+      Java::IoVertxExtSql::SQLConnection.java_class
+    end
     #  Sets the auto commit flag for this connection. True by default.
     # @param [true,false] autoCommit the autoCommit flag, true by default.
     # @yield the handler which is called once this operation completes.
@@ -23,7 +39,7 @@ module VertxSql
         @j_del.java_method(:setAutoCommit, [Java::boolean.java_class,Java::IoVertxCore::Handler.java_class]).call(autoCommit,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling set_auto_commit(autoCommit)"
+      raise ArgumentError, "Invalid arguments when calling set_auto_commit(#{autoCommit})"
     end
     #  Executes the given SQL statement
     # @param [String] sql the SQL to execute. For example <code>CREATE TABLE IF EXISTS table ...</code>
@@ -34,7 +50,7 @@ module VertxSql
         @j_del.java_method(:execute, [Java::java.lang.String.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling execute(sql)"
+      raise ArgumentError, "Invalid arguments when calling execute(#{sql})"
     end
     #  Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
     # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
@@ -45,7 +61,7 @@ module VertxSql
         @j_del.java_method(:query, [Java::java.lang.String.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling query(sql)"
+      raise ArgumentError, "Invalid arguments when calling query(#{sql})"
     end
     #  Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
     # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
@@ -56,7 +72,7 @@ module VertxSql
         @j_del.java_method(:queryStream, [Java::java.lang.String.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ::Vertx::Util::Utils.safe_create(ar.result,::VertxSql::SQLRowStream) : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling query_stream(sql)"
+      raise ArgumentError, "Invalid arguments when calling query_stream(#{sql})"
     end
     #  Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
     # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
@@ -68,7 +84,7 @@ module VertxSql
         @j_del.java_method(:queryWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling query_with_params(sql,params)"
+      raise ArgumentError, "Invalid arguments when calling query_with_params(#{sql},#{params})"
     end
     #  Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
     # @param [String] sql the SQL to execute. For example <code>SELECT * FROM table ...</code>.
@@ -80,7 +96,7 @@ module VertxSql
         @j_del.java_method(:queryStreamWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ::Vertx::Util::Utils.safe_create(ar.result,::VertxSql::SQLRowStream) : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling query_stream_with_params(sql,params)"
+      raise ArgumentError, "Invalid arguments when calling query_stream_with_params(#{sql},#{params})"
     end
     #  Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
     #  statement.
@@ -92,7 +108,7 @@ module VertxSql
         @j_del.java_method(:update, [Java::java.lang.String.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling update(sql)"
+      raise ArgumentError, "Invalid arguments when calling update(#{sql})"
     end
     #  Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
     #  statement with the given parameters
@@ -105,7 +121,7 @@ module VertxSql
         @j_del.java_method(:updateWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling update_with_params(sql,params)"
+      raise ArgumentError, "Invalid arguments when calling update_with_params(#{sql},#{params})"
     end
     #  Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
     # @param [String] sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
@@ -116,7 +132,7 @@ module VertxSql
         @j_del.java_method(:call, [Java::java.lang.String.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling call(sql)"
+      raise ArgumentError, "Invalid arguments when calling call(#{sql})"
     end
     #  Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
     # 
@@ -137,7 +153,7 @@ module VertxSql
         @j_del.java_method(:callWithParams, [Java::java.lang.String.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCoreJson::JsonArray.java_class,Java::IoVertxCore::Handler.java_class]).call(sql,::Vertx::Util::Utils.to_json_array(params),::Vertx::Util::Utils.to_json_array(outputs),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result != nil ? JSON.parse(ar.result.toJson.encode) : nil : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling call_with_params(sql,params,outputs)"
+      raise ArgumentError, "Invalid arguments when calling call_with_params(#{sql},#{params},#{outputs})"
     end
     #  Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
     # @yield the handler called when this operation completes.
@@ -180,7 +196,7 @@ module VertxSql
         @j_del.java_method(:setQueryTimeout, [Java::int.java_class]).call(timeoutInSeconds)
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling set_query_timeout(timeoutInSeconds)"
+      raise ArgumentError, "Invalid arguments when calling set_query_timeout(#{timeoutInSeconds})"
     end
     #  Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
     # @param [Array<String>] sqlStatements sql statement
@@ -191,7 +207,7 @@ module VertxSql
         @j_del.java_method(:batch, [Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatements.map { |element| element },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result.to_a.map { |elt| elt } : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling batch(sqlStatements)"
+      raise ArgumentError, "Invalid arguments when calling batch(#{sqlStatements})"
     end
     #  Batch a prepared statement with all entries from the args list. Each entry is a batch.
     #  The operation completes with the execution of the batch where the async result contains a array of Integers.
@@ -204,7 +220,7 @@ module VertxSql
         @j_del.java_method(:batchWithParams, [Java::java.lang.String.java_class,Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatement,args.map { |element| ::Vertx::Util::Utils.to_json_array(element) },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result.to_a.map { |elt| elt } : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling batch_with_params(sqlStatement,args)"
+      raise ArgumentError, "Invalid arguments when calling batch_with_params(#{sqlStatement},#{args})"
     end
     #  Batch a callable statement with all entries from the args list. Each entry is a batch.
     #  The size of the lists inArgs and outArgs MUST be the equal.
@@ -219,7 +235,7 @@ module VertxSql
         @j_del.java_method(:batchCallableWithParams, [Java::java.lang.String.java_class,Java::JavaUtil::List.java_class,Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(sqlStatement,inArgs.map { |element| ::Vertx::Util::Utils.to_json_array(element) },outArgs.map { |element| ::Vertx::Util::Utils.to_json_array(element) },(Proc.new { |ar| yield(ar.failed ? ar.cause : nil, ar.succeeded ? ar.result.to_a.map { |elt| elt } : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling batch_callable_with_params(sqlStatement,inArgs,outArgs)"
+      raise ArgumentError, "Invalid arguments when calling batch_callable_with_params(#{sqlStatement},#{inArgs},#{outArgs})"
     end
     #  Attempts to change the transaction isolation level for this Connection object to the one given.
     # 
@@ -232,7 +248,7 @@ module VertxSql
         @j_del.java_method(:setTransactionIsolation, [Java::IoVertxExtSql::TransactionIsolation.java_class,Java::IoVertxCore::Handler.java_class]).call(Java::IoVertxExtSql::TransactionIsolation.valueOf(isolation),(Proc.new { |ar| yield(ar.failed ? ar.cause : nil) }))
         return self
       end
-      raise ArgumentError, "Invalid arguments when calling set_transaction_isolation(isolation)"
+      raise ArgumentError, "Invalid arguments when calling set_transaction_isolation(#{isolation})"
     end
     #  Attempts to return the transaction isolation level for this Connection object to the one given.
     # @yield the handler called when this operation completes.

@@ -113,7 +113,7 @@ var SQLConnection = function(j_val) {
     if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
       j_sQLConnection["queryStream(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnVertxGen(ar.result(), SQLRowStream), null);
+        handler(utils.convReturnVertxGen(SQLRowStream, ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -159,7 +159,7 @@ var SQLConnection = function(j_val) {
     if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
       j_sQLConnection["queryStreamWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
-        handler(utils.convReturnVertxGen(ar.result(), SQLRowStream), null);
+        handler(utils.convReturnVertxGen(SQLRowStream, ar.result()), null);
       } else {
         handler(null, ar.cause());
       }
@@ -472,5 +472,23 @@ var SQLConnection = function(j_val) {
   this._jdel = j_sQLConnection;
 };
 
-// We export the Constructor function
+SQLConnection._jclass = utils.getJavaClass("io.vertx.ext.sql.SQLConnection");
+SQLConnection._jtype = {
+  accept: function(obj) {
+    return SQLConnection._jclass.isInstance(obj._jdel);
+  },
+  wrap: function(jdel) {
+    var obj = Object.create(SQLConnection.prototype, {});
+    SQLConnection.apply(obj, arguments);
+    return obj;
+  },
+  unwrap: function(obj) {
+    return obj._jdel;
+  }
+};
+SQLConnection._create = function(jdel) {
+  var obj = Object.create(SQLConnection.prototype, {});
+  SQLConnection.apply(obj, arguments);
+  return obj;
+}
 module.exports = SQLConnection;

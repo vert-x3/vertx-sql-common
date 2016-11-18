@@ -20,6 +20,22 @@ module VertxSql
     def j_del
       @j_del
     end
+    @@j_api_type = Object.new
+    def @@j_api_type.accept?(obj)
+      obj.class == SQLRowStream
+    end
+    def @@j_api_type.wrap(obj)
+      SQLRowStream.new(obj)
+    end
+    def @@j_api_type.unwrap(obj)
+      obj.j_del
+    end
+    def self.j_api_type
+      @@j_api_type
+    end
+    def self.j_class
+      Java::IoVertxExtSql::SQLRowStream.java_class
+    end
     # @yield 
     # @return [self]
     def exception_handler
@@ -70,7 +86,7 @@ module VertxSql
       if name.class == String && !block_given?
         return @j_del.java_method(:column, [Java::java.lang.String.java_class]).call(name)
       end
-      raise ArgumentError, "Invalid arguments when calling column(name)"
+      raise ArgumentError, "Invalid arguments when calling column(#{name})"
     end
     #  Closes the stream/underlying cursor(s)
     # @yield 
