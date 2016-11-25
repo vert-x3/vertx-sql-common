@@ -113,11 +113,11 @@ var SQLRowStream = function(j_val) {
   };
 
   /**
-   Will convert the column name to the json array index
+   Will convert the column name to the json array index.
 
    @public
-   @param name {string} 
-   @return {number} 
+   @param name {string} the column name 
+   @return {number} the json array index
    */
   this.column = function(name) {
     var __args = arguments;
@@ -127,19 +127,21 @@ var SQLRowStream = function(j_val) {
   };
 
   /**
-   Closes the stream/underlying cursor(s)
+   Closes the stream/underlying cursor(s). The actual close happens asynchronously.
 
    @public
-   @param handler {function} 
+   @param handler {function} called when the stream/underlying cursor(s) is(are) closed 
    */
-  this.close = function(handler) {
+  this.close = function() {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'function') {
+    if (__args.length === 0) {
+      j_sQLRowStream["close()"]();
+    }  else if (__args.length === 1 && typeof __args[0] === 'function') {
       j_sQLRowStream["close(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        handler(null, null);
+        __args[0](null, null);
       } else {
-        handler(null, ar.cause());
+        __args[0](null, ar.cause());
       }
     });
     } else throw new TypeError('function invoked with invalid arguments');
