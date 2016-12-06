@@ -207,6 +207,17 @@
  * {@link examples.SQLExamples#example6}
  * ----
  *
+ * === Multiple ResultSet responses
+ *
+ * In some cases your query might return more than one result set, in this case and to preserve the compatibility when
+ * the returned result set object is converted to pure json, the next result sets are chained to the current result set
+ * under the property `next`. A simple walk of all result sets can be achieved like this:
+ *
+ * [source,$lang]
+ * ----
+ * {@link examples.SQLExamples#example13}
+ * ----
+ *
  * === Using transactions
  *
  * To use transactions first set auto-commit to false with {@link io.vertx.ext.sql.SQLConnection#setAutoCommit(boolean, io.vertx.core.Handler)}.
