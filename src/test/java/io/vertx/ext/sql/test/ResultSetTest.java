@@ -37,7 +37,7 @@ public class ResultSetTest {
       results.add(result);
     }
 
-    rs = new ResultSet(columnNames, results);
+    rs = new ResultSet(columnNames, results, null);
   }
 
 

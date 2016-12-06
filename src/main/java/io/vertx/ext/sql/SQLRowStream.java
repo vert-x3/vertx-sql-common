@@ -17,17 +17,18 @@ import io.vertx.core.streams.ReadStream;
 @VertxGen
 public interface SQLRowStream extends ReadStream<JsonArray> {
 
-    /**
-     * Will convert the column name to the json array index
-     *
-     * @param name
-     * @return
-     */
-    int column(String name);
+  /**
+   * Will convert the column name to the json array index
+   *
+   * @param name
+   * @return
+   */
+  int column(String name);
 
-    /**
-     * Closes the stream/underlying cursor(s)
-     * @param handler
-     */
-    void close(Handler<AsyncResult<Void>> handler);
+  /**
+   * Closes the stream/underlying cursor(s)
+   *
+   * @param handler
+   */
+  void close(Handler<AsyncResult<Void>> handler);
 }
