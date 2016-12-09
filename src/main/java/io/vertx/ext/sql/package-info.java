@@ -218,6 +218,25 @@
  * {@link examples.SQLExamples#example13}
  * ----
  *
+ * === Streaming
+ *
+ * When dealing with large data sets, it is not advised to use API just described but to stream data since it avoids
+ * inflating the whole response into memory and JSON and data is just processed on a row by row basis, for example:
+ *
+ * [source,$lang]
+ * ----
+ * {@link examples.SQLExamples#example14}
+ * ----
+ *
+ * You still have full control on when the stream is pauses, resumed and ended. For cases where your query returns
+ * multiple result sets you should use the result set ended event to fetch the next one if available. If there is more
+ * data the stream handler will receive the new data, otherwise the end handler is invoked.
+ *
+ * [source,$lang]
+ * ----
+ * {@link examples.SQLExamples#example15}
+ * ----
+ *
  * === Using transactions
  *
  * To use transactions first set auto-commit to false with {@link io.vertx.ext.sql.SQLConnection#setAutoCommit(boolean, io.vertx.core.Handler)}.
