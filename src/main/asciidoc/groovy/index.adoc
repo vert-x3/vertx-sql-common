@@ -394,6 +394,17 @@ connection.execute(sql, { execute ->
 
 ----
 
+=== Multiple ResultSet responses
+
+In some cases your query might return more than one result set, in this case and to preserve the compatibility when
+the returned result set object is converted to pure json, the next result sets are chained to the current result set
+under the property `next`. A simple walk of all result sets can be achieved like this:
+
+[source,groovy]
+----
+Code not translatable
+----
+
 === Using transactions
 
 To use transactions first set auto-commit to false with `link:../../apidocs/io/vertx/ext/sql/SQLConnection.html#setAutoCommit-boolean-io.vertx.core.Handler-[setAutoCommit]`.

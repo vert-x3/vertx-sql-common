@@ -3,21 +3,26 @@ package io.vertx.kotlin.ext.sql
 import io.vertx.ext.sql.ResultSet
 
 fun ResultSet(
-        columnNames: List<String>? = null,
-    output: io.vertx.core.json.JsonArray? = null,
-    results: List<io.vertx.core.json.JsonArray>? = null): ResultSet = io.vertx.ext.sql.ResultSet().apply {
+    columnNames: List<String>? = null,
+  next: io.vertx.ext.sql.ResultSet? = null,
+  output: io.vertx.core.json.JsonArray? = null,
+  results: List<io.vertx.core.json.JsonArray>? = null): ResultSet = io.vertx.ext.sql.ResultSet().apply {
 
-    if (columnNames != null) {
-        this.columnNames = columnNames
-    }
+  if (columnNames != null) {
+    this.columnNames = columnNames
+  }
 
-    if (output != null) {
-        this.output = output
-    }
+  if (next != null) {
+    this.next = next
+  }
 
-    if (results != null) {
-        this.results = results
-    }
+  if (output != null) {
+    this.output = output
+  }
+
+  if (results != null) {
+    this.results = results
+  }
 
 }
 

@@ -145,6 +145,33 @@ var SQLRowStream = function(j_val) {
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
+  /**
+   Event handler when a resultset is closed. This is useful to request for more results.
+
+   @public
+   @param handler {function} 
+   @return {SQLRowStream}
+   */
+  this.resultSetClosed = function(handler) {
+    var __args = arguments;
+    if (__args.length === 1 && typeof __args[0] === 'function') {
+      return utils.convReturnVertxGen(SQLRowStream, j_sQLRowStream["resultSetClosed(io.vertx.core.Handler)"](handler));
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Request for more results if available
+
+   @public
+
+   */
+  this.moreResults = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      j_sQLRowStream["moreResults()"]();
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.
