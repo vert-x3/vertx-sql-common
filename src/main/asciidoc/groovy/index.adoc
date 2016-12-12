@@ -402,7 +402,12 @@ under the property `next`. A simple walk of all result sets can be achieved like
 
 [source,groovy]
 ----
-Code not translatable
+// do something with the result set...
+
+// next step
+rs = rs.next
+
+
 ----
 
 === Streaming

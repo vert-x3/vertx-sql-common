@@ -340,9 +340,12 @@ under the property `next`. A simple walk of all result sets can be achieved like
 
 [source,java]
 ----
-do {
+while (rs != null) {
   // do something with the result set...
-} while ((rs = rs.getNext()) != null);
+
+  // next step
+  rs = rs.getNext();
+}
 ----
 
 === Streaming

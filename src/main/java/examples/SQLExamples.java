@@ -243,9 +243,12 @@ public class SQLExamples {
   }
 
   public void example13(ResultSet rs) {
-    do {
+    while (rs != null) {
       // do something with the result set...
-    } while ((rs = rs.getNext()) != null);
+
+      // next step
+      rs = rs.getNext();
+    }
   }
 
   public void example14(SQLConnection connection) {
