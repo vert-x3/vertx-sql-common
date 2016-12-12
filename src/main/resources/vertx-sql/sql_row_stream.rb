@@ -79,20 +79,22 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling end_handler()"
     end
-    #  Will convert the column name to the json array index
-    # @param [String] name 
-    # @return [Fixnum] 
+    #  Will convert the column name to the json array index.
+    # @param [String] name the column name
+    # @return [Fixnum] the json array index
     def column(name=nil)
       if name.class == String && !block_given?
         return @j_del.java_method(:column, [Java::java.lang.String.java_class]).call(name)
       end
       raise ArgumentError, "Invalid arguments when calling column(#{name})"
     end
-    #  Closes the stream/underlying cursor(s)
-    # @yield 
+    #  Closes the stream/underlying cursor(s). The actual close happens asynchronously.
+    # @yield called when the stream/underlying cursor(s) is(are) closed
     # @return [void]
     def close
-      if block_given?
+      if !block_given?
+        return @j_del.java_method(:close, []).call()
+      elsif block_given?
         return @j_del.java_method(:close, [Java::IoVertxCore::Handler.java_class]).call((Proc.new { |ar| yield(ar.failed ? ar.cause : nil) }))
       end
       raise ArgumentError, "Invalid arguments when calling close()"

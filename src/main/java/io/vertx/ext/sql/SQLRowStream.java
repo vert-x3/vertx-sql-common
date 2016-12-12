@@ -17,17 +17,23 @@ import io.vertx.core.streams.ReadStream;
 @VertxGen
 public interface SQLRowStream extends ReadStream<JsonArray> {
 
-    /**
-     * Will convert the column name to the json array index
-     *
-     * @param name
-     * @return
-     */
-    int column(String name);
+  /**
+   * Will convert the column name to the json array index.
+   *
+   * @param name the column name
+   * @return the json array index
+   */
+  int column(String name);
 
-    /**
-     * Closes the stream/underlying cursor(s)
-     * @param handler
-     */
-    void close(Handler<AsyncResult<Void>> handler);
+  /**
+   * Closes the stream/underlying cursor(s). The actual close happens asynchronously.
+   */
+  void close();
+
+  /**
+   * Closes the stream/underlying cursor(s). The actual close happens asynchronously.
+   *
+   * @param handler called when the stream/underlying cursor(s) is(are) closed
+   */
+  void close(Handler<AsyncResult<Void>> handler);
 }
