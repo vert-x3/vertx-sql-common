@@ -264,7 +264,7 @@ public class SQLExamples {
         SQLRowStream sqlRowStream = stream.result();
 
         sqlRowStream
-          .resultSetClosed(v -> {
+          .resultSetClosedHandler(v -> {
             // will ask to restart the stream with the new result set if any
             sqlRowStream.moreResults();
           })

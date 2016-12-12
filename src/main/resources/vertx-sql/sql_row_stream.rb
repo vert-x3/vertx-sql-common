@@ -100,11 +100,11 @@ module VertxSql
     #  Event handler when a resultset is closed. This is useful to request for more results.
     # @yield 
     # @return [::VertxSql::SQLRowStream]
-    def result_set_closed
+    def result_set_closed_handler
       if block_given?
-        return ::Vertx::Util::Utils.safe_create(@j_del.java_method(:resultSetClosed, [Java::IoVertxCore::Handler.java_class]).call(Proc.new { yield }),::VertxSql::SQLRowStream)
+        return ::Vertx::Util::Utils.safe_create(@j_del.java_method(:resultSetClosedHandler, [Java::IoVertxCore::Handler.java_class]).call(Proc.new { yield }),::VertxSql::SQLRowStream)
       end
-      raise ArgumentError, "Invalid arguments when calling result_set_closed()"
+      raise ArgumentError, "Invalid arguments when calling result_set_closed_handler()"
     end
     #  Request for more results if available
     # @return [void]

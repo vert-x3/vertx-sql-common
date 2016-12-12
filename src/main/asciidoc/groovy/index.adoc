@@ -405,6 +405,46 @@ under the property `next`. A simple walk of all result sets can be achieved like
 Code not translatable
 ----
 
+=== Streaming
+
+When dealing with large data sets, it is not advised to use API just described but to stream data since it avoids
+inflating the whole response into memory and JSON and data is just processed on a row by row basis, for example:
+
+[source,groovy]
+----
+connection.queryStream("SELECT * FROM large_table", { stream ->
+  if (stream.succeeded()) {
+    stream.result().handler({ row ->
+      // do something with the row...
+    })
+  }
+})
+
+----
+
+You still have full control on when the stream is pauses, resumed and ended. For cases where your query returns
+multiple result sets you should use the result set ended event to fetch the next one if available. If there is more
+data the stream handler will receive the new data, otherwise the end handler is invoked.
+
+[source,groovy]
+----
+connection.queryStream("SELECT * FROM large_table; SELECT * FROM other_table", { stream ->
+  if (stream.succeeded()) {
+    def sqlRowStream = stream.result()
+
+    sqlRowStream.resultSetClosedHandler({ v ->
+      // will ask to restart the stream with the new result set if any
+      sqlRowStream.moreResults()
+    }).handler({ row ->
+      // do something with the row...
+    }).endHandler({ v ->
+      // no more data available...
+    })
+  }
+})
+
+----
+
 === Using transactions
 
 To use transactions first set auto-commit to false with `link:../../apidocs/io/vertx/ext/sql/SQLConnection.html#setAutoCommit-boolean-io.vertx.core.Handler-[setAutoCommit]`.

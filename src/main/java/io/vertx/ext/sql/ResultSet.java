@@ -22,7 +22,7 @@ public class ResultSet {
   private List<JsonArray> results;
   private List<JsonObject> rows;
   private JsonArray output;
-  // chainned result sets
+  // chained result sets
   private ResultSet next;
 
   /**

@@ -36,7 +36,7 @@ public interface SQLRowStream extends ReadStream<JsonArray> {
    * Event handler when a resultset is closed. This is useful to request for more results.
    * @param handler
    */
-  SQLRowStream resultSetClosed(Handler<Void> handler);
+  SQLRowStream resultSetClosedHandler(Handler<Void> handler);
 
   /**
    * Request for more results if available

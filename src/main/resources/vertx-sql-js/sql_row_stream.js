@@ -152,10 +152,10 @@ var SQLRowStream = function(j_val) {
    @param handler {function} 
    @return {SQLRowStream}
    */
-  this.resultSetClosed = function(handler) {
+  this.resultSetClosedHandler = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      return utils.convReturnVertxGen(SQLRowStream, j_sQLRowStream["resultSetClosed(io.vertx.core.Handler)"](handler));
+      return utils.convReturnVertxGen(SQLRowStream, j_sQLRowStream["resultSetClosedHandler(io.vertx.core.Handler)"](handler));
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
