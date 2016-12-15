@@ -22,6 +22,8 @@ public class ResultSet {
   private List<JsonArray> results;
   private List<JsonObject> rows;
   private JsonArray output;
+  // chained result sets
+  private ResultSet next;
 
   /**
    * Default constructor
@@ -38,6 +40,7 @@ public class ResultSet {
     this.columnNames = other.columnNames;
     this.results = other.results;
     this.output = other.output;
+    this.next = other.next;
   }
 
   /**
@@ -46,9 +49,10 @@ public class ResultSet {
    * @param columnNames  the column names
    * @param results  the results
    */
-  public ResultSet(List<String> columnNames, List<JsonArray> results) {
+  public ResultSet(List<String> columnNames, List<JsonArray> results, ResultSet next) {
     this.columnNames = columnNames;
     this.results = results;
+    this.next = next;
   }
 
   /**
@@ -115,6 +119,20 @@ public class ResultSet {
   }
 
   /**
+   * Get the next result set
+   *
+   * @return the next resultset
+   */
+  public ResultSet getNext() {
+    return next;
+  }
+
+  public ResultSet setNext(ResultSet next) {
+    this.next = next;
+    return this;
+  }
+
+  /**
    * Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
    * the column values.
    * <p>
@@ -165,6 +183,7 @@ public class ResultSet {
 
     if (columnNames != null ? !columnNames.equals(resultSet.columnNames) : resultSet.columnNames != null) return false;
     if (results != null ? !results.equals(resultSet.results) : resultSet.results != null) return false;
+    if (next != null ? !next.equals(resultSet.next) : resultSet.next != null) return false;
 
     return true;
   }
@@ -173,6 +192,7 @@ public class ResultSet {
   public int hashCode() {
     int result = columnNames != null ? columnNames.hashCode() : 0;
     result = 31 * result + (results != null ? results.hashCode() : 0);
+    result = 31 * result + (next != null ? next.hashCode() : 0);
     return result;
   }
 }

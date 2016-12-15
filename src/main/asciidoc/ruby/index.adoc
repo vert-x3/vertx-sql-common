@@ -394,6 +394,62 @@ connection.execute(sql) { |execute_err,execute|
 
 ----
 
+=== Multiple ResultSet responses
+
+In some cases your query might return more than one result set, in this case and to preserve the compatibility when
+the returned result set object is converted to pure json, the next result sets are chained to the current result set
+under the property `next`. A simple walk of all result sets can be achieved like this:
+
+[source,ruby]
+----
+# do something with the result set...
+
+# next step
+rs = rs['next']
+
+
+----
+
+=== Streaming
+
+When dealing with large data sets, it is not advised to use API just described but to stream data since it avoids
+inflating the whole response into memory and JSON and data is just processed on a row by row basis, for example:
+
+[source,ruby]
+----
+connection.query_stream("SELECT * FROM large_table") { |stream_err,stream|
+  if (stream_err == nil)
+    stream.handler() { |row|
+      # do something with the row...
+    }
+  end
+}
+
+----
+
+You still have full control on when the stream is pauses, resumed and ended. For cases where your query returns
+multiple result sets you should use the result set ended event to fetch the next one if available. If there is more
+data the stream handler will receive the new data, otherwise the end handler is invoked.
+
+[source,ruby]
+----
+connection.query_stream("SELECT * FROM large_table; SELECT * FROM other_table") { |stream_err,stream|
+  if (stream_err == nil)
+    sqlRowStream = stream
+
+    sqlRowStream.result_set_closed_handler() { |v|
+      # will ask to restart the stream with the new result set if any
+      sqlRowStream.more_results()
+    }.handler() { |row|
+      # do something with the row...
+    }.end_handler() { |v|
+      # no more data available...
+    }
+  end
+}
+
+----
+
 === Using transactions
 
 To use transactions first set auto-commit to false with `link:../../yardoc/VertxSql/SQLConnection.html#set_auto_commit-instance_method[setAutoCommit]`.
