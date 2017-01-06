@@ -132,7 +132,7 @@ public interface SQLConnection extends AutoCloseable {
   /**
    * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
    *
-   * @param sql  the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param sql  the SQL to execute. For example <code>{call getEmpName}</code>.
    * @param resultHandler  the handler which is called once the operation completes. It will return a {@code ResultSet}.
    *
    * @see java.sql.CallableStatement#execute(String)
