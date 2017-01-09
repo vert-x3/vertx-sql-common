@@ -17,6 +17,7 @@
 /** @module vertx-sql-js/sql_row_stream */
 var utils = require('vertx-js/util/utils');
 var ReadStream = require('vertx-js/read_stream');
+var Future = require('vertx-js/future');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -127,27 +128,6 @@ var SQLRowStream = function(j_val) {
   };
 
   /**
-   Closes the stream/underlying cursor(s). The actual close happens asynchronously.
-
-   @public
-   @param handler {function} called when the stream/underlying cursor(s) is(are) closed 
-   */
-  this.close = function() {
-    var __args = arguments;
-    if (__args.length === 0) {
-      j_sQLRowStream["close()"]();
-    }  else if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_sQLRowStream["close(io.vertx.core.Handler)"](function(ar) {
-      if (ar.succeeded()) {
-        __args[0](null, null);
-      } else {
-        __args[0](null, ar.cause());
-      }
-    });
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
    Event handler when a resultset is closed. This is useful to request for more results.
 
    @public
@@ -171,6 +151,27 @@ var SQLRowStream = function(j_val) {
     var __args = arguments;
     if (__args.length === 0) {
       j_sQLRowStream["moreResults()"]();
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Closes the stream/underlying cursor(s). The actual close happens asynchronously.
+
+   @public
+   @param handler {function} called when the stream/underlying cursor(s) is(are) closed 
+   */
+  this.close = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      j_sQLRowStream["close()"]();
+    }  else if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_sQLRowStream["close(io.vertx.core.Handler)"](function(ar) {
+      if (ar.succeeded()) {
+        __args[0](null, null);
+      } else {
+        __args[0](null, ar.cause());
+      }
+    });
     } else throw new TypeError('function invoked with invalid arguments');
   };
 

@@ -19,6 +19,7 @@ package io.vertx.ext.sql;
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 
@@ -42,6 +43,12 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler);
 
+  default Future<Void> setAutoCommit(boolean autoCommit) {
+    Future<Void> fut = Future.future();
+    setAutoCommit(autoCommit, fut.completer());
+    return fut;
+  }
+
   /**
    * Executes the given SQL statement
    *
@@ -51,6 +58,12 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler);
+
+  default Future<Void> execute(String sql) {
+    Future<Void> fut = Future.future();
+    execute(sql, fut.completer());
+    return fut;
+  }
 
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
@@ -64,6 +77,12 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
 
+  default Future<ResultSet> query(String sql) {
+    Future<ResultSet> fut = Future.future();
+    query(sql, fut.completer());
+    return fut;
+  }
+
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
    *
@@ -75,6 +94,12 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection queryStream(String sql, Handler<AsyncResult<SQLRowStream>> handler);
+
+  default Future<SQLRowStream> queryStream(String sql) {
+    Future<SQLRowStream> fut = Future.future();
+    queryStream(sql, fut.completer());
+    return fut;
+  };
 
   /**
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
@@ -89,6 +114,12 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
 
+  default Future<ResultSet> queryWithParams(String sql, JsonArray params) {
+    Future<ResultSet> fut = Future.future();
+    queryWithParams(sql, params, fut.completer());
+    return fut;
+  }
+
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
    *
@@ -102,6 +133,12 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection queryStreamWithParams(String sql, JsonArray params, Handler<AsyncResult<SQLRowStream>> handler);
 
+  default Future<SQLRowStream> queryStreamWithParams(String sql, JsonArray params) {
+    Future<SQLRowStream> fut = Future.future();
+    queryStreamWithParams(sql, params, fut.completer());
+    return fut;
+  }
+
   /**
    * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
    * statement.
@@ -114,6 +151,12 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler);
+
+  default Future<UpdateResult> update(String sql) {
+    Future<UpdateResult> fut = Future.future();
+    update(sql, fut.completer());
+    return fut;
+  }
 
   /**
    * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
@@ -129,6 +172,12 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
 
+  default Future<UpdateResult> updateWithParams(String sql, JsonArray params) {
+    Future<UpdateResult> fut = Future.future();
+    updateWithParams(sql, params, fut.completer());
+    return fut;
+  }
+
   /**
    * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
    *
@@ -139,6 +188,12 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection call(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
+
+  default Future<ResultSet> call(String sql) {
+    Future<ResultSet> fut = Future.future();
+    call(sql, fut.completer());
+    return fut;
+  }
 
   /**
    * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
@@ -161,6 +216,12 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> resultHandler);
 
+  default Future<ResultSet> callWithParams(String sql, JsonArray params, JsonArray outputs) {
+    Future<ResultSet> fut = Future.future();
+    callWithParams(sql, params, outputs, fut.completer());
+    return fut;
+  }
+
   /**
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
    *
@@ -181,6 +242,12 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection commit(Handler<AsyncResult<Void>> handler);
 
+  default Future<Void> commit() {
+    Future<Void> fut = Future.future();
+    close(fut.completer());
+    return fut;
+  }
+
   /**
    * Rolls back all changes made since the previous commit/rollback.
    *
@@ -188,6 +255,12 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection rollback(Handler<AsyncResult<Void>> handler);
+
+  default Future<Void> rollback() {
+    Future<Void> fut = Future.future();
+    rollback(fut.completer());
+    return fut;
+  }
 
 
   /**
@@ -209,6 +282,13 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<List<Integer>>> handler);
 
+  default
+  Future<List<Integer>> batch(List<String> sqlStatements) {
+    Future<List<Integer>> fut = Future.future();
+    batch(sqlStatements, fut.completer());
+    return fut;
+  }
+
   /**
    * Batch a prepared statement with all entries from the args list. Each entry is a batch.
    * The operation completes with the execution of the batch where the async result contains a array of Integers.
@@ -219,6 +299,12 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<List<Integer>>> handler);
+
+  default Future<List<Integer>> batchWithParams(String sqlStatement, List<JsonArray> args) {
+    Future<List<Integer>> fut = Future.future();
+    batchWithParams(sqlStatement, args, fut.completer());
+    return fut;
+  }
 
   /**
    * Batch a callable statement with all entries from the args list. Each entry is a batch.
@@ -233,6 +319,12 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection batchCallableWithParams(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs, Handler<AsyncResult<List<Integer>>> handler);
 
+  default Future<List<Integer>> batchCallableWithParams(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs) {
+    Future<List<Integer>> fut = Future.future();
+    batchCallableWithParams(sqlStatement, inArgs, outArgs, fut.completer());
+    return fut;
+  }
+
   /**
    * Attempts to change the transaction isolation level for this Connection object to the one given.
    *
@@ -244,6 +336,12 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler);
 
+  default Future<Void> setTransactionIsolation(TransactionIsolation isolation) {
+    Future<Void> fut = Future.future();
+    setTransactionIsolation(isolation, fut.completer());
+    return fut;
+  }
+
   /**
    * Attempts to return the transaction isolation level for this Connection object to the one given.
    *
@@ -251,4 +349,10 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection getTransactionIsolation(Handler<AsyncResult<TransactionIsolation>> handler);
+
+  default Future<TransactionIsolation> getTransactionIsolation() {
+    Future<TransactionIsolation> fut = Future.future();
+    getTransactionIsolation(fut.completer());
+    return fut;
+  }
 }

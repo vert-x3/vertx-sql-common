@@ -2,6 +2,7 @@ package io.vertx.ext.sql;
 
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.streams.ReadStream;
@@ -39,7 +40,11 @@ public interface SQLRowStream extends ReadStream<JsonArray> {
   /**
    * Closes the stream/underlying cursor(s). The actual close happens asynchronously.
    */
-  void close();
+  default Future<Void> close() {
+    Future<Void> fut = Future.future();
+    close(fut.completer());
+    return fut;
+  }
 
   /**
    * Closes the stream/underlying cursor(s). The actual close happens asynchronously.

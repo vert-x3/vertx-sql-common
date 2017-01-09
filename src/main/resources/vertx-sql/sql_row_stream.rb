@@ -1,4 +1,5 @@
 require 'vertx/read_stream'
+require 'vertx/future'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.sql.SQLRowStream
 module VertxSql
@@ -88,17 +89,6 @@ module VertxSql
       end
       raise ArgumentError, "Invalid arguments when calling column(#{name})"
     end
-    #  Closes the stream/underlying cursor(s). The actual close happens asynchronously.
-    # @yield called when the stream/underlying cursor(s) is(are) closed
-    # @return [void]
-    def close
-      if !block_given?
-        return @j_del.java_method(:close, []).call()
-      elsif block_given?
-        return @j_del.java_method(:close, [Java::IoVertxCore::Handler.java_class]).call((Proc.new { |ar| yield(ar.failed ? ar.cause : nil) }))
-      end
-      raise ArgumentError, "Invalid arguments when calling close()"
-    end
     #  Event handler when a resultset is closed. This is useful to request for more results.
     # @yield 
     # @return [::VertxSql::SQLRowStream]
@@ -115,6 +105,15 @@ module VertxSql
         return @j_del.java_method(:moreResults, []).call()
       end
       raise ArgumentError, "Invalid arguments when calling more_results()"
+    end
+    #  Closes the stream/underlying cursor(s). The actual close happens asynchronously.
+    # @yield called when the stream/underlying cursor(s) is(are) closed
+    # @return [void]
+    def close
+      if block_given?
+        return @j_del.java_method(:close, [Java::IoVertxCore::Handler.java_class]).call((Proc.new { |ar| yield(ar.failed ? ar.cause : nil) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling close()"
     end
   end
 end

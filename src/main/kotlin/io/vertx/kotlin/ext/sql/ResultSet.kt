@@ -4,9 +4,9 @@ import io.vertx.ext.sql.ResultSet
 
 fun ResultSet(
     columnNames: List<String>? = null,
-    next: io.vertx.ext.sql.ResultSet? = null,
-    output: io.vertx.core.json.JsonArray? = null,
-    results: List<io.vertx.core.json.JsonArray>? = null): ResultSet = io.vertx.ext.sql.ResultSet().apply {
+  next: io.vertx.ext.sql.ResultSet? = null,
+  output: io.vertx.core.json.JsonArray? = null,
+  results: List<io.vertx.core.json.JsonArray>? = null): ResultSet = io.vertx.ext.sql.ResultSet().apply {
 
   if (columnNames != null) {
     this.columnNames = columnNames
