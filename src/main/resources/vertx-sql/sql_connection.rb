@@ -1,5 +1,4 @@
 require 'vertx-sql/sql_row_stream'
-require 'vertx/future'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.sql.SQLConnection
 module VertxSql

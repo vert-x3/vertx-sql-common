@@ -17,7 +17,6 @@
 /** @module vertx-sql-js/sql_connection */
 var utils = require('vertx-js/util/utils');
 var SQLRowStream = require('vertx-sql-js/sql_row_stream');
-var Future = require('vertx-js/future');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -43,17 +42,14 @@ var SQLConnection = function(j_val) {
    @param resultHandler {function} the handler which is called once this operation completes. 
    @return {SQLConnection}
    */
-  this.setAutoCommit = function() {
+  this.setAutoCommit = function(autoCommit, resultHandler) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] ==='boolean') {
-      j_sQLConnection["setAutoCommit(boolean)"](__args[0]);
-      return that;
-    }  else if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
-      j_sQLConnection["setAutoCommit(boolean,io.vertx.core.Handler)"](__args[0], function(ar) {
+    if (__args.length === 2 && typeof __args[0] ==='boolean' && typeof __args[1] === 'function') {
+      j_sQLConnection["setAutoCommit(boolean,io.vertx.core.Handler)"](autoCommit, function(ar) {
       if (ar.succeeded()) {
-        __args[1](null, null);
+        resultHandler(null, null);
       } else {
-        __args[1](null, ar.cause());
+        resultHandler(null, ar.cause());
       }
     });
       return that;
@@ -68,17 +64,14 @@ var SQLConnection = function(j_val) {
    @param resultHandler {function} the handler which is called once this operation completes. 
    @return {SQLConnection}
    */
-  this.execute = function() {
+  this.execute = function(sql, resultHandler) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'string') {
-      j_sQLConnection["execute(java.lang.String)"](__args[0]);
-      return that;
-    }  else if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sQLConnection["execute(java.lang.String,io.vertx.core.Handler)"](__args[0], function(ar) {
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["execute(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
-        __args[1](null, null);
+        resultHandler(null, null);
       } else {
-        __args[1](null, ar.cause());
+        resultHandler(null, ar.cause());
       }
     });
       return that;
@@ -93,17 +86,14 @@ var SQLConnection = function(j_val) {
    @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
-  this.query = function() {
+  this.query = function(sql, resultHandler) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'string') {
-      j_sQLConnection["query(java.lang.String)"](__args[0]);
-      return that;
-    }  else if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sQLConnection["query(java.lang.String,io.vertx.core.Handler)"](__args[0], function(ar) {
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["query(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
-        __args[1](utils.convReturnDataObject(ar.result()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
-        __args[1](null, ar.cause());
+        resultHandler(null, ar.cause());
       }
     });
       return that;
@@ -118,17 +108,14 @@ var SQLConnection = function(j_val) {
    @param handler {function} the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>. 
    @return {SQLConnection}
    */
-  this.queryStream = function() {
+  this.queryStream = function(sql, handler) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'string') {
-      j_sQLConnection["queryStream(java.lang.String)"](__args[0]);
-      return that;
-    }  else if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sQLConnection["queryStream(java.lang.String,io.vertx.core.Handler)"](__args[0], function(ar) {
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["queryStream(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
-        __args[1](utils.convReturnVertxGen(SQLRowStream, ar.result()), null);
+        handler(utils.convReturnVertxGen(SQLRowStream, ar.result()), null);
       } else {
-        __args[1](null, ar.cause());
+        handler(null, ar.cause());
       }
     });
       return that;
@@ -144,17 +131,14 @@ var SQLConnection = function(j_val) {
    @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
-  this.queryWithParams = function() {
+  this.queryWithParams = function(sql, params, resultHandler) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array) {
-      j_sQLConnection["queryWithParams(java.lang.String,io.vertx.core.json.JsonArray)"](__args[0], utils.convParamJsonArray(__args[1]));
-      return that;
-    }  else if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sQLConnection["queryWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](__args[0], utils.convParamJsonArray(__args[1]), function(ar) {
+    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
+      j_sQLConnection["queryWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
-        __args[2](utils.convReturnDataObject(ar.result()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
-        __args[2](null, ar.cause());
+        resultHandler(null, ar.cause());
       }
     });
       return that;
@@ -170,17 +154,14 @@ var SQLConnection = function(j_val) {
    @param handler {function} the handler which is called once the operation completes. It will return a <code>SQLRowStream</code>. 
    @return {SQLConnection}
    */
-  this.queryStreamWithParams = function() {
+  this.queryStreamWithParams = function(sql, params, handler) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array) {
-      j_sQLConnection["queryStreamWithParams(java.lang.String,io.vertx.core.json.JsonArray)"](__args[0], utils.convParamJsonArray(__args[1]));
-      return that;
-    }  else if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sQLConnection["queryStreamWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](__args[0], utils.convParamJsonArray(__args[1]), function(ar) {
+    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
+      j_sQLConnection["queryStreamWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
-        __args[2](utils.convReturnVertxGen(SQLRowStream, ar.result()), null);
+        handler(utils.convReturnVertxGen(SQLRowStream, ar.result()), null);
       } else {
-        __args[2](null, ar.cause());
+        handler(null, ar.cause());
       }
     });
       return that;
@@ -196,17 +177,14 @@ var SQLConnection = function(j_val) {
    @param resultHandler {function} the handler which is called once the operation completes. 
    @return {SQLConnection}
    */
-  this.update = function() {
+  this.update = function(sql, resultHandler) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'string') {
-      j_sQLConnection["update(java.lang.String)"](__args[0]);
-      return that;
-    }  else if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sQLConnection["update(java.lang.String,io.vertx.core.Handler)"](__args[0], function(ar) {
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["update(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
-        __args[1](utils.convReturnDataObject(ar.result()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
-        __args[1](null, ar.cause());
+        resultHandler(null, ar.cause());
       }
     });
       return that;
@@ -223,17 +201,14 @@ var SQLConnection = function(j_val) {
    @param resultHandler {function} the handler which is called once the operation completes. 
    @return {SQLConnection}
    */
-  this.updateWithParams = function() {
+  this.updateWithParams = function(sql, params, resultHandler) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array) {
-      j_sQLConnection["updateWithParams(java.lang.String,io.vertx.core.json.JsonArray)"](__args[0], utils.convParamJsonArray(__args[1]));
-      return that;
-    }  else if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sQLConnection["updateWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](__args[0], utils.convParamJsonArray(__args[1]), function(ar) {
+    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
+      j_sQLConnection["updateWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), function(ar) {
       if (ar.succeeded()) {
-        __args[2](utils.convReturnDataObject(ar.result()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
-        __args[2](null, ar.cause());
+        resultHandler(null, ar.cause());
       }
     });
       return that;
@@ -248,17 +223,14 @@ var SQLConnection = function(j_val) {
    @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
-  this.call = function() {
+  this.call = function(sql, resultHandler) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'string') {
-      j_sQLConnection["call(java.lang.String)"](__args[0]);
-      return that;
-    }  else if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sQLConnection["call(java.lang.String,io.vertx.core.Handler)"](__args[0], function(ar) {
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["call(java.lang.String,io.vertx.core.Handler)"](sql, function(ar) {
       if (ar.succeeded()) {
-        __args[1](utils.convReturnDataObject(ar.result()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
-        __args[1](null, ar.cause());
+        resultHandler(null, ar.cause());
       }
     });
       return that;
@@ -283,17 +255,14 @@ var SQLConnection = function(j_val) {
    @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */
-  this.callWithParams = function() {
+  this.callWithParams = function(sql, params, outputs, resultHandler) {
     var __args = arguments;
-    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array) {
-      j_sQLConnection["callWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.json.JsonArray)"](__args[0], utils.convParamJsonArray(__args[1]), utils.convParamJsonArray(__args[2]));
-      return that;
-    }  else if (__args.length === 4 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array && typeof __args[3] === 'function') {
-      j_sQLConnection["callWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](__args[0], utils.convParamJsonArray(__args[1]), utils.convParamJsonArray(__args[2]), function(ar) {
+    if (__args.length === 4 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array && typeof __args[3] === 'function') {
+      j_sQLConnection["callWithParams(java.lang.String,io.vertx.core.json.JsonArray,io.vertx.core.json.JsonArray,io.vertx.core.Handler)"](sql, utils.convParamJsonArray(params), utils.convParamJsonArray(outputs), function(ar) {
       if (ar.succeeded()) {
-        __args[3](utils.convReturnDataObject(ar.result()), null);
+        resultHandler(utils.convReturnDataObject(ar.result()), null);
       } else {
-        __args[3](null, ar.cause());
+        resultHandler(null, ar.cause());
       }
     });
       return that;
@@ -328,17 +297,14 @@ var SQLConnection = function(j_val) {
    @param handler {function} the handler called when this operation completes. 
    @return {SQLConnection}
    */
-  this.commit = function() {
+  this.commit = function(handler) {
     var __args = arguments;
-    if (__args.length === 0) {
-      j_sQLConnection["commit()"]();
-      return that;
-    }  else if (__args.length === 1 && typeof __args[0] === 'function') {
+    if (__args.length === 1 && typeof __args[0] === 'function') {
       j_sQLConnection["commit(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        __args[0](null, null);
+        handler(null, null);
       } else {
-        __args[0](null, ar.cause());
+        handler(null, ar.cause());
       }
     });
       return that;
@@ -352,17 +318,14 @@ var SQLConnection = function(j_val) {
    @param handler {function} the handler called when this operation completes. 
    @return {SQLConnection}
    */
-  this.rollback = function() {
+  this.rollback = function(handler) {
     var __args = arguments;
-    if (__args.length === 0) {
-      j_sQLConnection["rollback()"]();
-      return that;
-    }  else if (__args.length === 1 && typeof __args[0] === 'function') {
+    if (__args.length === 1 && typeof __args[0] === 'function') {
       j_sQLConnection["rollback(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        __args[0](null, null);
+        handler(null, null);
       } else {
-        __args[0](null, ar.cause());
+        handler(null, ar.cause());
       }
     });
       return that;
@@ -394,17 +357,14 @@ var SQLConnection = function(j_val) {
    @param handler {function} the result handler 
    @return {SQLConnection}
    */
-  this.batch = function() {
+  this.batch = function(sqlStatements, handler) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'object' && __args[0] instanceof Array) {
-      j_sQLConnection["batch(java.util.List)"](utils.convParamListBasicOther(__args[0]));
-      return that;
-    }  else if (__args.length === 2 && typeof __args[0] === 'object' && __args[0] instanceof Array && typeof __args[1] === 'function') {
-      j_sQLConnection["batch(java.util.List,io.vertx.core.Handler)"](utils.convParamListBasicOther(__args[0]), function(ar) {
+    if (__args.length === 2 && typeof __args[0] === 'object' && __args[0] instanceof Array && typeof __args[1] === 'function') {
+      j_sQLConnection["batch(java.util.List,io.vertx.core.Handler)"](utils.convParamListBasicOther(sqlStatements), function(ar) {
       if (ar.succeeded()) {
-        __args[1](ar.result(), null);
+        handler(ar.result(), null);
       } else {
-        __args[1](null, ar.cause());
+        handler(null, ar.cause());
       }
     });
       return that;
@@ -421,17 +381,14 @@ var SQLConnection = function(j_val) {
    @param handler {function} the result handler 
    @return {SQLConnection}
    */
-  this.batchWithParams = function() {
+  this.batchWithParams = function(sqlStatement, args, handler) {
     var __args = arguments;
-    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array) {
-      j_sQLConnection["batchWithParams(java.lang.String,java.util.List)"](__args[0], utils.convParamListJsonArray(__args[1]));
-      return that;
-    }  else if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-      j_sQLConnection["batchWithParams(java.lang.String,java.util.List,io.vertx.core.Handler)"](__args[0], utils.convParamListJsonArray(__args[1]), function(ar) {
+    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
+      j_sQLConnection["batchWithParams(java.lang.String,java.util.List,io.vertx.core.Handler)"](sqlStatement, utils.convParamListJsonArray(args), function(ar) {
       if (ar.succeeded()) {
-        __args[2](ar.result(), null);
+        handler(ar.result(), null);
       } else {
-        __args[2](null, ar.cause());
+        handler(null, ar.cause());
       }
     });
       return that;
@@ -450,17 +407,14 @@ var SQLConnection = function(j_val) {
    @param handler {function} the result handler 
    @return {SQLConnection}
    */
-  this.batchCallableWithParams = function() {
+  this.batchCallableWithParams = function(sqlStatement, inArgs, outArgs, handler) {
     var __args = arguments;
-    if (__args.length === 3 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array) {
-      j_sQLConnection["batchCallableWithParams(java.lang.String,java.util.List,java.util.List)"](__args[0], utils.convParamListJsonArray(__args[1]), utils.convParamListJsonArray(__args[2]));
-      return that;
-    }  else if (__args.length === 4 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array && typeof __args[3] === 'function') {
-      j_sQLConnection["batchCallableWithParams(java.lang.String,java.util.List,java.util.List,io.vertx.core.Handler)"](__args[0], utils.convParamListJsonArray(__args[1]), utils.convParamListJsonArray(__args[2]), function(ar) {
+    if (__args.length === 4 && typeof __args[0] === 'string' && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'object' && __args[2] instanceof Array && typeof __args[3] === 'function') {
+      j_sQLConnection["batchCallableWithParams(java.lang.String,java.util.List,java.util.List,io.vertx.core.Handler)"](sqlStatement, utils.convParamListJsonArray(inArgs), utils.convParamListJsonArray(outArgs), function(ar) {
       if (ar.succeeded()) {
-        __args[3](ar.result(), null);
+        handler(ar.result(), null);
       } else {
-        __args[3](null, ar.cause());
+        handler(null, ar.cause());
       }
     });
       return that;
@@ -477,17 +431,14 @@ var SQLConnection = function(j_val) {
    @param handler {function} the handler called when this operation completes. 
    @return {SQLConnection}
    */
-  this.setTransactionIsolation = function() {
+  this.setTransactionIsolation = function(isolation, handler) {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] === 'string') {
-      j_sQLConnection["setTransactionIsolation(io.vertx.ext.sql.TransactionIsolation)"](io.vertx.ext.sql.TransactionIsolation.valueOf(__args[0]));
-      return that;
-    }  else if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
-      j_sQLConnection["setTransactionIsolation(io.vertx.ext.sql.TransactionIsolation,io.vertx.core.Handler)"](io.vertx.ext.sql.TransactionIsolation.valueOf(__args[0]), function(ar) {
+    if (__args.length === 2 && typeof __args[0] === 'string' && typeof __args[1] === 'function') {
+      j_sQLConnection["setTransactionIsolation(io.vertx.ext.sql.TransactionIsolation,io.vertx.core.Handler)"](io.vertx.ext.sql.TransactionIsolation.valueOf(isolation), function(ar) {
       if (ar.succeeded()) {
-        __args[1](null, null);
+        handler(null, null);
       } else {
-        __args[1](null, ar.cause());
+        handler(null, ar.cause());
       }
     });
       return that;
@@ -501,17 +452,14 @@ var SQLConnection = function(j_val) {
    @param handler {function} the handler called when this operation completes. 
    @return {SQLConnection}
    */
-  this.getTransactionIsolation = function() {
+  this.getTransactionIsolation = function(handler) {
     var __args = arguments;
-    if (__args.length === 0) {
-      j_sQLConnection["getTransactionIsolation()"]();
-      return that;
-    }  else if (__args.length === 1 && typeof __args[0] === 'function') {
+    if (__args.length === 1 && typeof __args[0] === 'function') {
       j_sQLConnection["getTransactionIsolation(io.vertx.core.Handler)"](function(ar) {
       if (ar.succeeded()) {
-        __args[0](utils.convReturnEnum(ar.result()), null);
+        handler(utils.convReturnEnum(ar.result()), null);
       } else {
-        __args[0](null, ar.cause());
+        handler(null, ar.cause());
       }
     });
       return that;

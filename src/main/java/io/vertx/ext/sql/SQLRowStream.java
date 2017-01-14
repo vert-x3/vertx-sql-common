@@ -2,10 +2,12 @@ package io.vertx.ext.sql;
 
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.spi.concurrent.CompletableStage;
 import io.vertx.core.streams.ReadStream;
+
+import java.util.concurrent.CompletionStage;
 
 /**
  * A ReadStream of Rows from the underlying RDBMS. This class follows the ReadStream semantics and will automatically
@@ -40,9 +42,9 @@ public interface SQLRowStream extends ReadStream<JsonArray> {
   /**
    * Closes the stream/underlying cursor(s). The actual close happens asynchronously.
    */
-  default Future<Void> close() {
-    Future<Void> fut = Future.future();
-    close(fut.completer());
+  default CompletionStage<Void> close() {
+    CompletableStage<Void> fut = CompletableStage.create();
+    close(fut);
     return fut;
   }
 

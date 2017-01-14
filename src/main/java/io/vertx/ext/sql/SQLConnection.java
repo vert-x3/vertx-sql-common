@@ -19,11 +19,12 @@ package io.vertx.ext.sql;
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.spi.concurrent.CompletableStage;
 
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 
 /**
  * Represents a connection to a SQL database
@@ -43,9 +44,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler);
 
-  default Future<Void> setAutoCommit(boolean autoCommit) {
-    Future<Void> fut = Future.future();
-    setAutoCommit(autoCommit, fut.completer());
+  default CompletionStage<Void> setAutoCommit(boolean autoCommit) {
+    CompletableStage<Void> fut = CompletableStage.create();
+    setAutoCommit(autoCommit, fut);
     return fut;
   }
 
@@ -59,9 +60,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection execute(String sql, Handler<AsyncResult<Void>> resultHandler);
 
-  default Future<Void> execute(String sql) {
-    Future<Void> fut = Future.future();
-    execute(sql, fut.completer());
+  default CompletionStage<Void> execute(String sql) {
+    CompletableStage<Void> fut = CompletableStage.create();
+    execute(sql, fut);
     return fut;
   }
 
@@ -77,9 +78,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
 
-  default Future<ResultSet> query(String sql) {
-    Future<ResultSet> fut = Future.future();
-    query(sql, fut.completer());
+  default CompletionStage<ResultSet> query(String sql) {
+    CompletableStage<ResultSet> fut = CompletableStage.create();
+    query(sql, fut);
     return fut;
   }
 
@@ -95,9 +96,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection queryStream(String sql, Handler<AsyncResult<SQLRowStream>> handler);
 
-  default Future<SQLRowStream> queryStream(String sql) {
-    Future<SQLRowStream> fut = Future.future();
-    queryStream(sql, fut.completer());
+  default CompletionStage<SQLRowStream> queryStream(String sql) {
+    CompletableStage<SQLRowStream> fut = CompletableStage.create();
+    queryStream(sql, fut);
     return fut;
   };
 
@@ -114,9 +115,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
 
-  default Future<ResultSet> queryWithParams(String sql, JsonArray params) {
-    Future<ResultSet> fut = Future.future();
-    queryWithParams(sql, params, fut.completer());
+  default CompletionStage<ResultSet> queryWithParams(String sql, JsonArray params) {
+    CompletableStage<ResultSet> fut = CompletableStage.create();
+    queryWithParams(sql, params, fut);
     return fut;
   }
 
@@ -133,9 +134,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection queryStreamWithParams(String sql, JsonArray params, Handler<AsyncResult<SQLRowStream>> handler);
 
-  default Future<SQLRowStream> queryStreamWithParams(String sql, JsonArray params) {
-    Future<SQLRowStream> fut = Future.future();
-    queryStreamWithParams(sql, params, fut.completer());
+  default CompletionStage<SQLRowStream> queryStreamWithParams(String sql, JsonArray params) {
+    CompletableStage<SQLRowStream> fut = CompletableStage.create();
+    queryStreamWithParams(sql, params, fut);
     return fut;
   }
 
@@ -152,9 +153,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler);
 
-  default Future<UpdateResult> update(String sql) {
-    Future<UpdateResult> fut = Future.future();
-    update(sql, fut.completer());
+  default CompletionStage<UpdateResult> update(String sql) {
+    CompletableStage<UpdateResult> fut = CompletableStage.create();
+    update(sql, fut);
     return fut;
   }
 
@@ -172,9 +173,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
 
-  default Future<UpdateResult> updateWithParams(String sql, JsonArray params) {
-    Future<UpdateResult> fut = Future.future();
-    updateWithParams(sql, params, fut.completer());
+  default CompletionStage<UpdateResult> updateWithParams(String sql, JsonArray params) {
+    CompletableStage<UpdateResult> fut = CompletableStage.create();
+    updateWithParams(sql, params, fut);
     return fut;
   }
 
@@ -189,9 +190,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection call(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
 
-  default Future<ResultSet> call(String sql) {
-    Future<ResultSet> fut = Future.future();
-    call(sql, fut.completer());
+  default CompletionStage<ResultSet> call(String sql) {
+    CompletableStage<ResultSet> fut = CompletableStage.create();
+    call(sql, fut);
     return fut;
   }
 
@@ -216,9 +217,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> resultHandler);
 
-  default Future<ResultSet> callWithParams(String sql, JsonArray params, JsonArray outputs) {
-    Future<ResultSet> fut = Future.future();
-    callWithParams(sql, params, outputs, fut.completer());
+  default CompletionStage<ResultSet> callWithParams(String sql, JsonArray params, JsonArray outputs) {
+    CompletableStage<ResultSet> fut = CompletableStage.create();
+    callWithParams(sql, params, outputs, fut);
     return fut;
   }
 
@@ -242,9 +243,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection commit(Handler<AsyncResult<Void>> handler);
 
-  default Future<Void> commit() {
-    Future<Void> fut = Future.future();
-    close(fut.completer());
+  default CompletionStage<Void> commit() {
+    CompletableStage<Void> fut = CompletableStage.create();
+    close(fut);
     return fut;
   }
 
@@ -256,9 +257,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection rollback(Handler<AsyncResult<Void>> handler);
 
-  default Future<Void> rollback() {
-    Future<Void> fut = Future.future();
-    rollback(fut.completer());
+  default CompletionStage<Void> rollback() {
+    CompletableStage<Void> fut = CompletableStage.create();
+    rollback(fut);
     return fut;
   }
 
@@ -282,10 +283,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection batch(List<String> sqlStatements, Handler<AsyncResult<List<Integer>>> handler);
 
-  default
-  Future<List<Integer>> batch(List<String> sqlStatements) {
-    Future<List<Integer>> fut = Future.future();
-    batch(sqlStatements, fut.completer());
+  default CompletionStage<List<Integer>> batch(List<String> sqlStatements) {
+    CompletableStage<List<Integer>> fut = CompletableStage.create();
+    batch(sqlStatements, fut);
     return fut;
   }
 
@@ -300,9 +300,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection batchWithParams(String sqlStatement, List<JsonArray> args, Handler<AsyncResult<List<Integer>>> handler);
 
-  default Future<List<Integer>> batchWithParams(String sqlStatement, List<JsonArray> args) {
-    Future<List<Integer>> fut = Future.future();
-    batchWithParams(sqlStatement, args, fut.completer());
+  default CompletionStage<List<Integer>> batchWithParams(String sqlStatement, List<JsonArray> args) {
+    CompletableStage<List<Integer>> fut = CompletableStage.create();
+    batchWithParams(sqlStatement, args, fut);
     return fut;
   }
 
@@ -319,9 +319,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection batchCallableWithParams(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs, Handler<AsyncResult<List<Integer>>> handler);
 
-  default Future<List<Integer>> batchCallableWithParams(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs) {
-    Future<List<Integer>> fut = Future.future();
-    batchCallableWithParams(sqlStatement, inArgs, outArgs, fut.completer());
+  default CompletionStage<List<Integer>> batchCallableWithParams(String sqlStatement, List<JsonArray> inArgs, List<JsonArray> outArgs) {
+    CompletableStage<List<Integer>> fut = CompletableStage.create();
+    batchCallableWithParams(sqlStatement, inArgs, outArgs, fut);
     return fut;
   }
 
@@ -336,9 +336,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler);
 
-  default Future<Void> setTransactionIsolation(TransactionIsolation isolation) {
-    Future<Void> fut = Future.future();
-    setTransactionIsolation(isolation, fut.completer());
+  default CompletionStage<Void> setTransactionIsolation(TransactionIsolation isolation) {
+    CompletableStage<Void> fut = CompletableStage.create();
+    setTransactionIsolation(isolation, fut);
     return fut;
   }
 
@@ -350,9 +350,9 @@ public interface SQLConnection extends AutoCloseable {
   @Fluent
   SQLConnection getTransactionIsolation(Handler<AsyncResult<TransactionIsolation>> handler);
 
-  default Future<TransactionIsolation> getTransactionIsolation() {
-    Future<TransactionIsolation> fut = Future.future();
-    getTransactionIsolation(fut.completer());
+  default CompletionStage<TransactionIsolation> getTransactionIsolation() {
+    CompletableStage<TransactionIsolation> fut = CompletableStage.create();
+    getTransactionIsolation(fut);
     return fut;
   }
 }
