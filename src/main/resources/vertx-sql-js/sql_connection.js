@@ -219,7 +219,7 @@ var SQLConnection = function(j_val) {
    Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
 
    @public
-   @param sql {string} the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>. 
+   @param sql {string} the SQL to execute. For example <code>{call getEmpName}</code>. 
    @param resultHandler {function} the handler which is called once the operation completes. It will return a <code>ResultSet</code>. 
    @return {SQLConnection}
    */

@@ -124,7 +124,7 @@ module VertxSql
       raise ArgumentError, "Invalid arguments when calling update_with_params(#{sql},#{params})"
     end
     #  Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
-    # @param [String] sql the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+    # @param [String] sql the SQL to execute. For example <code>{call getEmpName}</code>.
     # @yield the handler which is called once the operation completes. It will return a <code>ResultSet</code>.
     # @return [self]
     def call(sql=nil)
