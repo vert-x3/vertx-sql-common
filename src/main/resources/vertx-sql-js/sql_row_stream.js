@@ -20,7 +20,7 @@ var ReadStream = require('vertx-js/read_stream');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JSQLRowStream = io.vertx.ext.sql.SQLRowStream;
+var JSQLRowStream = Java.type('io.vertx.ext.sql.SQLRowStream');
 
 /**
  A ReadStream of Rows from the underlying RDBMS. This class follows the ReadStream semantics and will automatically

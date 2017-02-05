@@ -20,9 +20,9 @@ var SQLRowStream = require('vertx-sql-js/sql_row_stream');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JSQLConnection = io.vertx.ext.sql.SQLConnection;
-var UpdateResult = io.vertx.ext.sql.UpdateResult;
-var ResultSet = io.vertx.ext.sql.ResultSet;
+var JSQLConnection = Java.type('io.vertx.ext.sql.SQLConnection');
+var UpdateResult = Java.type('io.vertx.ext.sql.UpdateResult');
+var ResultSet = Java.type('io.vertx.ext.sql.ResultSet');
 
 /**
  Represents a connection to a SQL database
