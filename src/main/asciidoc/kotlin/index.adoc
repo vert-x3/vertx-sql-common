@@ -41,13 +41,14 @@ When the operation is complete, the handler will be called:
 
 [source,java]
 ----
-connection.setAutoCommit(false, res -> {
+connection.setAutoCommit(false, { res ->
   if (res.succeeded()) {
     // OK!
   } else {
     // Failed!
   }
-});
+})
+
 ----
 
 === Executing queries
@@ -61,14 +62,15 @@ been run.
 
 [source,java]
 ----
-connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", res -> {
+connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", { res ->
   if (res.succeeded()) {
     // Get the result set
-    ResultSet resultSet = res.result();
+    var resultSet = res.result()
   } else {
     // Failed!
   }
-});
+})
+
 ----
 
 The `link:../../apidocs/io/vertx/ext/sql/ResultSet.html[ResultSet]` instance represents the results of a query.
@@ -80,18 +82,21 @@ The results are a list of `link:../../apidocs/io/vertx/core/json/JsonArray.html[
 
 [source,java]
 ----
-List<String> columnNames = resultSet.getColumnNames();
 
-List<JsonArray> results = resultSet.getResults();
+var columnNames = resultSet.columnNames
 
-for (JsonArray row : results) {
+var results = resultSet.results
 
-  String id = row.getString(0);
-  String fName = row.getString(1);
-  String lName = row.getString(2);
-  int shoeSize = row.getInteger(3);
+for (row in results) {
+
+  var id = row.getString(0)
+  var fName = row.getString(1)
+  var lName = row.getString(2)
+  var shoeSize = row.getInteger(3)
 
 }
+
+
 ----
 
 You can also retrieve the rows as a list of Json object instances with `link:../../apidocs/io/vertx/ext/sql/ResultSet.html#getRows--[getRows]` -
@@ -102,16 +107,19 @@ Here's an example of iterating through the results as Json object instances:
 
 [source,java]
 ----
-List<JsonObject> rows = resultSet.getRows();
 
-for (JsonObject row : rows) {
+var rows = resultSet.rows
 
-  String id = row.getString("ID");
-  String fName = row.getString("FNAME");
-  String lName = row.getString("LNAME");
-  int shoeSize = row.getInteger("SHOE_SIZE");
+for (row in rows) {
+
+  var id = row.getString("ID")
+  var fName = row.getString("FNAME")
+  var lName = row.getString("LNAME")
+  var shoeSize = row.getInteger("SHOE_SIZE")
 
 }
+
+
 ----
 
 === Prepared statement queries
@@ -124,18 +132,23 @@ values.
 
 [source,java]
 ----
-String query = "SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE WHERE LNAME=? AND SHOE_SIZE > ?";
-JsonArray params = new JsonArray().add("Fox").add(9);
 
-connection.queryWithParams(query, params, res -> {
+var query = "SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE WHERE LNAME=? AND SHOE_SIZE > ?"
+var params = json {
+  array("Fox", 9)
+}
+
+connection.queryWithParams(query, params, { res ->
 
   if (res.succeeded()) {
     // Get the result set
-    ResultSet resultSet = res.result();
+    var resultSet = res.result()
   } else {
     // Failed!
   }
-});
+})
+
+
 ----
 
 === Executing INSERT, UPDATE or DELETE
@@ -152,17 +165,21 @@ if the update generated keys, they are available with `link:../../apidocs/io/ver
 
 [source,java]
 ----
-connection.update("INSERT INTO PEOPLE VALUES (null, 'john', 'smith', 9)", res -> {
+
+connection.update("INSERT INTO PEOPLE VALUES (null, 'john', 'smith', 9)", { res ->
   if (res.succeeded()) {
 
-    UpdateResult result = res.result();
-    System.out.println("Updated no. of rows: " + result.getUpdated());
-    System.out.println("Generated keys: " + result.getKeys());
+    var result = res.result()
+    println("Updated no. of rows: ${result.updated}")
+    println("Generated keys: ${result.keys}")
 
   } else {
     // Failed!
   }
-});
+})
+
+
+
 ----
 
 === Prepared statement updates
@@ -175,23 +192,28 @@ values.
 
 [source,java]
 ----
-String update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?";
-JsonArray params = new JsonArray().add("Fox");
 
-connection.updateWithParams(update, params, res -> {
+var update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?"
+var params = json {
+  array("Fox")
+}
+
+connection.updateWithParams(update, params, { res ->
 
   if (res.succeeded()) {
 
-    UpdateResult updateResult = res.result();
+    var updateResult = res.result()
 
-    System.out.println("No. of rows updated: " + updateResult.getUpdated());
+    println("No. of rows updated: ${updateResult.updated}")
 
   } else {
 
     // Failed!
 
   }
-});
+})
+
+
 ----
 
 === Callable statements
@@ -211,16 +233,23 @@ A SQL function returns some output using the `return` keyword, and in this case 
 
 [source,java]
 ----
-String func = "{ call one_hour_ago() }";
+// Assume that there is a SQL function like this:
+//
+// create function one_hour_ago() returns timestamp
+//    return now() - 1 hour;
 
-connection.call(func, res -> {
+// note that you do not need to declare the output for functions
+var func = "{ call one_hour_ago() }"
+
+connection.call(func, { res ->
 
   if (res.succeeded()) {
-    ResultSet result = res.result();
+    var result = res.result()
   } else {
     // Failed!
   }
-});
+})
+
 ----
 
 When working with Procedures you and still return values from your procedures via its arguments, in the case you do
@@ -228,32 +257,52 @@ not return anything the usage is as follows:
 
 [source,java]
 ----
-String func = "{ call new_customer(?, ?) }";
+// Assume that there is a SQL procedure like this:
+//
+// create procedure new_customer(firstname varchar(50), lastname varchar(50))
+//   modifies sql data
+//   insert into customers values (default, firstname, lastname, current_timestamp);
 
-connection.callWithParams(func, new JsonArray().add("John").add("Doe"), null, res -> {
+var func = "{ call new_customer(?, ?) }"
+
+connection.callWithParams(func, json {
+  array("John", "Doe")
+}, null, { res ->
 
   if (res.succeeded()) {
     // Success!
   } else {
     // Failed!
   }
-});
+})
+
 ----
 
 However you can also return values like this:
 
 [source,java]
 ----
-String func = "{ call customer_lastname(?, ?) }";
+// Assume that there is a SQL procedure like this:
+//
+// create procedure customer_lastname(IN firstname varchar(50), OUT lastname varchar(50))
+//   modifies sql data
+//   select lastname into lastname from customers where firstname = firstname;
 
-connection.callWithParams(func, new JsonArray().add("John"), new JsonArray().addNull().add("VARCHAR"), res -> {
+var func = "{ call customer_lastname(?, ?) }"
+
+connection.callWithParams(func, json {
+  array("John")
+}, json {
+  array(null, "VARCHAR")
+}, { res ->
 
   if (res.succeeded()) {
-    ResultSet result = res.result();
+    var result = res.result()
   } else {
     // Failed!
   }
-});
+})
+
 ----
 
 Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a
@@ -280,34 +329,42 @@ A batches statement will exeucte a list of sql statements as for example:
 
 [source,java]
 ----
-List<String> batch = new ArrayList<>();
-batch.add("INSERT INTO emp (NAME) VALUES ('JOE')");
-batch.add("INSERT INTO emp (NAME) VALUES ('JANE')");
+// Batch values
+var batch = mutableListOf<Any?>()
+batch.add("INSERT INTO emp (NAME) VALUES ('JOE')")
+batch.add("INSERT INTO emp (NAME) VALUES ('JANE')")
 
-connection.batch(batch, res -> {
+connection.batch(batch, { res ->
   if (res.succeeded()) {
-    List<Integer> result = res.result();
+    var result = res.result()
   } else {
     // Failed!
   }
-});
+})
+
 ----
 
 While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
 
 [source,java]
 ----
-List<JsonArray> batch = new ArrayList<>();
-batch.add(new JsonArray().add("joe"));
-batch.add(new JsonArray().add("jane"));
+// Batch values
+var batch = mutableListOf<Any?>()
+batch.add(json {
+  array("joe")
+})
+batch.add(json {
+  array("jane")
+})
 
-connection.batchWithParams("INSERT INTO emp (name) VALUES (?)", batch, res -> {
+connection.batchWithParams("INSERT INTO emp (name) VALUES (?)", batch, { res ->
   if (res.succeeded()) {
-    List<Integer> result = res.result();
+    var result = res.result()
   } else {
     // Failed!
   }
-});
+})
+
 ----
 
 === Executing other operations
@@ -320,16 +377,18 @@ is complete
 
 [source,java]
 ----
-String sql = "CREATE TABLE PEOPLE (ID int generated by default as identity (start with 1 increment by 1) not null," +
-  "FNAME varchar(255), LNAME varchar(255), SHOE_SIZE int);";
 
-connection.execute(sql, execute -> {
+var sql = "CREATE TABLE PEOPLE (ID int generated by default as identity (start with 1 increment by 1) not null,FNAME varchar(255), LNAME varchar(255), SHOE_SIZE int);"
+
+connection.execute(sql, { execute ->
   if (execute.succeeded()) {
-    System.out.println("Table created !");
+    println("Table created !")
   } else {
     // Failed!
   }
-});
+})
+
+
 ----
 
 === Multiple ResultSet responses
@@ -338,14 +397,14 @@ In some cases your query might return more than one result set, in this case and
 the returned result set object is converted to pure json, the next result sets are chained to the current result set
 under the property `next`. A simple walk of all result sets can be achieved like this:
 
-[source,java]
+[source,kotlin]
 ----
-while (rs != null) {
-  // do something with the result set...
+// do something with the result set...
 
-  // next step
-  rs = rs.getNext();
-}
+// next step
+rs = rs.next
+
+
 ----
 
 === Streaming
@@ -353,40 +412,39 @@ while (rs != null) {
 When dealing with large data sets, it is not advised to use API just described but to stream data since it avoids
 inflating the whole response into memory and JSON and data is just processed on a row by row basis, for example:
 
-[source,java]
+[source,kotlin]
 ----
-connection.queryStream("SELECT * FROM large_table", stream -> {
+connection.queryStream("SELECT * FROM large_table", { stream ->
   if (stream.succeeded()) {
-    stream.result().handler(row -> {
+    stream.result().handler({ row ->
       // do something with the row...
-    });
+    })
   }
-});
+})
+
 ----
 
 You still have full control on when the stream is pauses, resumed and ended. For cases where your query returns
 multiple result sets you should use the result set ended event to fetch the next one if available. If there is more
 data the stream handler will receive the new data, otherwise the end handler is invoked.
 
-[source,java]
+[source,kotlin]
 ----
-connection.queryStream("SELECT * FROM large_table; SELECT * FROM other_table", stream -> {
+connection.queryStream("SELECT * FROM large_table; SELECT * FROM other_table", { stream ->
   if (stream.succeeded()) {
-    SQLRowStream sqlRowStream = stream.result();
+    var sqlRowStream = stream.result()
 
-    sqlRowStream
-      .resultSetClosedHandler(v -> {
-        // will ask to restart the stream with the new result set if any
-        sqlRowStream.moreResults();
-      })
-      .handler(row -> {
-        // do something with the row...
-      })
-      .endHandler(v -> {
-        // no more data available...
-      });
+    sqlRowStream.resultSetClosedHandler({ v ->
+      // will ask to restart the stream with the new result set if any
+      sqlRowStream.moreResults()
+    }).handler({ row ->
+      // do something with the row...
+    }).endHandler({ v ->
+      // no more data available...
+    })
   }
-});
+})
+
 ----
 
 === Using transactions
@@ -401,13 +459,20 @@ Once the commit/rollback is complete the handler will be called and the next tra
 
 [source,java]
 ----
-connection.commit(res -> {
+
+// Do stuff with connection - updates etc
+
+// Now commit
+
+connection.commit({ res ->
   if (res.succeeded()) {
     // Committed OK!
   } else {
     // Failed!
   }
-});
+})
+
+
 ----
 
 === Closing connections

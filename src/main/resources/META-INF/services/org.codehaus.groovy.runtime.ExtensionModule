@@ -1,4 +1,0 @@
-moduleName = io.vertx.ext.sql.SQLRowStream-module
-moduleVersion = 1.0
-extensionClasses = io.vertx.groovy.ext.sql.SQLConnection_GroovyExtension, io.vertx.groovy.ext.sql.SQLRowStream_GroovyExtension
-staticExtensionClasses = 
