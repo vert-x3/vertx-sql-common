@@ -17,6 +17,7 @@
 package io.vertx.ext.sql;
 
 import io.vertx.codegen.annotations.Fluent;
+import io.vertx.codegen.annotations.GenIgnore;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -251,4 +252,15 @@ public interface SQLConnection extends AutoCloseable {
    */
   @Fluent
   SQLConnection getTransactionIsolation(Handler<AsyncResult<TransactionIsolation>> handler);
+
+  /**
+   * Return the native Connection object if available. This is not mandated to be implemented by the clients.
+   *
+   * @param <N> the native object
+   * @return the native connection or null
+   */
+  @GenIgnore
+  default <N> N nativeConnection() {
+    return null;
+  }
 }
