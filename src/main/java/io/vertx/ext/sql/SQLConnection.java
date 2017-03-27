@@ -254,13 +254,13 @@ public interface SQLConnection extends AutoCloseable {
   SQLConnection getTransactionIsolation(Handler<AsyncResult<TransactionIsolation>> handler);
 
   /**
-   * Return the native Connection object if available. This is not mandated to be implemented by the clients.
+   * Return the underlying Connection object if available. This is not mandated to be implemented by the clients.
    *
-   * @param <N> the native object
-   * @return the native connection or null
+   * @param <N> the underlying connection object type
+   * @return the unwrapped connection or null
    */
   @GenIgnore
-  default <N> N nativeConnection() {
+  default <N> N unwrap() {
     return null;
   }
 }
