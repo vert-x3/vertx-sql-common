@@ -131,6 +131,21 @@ public interface SQLConnection extends AutoCloseable {
   SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
 
   /**
+   * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement with the given parameters
+   *
+   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params  these are the parameters to fill the statement.
+   * @param columnNames the column names for the auto-generated keys to be returned after update.
+   * @param resultHandler  the handler which is called once the operation completes.
+   *
+   * @see java.sql.Statement#executeUpdate(String)
+   * @see java.sql.PreparedStatement#executeUpdate(String)
+   */
+  @Fluent
+  SQLConnection updateWithParams(String sql, JsonArray params, List<String> columnNames, Handler<AsyncResult<UpdateResult>> resultHandler);
+
+  /**
    * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
    *
    * @param sql  the SQL to execute. For example <code>{call getEmpName}</code>.
