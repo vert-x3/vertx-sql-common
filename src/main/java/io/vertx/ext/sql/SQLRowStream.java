@@ -6,6 +6,8 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.streams.ReadStream;
 
+import java.util.List;
+
 /**
  * A ReadStream of Rows from the underlying RDBMS. This class follows the ReadStream semantics and will automatically
  * close the underlying resources if all returned rows are returned. For cases where the results are ignored before the
@@ -24,6 +26,15 @@ public interface SQLRowStream extends ReadStream<JsonArray> {
    * @return the json array index
    */
   int column(String name);
+
+  /**
+   * Returns all column names available in the underlying resultset. One needs to carefully use this method since in
+   * contrast to the singular version it does not perform case insensitive lookups or takes alias in consideration on
+   * the column names.
+   *
+   * @return the list of columns names returned by the query
+   */
+  List<String> columns();
 
   /**
    * Event handler when a resultset is closed. This is useful to request for more results.
