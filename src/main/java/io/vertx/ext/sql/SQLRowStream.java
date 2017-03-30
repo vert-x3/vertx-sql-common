@@ -28,7 +28,9 @@ public interface SQLRowStream extends ReadStream<JsonArray> {
   int column(String name);
 
   /**
-   * Returns all column names available in the underlying resultset.
+   * Returns all column names available in the underlying resultset. One needs to carefully use this method since in
+   * contrast to the singular version it does not perform case insensitive lookups or takes alias in consideration on
+   * the column names.
    *
    * @return the list of columns names returned by the query
    */
