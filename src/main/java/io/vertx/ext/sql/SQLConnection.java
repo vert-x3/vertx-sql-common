@@ -20,6 +20,7 @@ import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.GenIgnore;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 
@@ -34,6 +35,16 @@ import java.util.List;
 public interface SQLConnection extends AutoCloseable {
 
   /**
+   * Sets the desired options to be applied to the connection when a statement is executed.
+   *
+   * This method is not async in nature since the apply will only happen at the moment a query is run.
+   *
+   * @param options  the options to modify the unwrapped connection.
+   */
+  @Fluent
+  SQLConnection setOptions(SQLOptions options);
+
+  /**
    * Sets the auto commit flag for this connection. True by default.
    *
    * @param autoCommit  the autoCommit flag, true by default.
@@ -41,7 +52,12 @@ public interface SQLConnection extends AutoCloseable {
    * @see java.sql.Connection#setAutoCommit(boolean)
    */
   @Fluent
-  SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler);
+  @Deprecated
+  default SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) {
+    setOptions(new SQLOptions().setAutoCommit(autoCommit));
+    resultHandler.handle(Future.succeededFuture());
+    return this;
+  }
 
   /**
    * Executes the given SQL statement
@@ -199,7 +215,11 @@ public interface SQLConnection extends AutoCloseable {
    * @param timeoutInSeconds the max amount of seconds the query can take to execute.
    */
   @Fluent
-  SQLConnection setQueryTimeout(int timeoutInSeconds);
+  @Deprecated
+  default SQLConnection setQueryTimeout(int timeoutInSeconds) {
+    setOptions(new SQLOptions().setQueryTimeout(timeoutInSeconds));
+    return this;
+  }
 
   /**
    * Batch simple SQL strings and execute the batch where the async result contains a array of Integers.
@@ -243,7 +263,12 @@ public interface SQLConnection extends AutoCloseable {
    * @param handler the handler called when this operation completes.
    */
   @Fluent
-  SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler);
+  @Deprecated
+  default SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler) {
+    setOptions(new SQLOptions().setTransactionIsolation(isolation));
+    handler.handle(Future.succeededFuture());
+    return this;
+  }
 
   /**
    * Attempts to return the transaction isolation level for this Connection object to the one given.

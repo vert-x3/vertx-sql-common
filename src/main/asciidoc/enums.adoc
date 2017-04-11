@@ -1,5 +1,43 @@
 = Enums
 
+[[FetchDirection]]
+== FetchDirection
+
+
+[cols=">25%,75%"]
+[frame="topbot"]
+|===
+^|Name | Description
+|[[FORWARD]]`FORWARD`|-
+|[[REVERSE]]`REVERSE`|-
+|[[UNKNOWN]]`UNKNOWN`|-
+|===
+
+[[ResultSetConcurrency]]
+== ResultSetConcurrency
+
+
+[cols=">25%,75%"]
+[frame="topbot"]
+|===
+^|Name | Description
+|[[READ_ONLY]]`READ_ONLY`|-
+|[[UPDATABLE]]`UPDATABLE`|-
+|===
+
+[[ResultSetType]]
+== ResultSetType
+
+
+[cols=">25%,75%"]
+[frame="topbot"]
+|===
+^|Name | Description
+|[[FORWARD_ONLY]]`FORWARD_ONLY`|-
+|[[SCROLL_INSENSITIVE]]`SCROLL_INSENSITIVE`|-
+|[[SCROLL_SENSITIVE]]`SCROLL_SENSITIVE`|-
+|===
+
 [[TransactionIsolation]]
 == TransactionIsolation
 
