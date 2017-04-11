@@ -52,6 +52,10 @@ Get the rows - each row represented as a JsonObject where the keys are the colum
 [[SQLOptions]]
 == SQLOptions
 
+++++
+ Represents the options one can use to customize the unwrapped connection/statement/resultset types
+++++
+'''
 
 [cols=">25%,^25%,50%"]
 [frame="topbot"]

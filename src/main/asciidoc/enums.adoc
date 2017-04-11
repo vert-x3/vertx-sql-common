@@ -3,6 +3,10 @@
 [[FetchDirection]]
 == FetchDirection
 
+++++
+ Represents a The fetch direction hint
+++++
+'''
 
 [cols=">25%,75%"]
 [frame="topbot"]
@@ -16,6 +20,10 @@
 [[ResultSetConcurrency]]
 == ResultSetConcurrency
 
+++++
+ Represents a The resultset concurrency hint
+++++
+'''
 
 [cols=">25%,75%"]
 [frame="topbot"]
@@ -28,6 +36,10 @@
 [[ResultSetType]]
 == ResultSetType
 
+++++
+ Represents a The resultset type hint
+++++
+'''
 
 [cols=">25%,75%"]
 [frame="topbot"]
