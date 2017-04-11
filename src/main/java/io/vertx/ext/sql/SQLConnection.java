@@ -52,12 +52,7 @@ public interface SQLConnection extends AutoCloseable {
    * @see java.sql.Connection#setAutoCommit(boolean)
    */
   @Fluent
-  @Deprecated
-  default SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler) {
-    setOptions(new SQLOptions().setAutoCommit(autoCommit));
-    resultHandler.handle(Future.succeededFuture());
-    return this;
-  }
+  SQLConnection setAutoCommit(boolean autoCommit, Handler<AsyncResult<Void>> resultHandler);
 
   /**
    * Executes the given SQL statement
@@ -263,12 +258,7 @@ public interface SQLConnection extends AutoCloseable {
    * @param handler the handler called when this operation completes.
    */
   @Fluent
-  @Deprecated
-  default SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler) {
-    setOptions(new SQLOptions().setTransactionIsolation(isolation));
-    handler.handle(Future.succeededFuture());
-    return this;
-  }
+  SQLConnection setTransactionIsolation(TransactionIsolation isolation, Handler<AsyncResult<Void>> handler);
 
   /**
    * Attempts to return the transaction isolation level for this Connection object to the one given.
