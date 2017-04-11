@@ -69,4 +69,21 @@ public enum TransactionIsolation {
   public int getType() {
     return type;
   }
+
+  public static TransactionIsolation from(int level) {
+    switch (level) {
+      case Connection.TRANSACTION_READ_COMMITTED:
+        return TransactionIsolation.READ_COMMITTED;
+      case Connection.TRANSACTION_READ_UNCOMMITTED:
+        return TransactionIsolation.READ_UNCOMMITTED;
+      case Connection.TRANSACTION_REPEATABLE_READ:
+        return TransactionIsolation.REPEATABLE_READ;
+      case Connection.TRANSACTION_SERIALIZABLE:
+        return TransactionIsolation.SERIALIZABLE;
+      case Connection.TRANSACTION_NONE:
+        return TransactionIsolation.NONE;
+      default:
+        return null;
+    }
+  }
 }
