@@ -42,7 +42,7 @@ public interface SQLClient {
    * Close the client and release all resources.
    * Call the handler when close is complete.
    *
-   * @param completionHandler handler that will be called when close is complete
+   * @param completionHandler the handler that will be called when close is complete
    */
   void close(Handler<AsyncResult<Void>> completionHandler);
   /**
