@@ -1,5 +1,6 @@
 package io.vertx.ext.sql;
 
+import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -18,6 +19,21 @@ import java.util.List;
  */
 @VertxGen
 public interface SQLRowStream extends ReadStream<JsonArray> {
+
+  @Override
+  SQLRowStream exceptionHandler(Handler<Throwable> handler);
+
+  @Override
+  SQLRowStream handler(Handler<JsonArray> handler);
+
+  @Override
+  SQLRowStream pause();
+
+  @Override
+  SQLRowStream resume();
+
+  @Override
+  SQLRowStream endHandler(Handler<Void> endHandler);
 
   /**
    * Will convert the column name to the json array index.
@@ -38,8 +54,10 @@ public interface SQLRowStream extends ReadStream<JsonArray> {
 
   /**
    * Event handler when a resultset is closed. This is useful to request for more results.
-   * @param handler
+   *
+   * @param handler called when the current result set is closed
    */
+  @Fluent
   SQLRowStream resultSetClosedHandler(Handler<Void> handler);
 
   /**
