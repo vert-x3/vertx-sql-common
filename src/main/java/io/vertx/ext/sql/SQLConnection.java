@@ -37,6 +37,8 @@ public interface SQLConnection extends AutoCloseable {
   /**
    * Sets the desired options to be applied to the connection when a statement is executed.
    *
+   * The options should be applied on a connection basis and are not applied to new connections automatically.
+   *
    * This method is not async in nature since the apply will only happen at the moment a query is run.
    *
    * @param options  the options to modify the unwrapped connection.

@@ -20,7 +20,7 @@ import io.vertx.codegen.annotations.VertxGen;
 import java.sql.ResultSet;
 
 /**
- * Represents a The fetch direction hint
+ * Represents the fetch direction hint
  *
  * @author <a href="mailto:plopes@redhat.com">Paulo Lopes</a>
  */

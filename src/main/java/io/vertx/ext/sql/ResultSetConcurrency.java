@@ -20,7 +20,7 @@ import io.vertx.codegen.annotations.VertxGen;
 import java.sql.ResultSet;
 
 /**
- * Represents a The resultset concurrency hint
+ * Represents the resultset concurrency hint
  *
  * @author <a href="mailto:plopes@redhat.com">Paulo Lopes</a>
  */
