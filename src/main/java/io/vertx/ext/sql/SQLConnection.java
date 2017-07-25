@@ -35,9 +35,11 @@ import java.util.List;
 public interface SQLConnection extends AutoCloseable {
 
   /**
-   * Sets the desired options to be applied to the connection when a statement is executed.
+   * Sets the desired options to be applied to the current connection when statements are executed.
    *
-   * The options should be applied on a connection basis and are not applied to new connections automatically.
+   * The options are not applied globally but applicable to the current connection. For example changing the transaction
+   * isolation level will only affect statements run on this connection and not future or current connections acquired
+   * from the connection pool.
    *
    * This method is not async in nature since the apply will only happen at the moment a query is run.
    *
