@@ -68,6 +68,14 @@ public class ResultSetTest {
   }
 
   @Test
+  public void testCaseInsensitiveRows() {
+    JsonObject row = rs.getRows(true).get(0);
+    assertEquals("res0", row.getString("foo"));
+    assertEquals("res0", row.getString("FOO"));
+    assertEquals("res0", row.getString("fOo"));
+  }
+
+  @Test
   public void testJson() {
 
     JsonObject json = rs.toJson();
