@@ -4,7 +4,7 @@
 == FetchDirection
 
 ++++
- Represents a The fetch direction hint
+ Represents the fetch direction hint
 ++++
 '''
 
@@ -21,7 +21,7 @@
 == ResultSetConcurrency
 
 ++++
- Represents a The resultset concurrency hint
+ Represents the resultset concurrency hint
 ++++
 '''
 
@@ -37,7 +37,7 @@
 == ResultSetType
 
 ++++
- Represents a The resultset type hint
+ Represents the resultset type hint
 ++++
 '''
 
