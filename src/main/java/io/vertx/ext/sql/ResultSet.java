@@ -136,9 +136,15 @@ public class ResultSet {
   /**
    * Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
    * the column values.
-   * <p>
+   *
    * Beware that it's legal for a query result in SQL to contain duplicate column names, in which case one will
    * overwrite the other if using this method. If that's the case use {@link #getResults} instead.
+   *
+   * Be aware that column names are defined as returned by the database, this means that even if your SQL statement
+   * is for example: <pre>SELECT a, b FROM table</pre> the column names are not required to be: <pre>a</pre> and
+   * <pre>b</pre> and could be in fact <pre>A</pre> and <pre>B</pre>.
+   *
+   * For cases when there is the need for case insentivitity you should see {@link #getRows(boolean)}
    *
    * @return  the rows represented as JSON object instances
    */
@@ -149,9 +155,12 @@ public class ResultSet {
   /**
    * Get the rows - each row represented as a JsonObject where the keys are the column names and the values are
    * the column values.
-   * <p>
+   *
    * Beware that it's legal for a query result in SQL to contain duplicate column names, in which case one will
    * overwrite the other if using this method. If that's the case use {@link #getResults} instead.
+   *
+   * Special note, when encoding the row JSON to a String or Buffer the column names will be as they returned by the
+   * database server regardless of the case sensitivity chosen on this method call.
    *
    * @param caseInsensitive - treat column names as case insensitive, i.e.: FoO equals foo equals FOO
    *
