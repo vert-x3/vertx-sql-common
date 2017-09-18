@@ -22,9 +22,6 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
-
-import java.util.List;
 
 /**
  * A common asynchronous client interface for interacting with SQL compliant database
@@ -32,7 +29,7 @@ import java.util.List;
  * @author <a href="mailto:emad.albloushi@gmail.com">Emad Alblueshi</a>
  */
 @VertxGen
-public interface SQLClient {
+public interface SQLClient extends SQLQuery {
 
   /**
    * Returns a connection that can be used to perform SQL operations on. It's important to remember
@@ -65,7 +62,8 @@ public interface SQLClient {
    * @return self
    */
   @Fluent
-  default SQLClient execute(String sql, Handler<AsyncResult<ResultSet>> handler) {
+  @Override
+  default SQLClient query(String sql, Handler<AsyncResult<ResultSet>> handler) {
     getConnection(getConnection -> {
       if (getConnection.failed()) {
         handler.handle(Future.failedFuture(getConnection.cause()));
@@ -106,7 +104,8 @@ public interface SQLClient {
    * @return self
    */
   @Fluent
-  default SQLClient execute(String sql, JsonArray arguments, Handler<AsyncResult<ResultSet>> handler) {
+  @Override
+  default SQLClient queryWithParams(String sql, JsonArray arguments, Handler<AsyncResult<ResultSet>> handler) {
     getConnection(getConnection -> {
       if (getConnection.failed()) {
         handler.handle(Future.failedFuture(getConnection.cause()));
@@ -135,158 +134,5 @@ public interface SQLClient {
       }
     });
     return this;
-  }
-
-  /**
-   * Execute a one shot SQL statement that returns a single SQL row. This method will reduce the boilerplate code by
-   * getting a connection from the pool (this object) and return it back after the execution. Only the first result
-   * from the result set is returned.
-   *
-   * @param sql     the statement to execute
-   * @param handler the result handler
-   * @return self
-   */
-  @Fluent
-  default SQLClient executeSingle(String sql, Handler<AsyncResult<JsonArray>> handler) {
-    return execute(sql, execute -> {
-      if (execute.failed()) {
-        handler.handle(Future.failedFuture(execute.cause()));
-      } else {
-        final ResultSet rs = execute.result();
-        if (rs == null) {
-          handler.handle(Future.succeededFuture());
-        } else {
-          List<JsonArray> results = rs.getResults();
-          if (results == null) {
-            handler.handle(Future.succeededFuture());
-          } else {
-            handler.handle(Future.succeededFuture(results.get(0)));
-          }
-        }
-      }
-    });
-  }
-
-  /**
-   * Execute a one shot SQL statement with arguments that returns a single SQL row. This method will reduce the
-   * boilerplate code by getting a connection from the pool (this object) and return it back after the execution.
-   * Only the first result from the result set is returned.
-   *
-   * @param sql       the statement to execute
-   * @param arguments the arguments
-   * @param handler   the result handler
-   * @return self
-   */
-  @Fluent
-  default SQLClient executeSingle(String sql, JsonArray arguments, Handler<AsyncResult<JsonArray>> handler) {
-    return execute(sql, arguments, execute -> {
-      if (execute.failed()) {
-        handler.handle(Future.failedFuture(execute.cause()));
-      } else {
-        final ResultSet rs = execute.result();
-        if (rs == null) {
-          handler.handle(Future.succeededFuture());
-        } else {
-          List<JsonArray> results = rs.getResults();
-          if (results == null) {
-            handler.handle(Future.succeededFuture());
-          } else {
-            handler.handle(Future.succeededFuture(results.get(0)));
-          }
-        }
-      }
-    });
-  }
-
-  /**
-   * Execute a one shot SQL statement that returns a single SQL row with column names. This method will reduce the
-   * boilerplate code by getting a connection from the pool (this object) and return it back after the execution.
-   * Only the first result from the result set is returned.
-   *
-   * @param sql                    the statement to execute
-   * @param caseInsensitiveColumns return a case insensitive JSON
-   * @param handler                the result handler
-   * @return self
-   */
-  @Fluent
-  default SQLClient executeSingleRow(String sql, boolean caseInsensitiveColumns, Handler<AsyncResult<JsonObject>> handler) {
-    return execute(sql, execute -> {
-      if (execute.failed()) {
-        handler.handle(Future.failedFuture(execute.cause()));
-      } else {
-        final ResultSet rs = execute.result();
-        if (rs == null) {
-          handler.handle(Future.succeededFuture());
-        } else {
-          List<JsonObject> results = rs.getRows(caseInsensitiveColumns);
-          if (results == null) {
-            handler.handle(Future.succeededFuture());
-          } else {
-            handler.handle(Future.succeededFuture(results.get(0)));
-          }
-        }
-      }
-    });
-  }
-
-  /**
-   * Execute a one shot SQL statement that returns a single SQL row with column names. This method will reduce the
-   * boilerplate code by getting a connection from the pool (this object) and return it back after the execution.
-   * Only the first result from the result set is returned.
-   *
-   * @param sql     the statement to execute
-   * @param handler the result handler
-   * @return self
-   */
-  @Fluent
-  default SQLClient executeSingleRow(String sql, Handler<AsyncResult<JsonObject>> handler) {
-    return executeSingleRow(sql, false, handler);
-  }
-
-  /**
-   * Execute a one shot SQL statement that returns a single SQL row with column names. This method will reduce the
-   * boilerplate code by getting a connection from the pool (this object) and return it back after the execution.
-   * Only the first result from the result set is returned.
-   *
-   * @param sql       the statement to execute
-   * @param arguments the arguments to the query
-   * @param caseInsensitiveColumns return a case insensitive JSON
-   * @param handler   the result handler
-   * @return self
-   */
-  @Fluent
-  default SQLClient executeSingleRow(String sql, JsonArray arguments, boolean caseInsensitiveColumns, Handler<AsyncResult<JsonObject>> handler) {
-    return execute(sql, arguments, execute -> {
-      if (execute.failed()) {
-        handler.handle(Future.failedFuture(execute.cause()));
-      } else {
-        final ResultSet rs = execute.result();
-        if (rs == null) {
-          handler.handle(Future.succeededFuture());
-        } else {
-          List<JsonObject> results = rs.getRows(caseInsensitiveColumns);
-          if (results == null) {
-            handler.handle(Future.succeededFuture());
-          } else {
-            handler.handle(Future.succeededFuture(results.get(0)));
-          }
-        }
-      }
-    });
-  }
-
-  /**
-   * Execute a one shot SQL statement that returns a single SQL row with column names. This method will reduce the
-   * boilerplate code by getting a connection from the pool (this object) and return it back after the execution.
-   * Only the first result from the result set is returned.
-   *
-   * @param sql       the statement to execute
-   * @param arguments the arguments to the query
-   * @param handler   the result handler
-   * @return self
-   */
-  @Fluent
-  default SQLClient executeSingleRow(String sql, JsonArray arguments, Handler<AsyncResult<JsonObject>> handler) {
-    return executeSingleRow(sql, arguments, false, handler);
   }
 }

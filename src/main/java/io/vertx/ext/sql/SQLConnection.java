@@ -32,7 +32,7 @@ import java.util.List;
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 @VertxGen
-public interface SQLConnection extends AutoCloseable {
+public interface SQLConnection extends SQLQuery {
 
   /**
    * Sets the desired options to be applied to the current connection when statements are executed.
@@ -78,6 +78,7 @@ public interface SQLConnection extends AutoCloseable {
    * @see java.sql.PreparedStatement#executeQuery(String)
    */
   @Fluent
+  @Override
   SQLConnection query(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
@@ -103,6 +104,7 @@ public interface SQLConnection extends AutoCloseable {
    * @see java.sql.PreparedStatement#executeQuery(String)
    */
   @Fluent
+  @Override
   SQLConnection queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
