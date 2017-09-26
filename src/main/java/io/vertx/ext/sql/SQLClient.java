@@ -29,7 +29,7 @@ import io.vertx.core.json.JsonArray;
  * @author <a href="mailto:emad.albloushi@gmail.com">Emad Alblueshi</a>
  */
 @VertxGen
-public interface SQLClient extends SQLQuery {
+public interface SQLClient extends SQLOperations {
 
   /**
    * Returns a connection that can be used to perform SQL operations on. It's important to remember
@@ -135,4 +135,92 @@ public interface SQLClient extends SQLQuery {
     });
     return this;
   }
+
+  /**
+   * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement.
+   *
+   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param handler  the handler which is called once the operation completes.
+   *
+   * @see java.sql.Statement#executeUpdate(String)
+   * @see java.sql.PreparedStatement#executeUpdate(String)
+   */
+  @Fluent
+  @Override
+  default SQLClient update(String sql, Handler<AsyncResult<UpdateResult>> handler) {
+    getConnection(getConnection -> {
+      if (getConnection.failed()) {
+        handler.handle(Future.failedFuture(getConnection.cause()));
+      } else {
+        final SQLConnection conn = getConnection.result();
+
+        conn.update(sql, query -> {
+          if (query.failed()) {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.failedFuture(query.cause()));
+              }
+            });
+          } else {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.succeededFuture(query.result()));
+              }
+            });
+          }
+        });
+      }
+    });
+    return this;
+  }
+
+  /**
+   * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement with the given parameters
+   *
+   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params  these are the parameters to fill the statement.
+   * @param handler  the handler which is called once the operation completes.
+   *
+   * @see java.sql.Statement#executeUpdate(String)
+   * @see java.sql.PreparedStatement#executeUpdate(String)
+   */
+  @Fluent
+  @Override
+  default SQLClient updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> handler) {
+    getConnection(getConnection -> {
+      if (getConnection.failed()) {
+        handler.handle(Future.failedFuture(getConnection.cause()));
+      } else {
+        final SQLConnection conn = getConnection.result();
+
+        conn.updateWithParams(sql, params, query -> {
+          if (query.failed()) {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.failedFuture(query.cause()));
+              }
+            });
+          } else {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.succeededFuture(query.result()));
+              }
+            });
+          }
+        });
+      }
+    });
+    return this;
+  }
+
 }

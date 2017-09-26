@@ -20,7 +20,6 @@ import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.GenIgnore;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 
@@ -32,7 +31,7 @@ import java.util.List;
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 @VertxGen
-public interface SQLConnection extends SQLQuery {
+public interface SQLConnection extends SQLOperations {
 
   /**
    * Sets the desired options to be applied to the current connection when statements are executed.

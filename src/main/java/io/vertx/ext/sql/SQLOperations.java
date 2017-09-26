@@ -15,7 +15,7 @@ import java.util.List;
  * @author <a href="mailto:plopes@redhat.com">Paulo Lopes</a>
  */
 @VertxGen(concrete = false)
-public interface SQLQuery {
+public interface SQLOperations {
 
   /**
    * Executes the given SQL <code>SELECT</code> statement which returns the results of the query.
@@ -27,7 +27,7 @@ public interface SQLQuery {
    * @see java.sql.PreparedStatement#executeQuery(String)
    */
   @Fluent
-  SQLQuery query(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
+  SQLOperations query(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
    * Executes the given SQL <code>SELECT</code> prepared statement which returns the results of the query.
@@ -40,7 +40,7 @@ public interface SQLQuery {
    * @see java.sql.PreparedStatement#executeQuery(String)
    */
   @Fluent
-  SQLQuery queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
+  SQLOperations queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
    * Execute a one shot SQL statement that returns a single SQL row. This method will reduce the boilerplate code by
@@ -52,7 +52,7 @@ public interface SQLQuery {
    * @return self
    */
   @Fluent
-  default SQLQuery querySingle(String sql, Handler<AsyncResult<JsonArray>> handler) {
+  default SQLOperations querySingle(String sql, Handler<AsyncResult<JsonArray>> handler) {
     return query(sql, execute -> {
       if (execute.failed()) {
         handler.handle(Future.failedFuture(execute.cause()));
@@ -83,7 +83,7 @@ public interface SQLQuery {
    * @return self
    */
   @Fluent
-  default SQLQuery querySingleWithParams(String sql, JsonArray arguments, Handler<AsyncResult<JsonArray>> handler) {
+  default SQLOperations querySingleWithParams(String sql, JsonArray arguments, Handler<AsyncResult<JsonArray>> handler) {
     return queryWithParams(sql, arguments, execute -> {
       if (execute.failed()) {
         handler.handle(Future.failedFuture(execute.cause()));
@@ -102,4 +102,31 @@ public interface SQLQuery {
       }
     });
   }
+
+  /**
+   * Executes the given SQL statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement.
+   *
+   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param resultHandler  the handler which is called once the operation completes.
+   *
+   * @see java.sql.Statement#executeUpdate(String)
+   * @see java.sql.PreparedStatement#executeUpdate(String)
+   */
+  @Fluent
+  SQLOperations update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler);
+
+  /**
+   * Executes the given prepared statement which may be an <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>
+   * statement with the given parameters
+   *
+   * @param sql  the SQL to execute. For example <code>INSERT INTO table ...</code>
+   * @param params  these are the parameters to fill the statement.
+   * @param resultHandler  the handler which is called once the operation completes.
+   *
+   * @see java.sql.Statement#executeUpdate(String)
+   * @see java.sql.PreparedStatement#executeUpdate(String)
+   */
+  @Fluent
+  SQLOperations updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
 }
