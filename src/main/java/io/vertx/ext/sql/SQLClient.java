@@ -54,8 +54,8 @@ public interface SQLClient extends SQLOperations {
   void close();
 
   /**
-   * Execute a one shot SQL statement. This method will reduce the boilerplate code by getting a connection from the
-   * pool (this object) and return it back after the execution.
+   * Execute a single SQL statement, this method acquires a connection from the the pool and executes the SQL
+   * statement and returns it back after the execution.
    *
    * @param sql     the statement to execute
    * @param handler the result handler
@@ -95,8 +95,8 @@ public interface SQLClient extends SQLOperations {
   }
 
   /**
-   * Execute a one shot SQL statement with arguments. This method will reduce the boilerplate code by getting a
-   * connection from the pool (this object) and return it back after the execution.
+   * Execute a single SQL prepared statement, this method acquires a connection from the the pool and executes the SQL
+   * prepared statement and returns it back after the execution.
    *
    * @param sql       the statement to execute
    * @param arguments the arguments to the statement
