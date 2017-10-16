@@ -31,7 +31,7 @@ import java.util.List;
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 @VertxGen
-public interface SQLConnection extends SQLOperations {
+public interface SQLConnection extends SQLOperations, AutoCloseable {
 
   /**
    * Sets the desired options to be applied to the current connection when statements are executed.
