@@ -65,7 +65,11 @@ public interface SQLOperations {
           if (results == null) {
             handler.handle(Future.succeededFuture());
           } else {
-            handler.handle(Future.succeededFuture(results.get(0)));
+            if (results.size() > 0) {
+              handler.handle(Future.succeededFuture(results.get(0)));
+            } else {
+              handler.handle(Future.succeededFuture());
+            }
           }
         }
       }
@@ -96,7 +100,11 @@ public interface SQLOperations {
           if (results == null) {
             handler.handle(Future.succeededFuture());
           } else {
-            handler.handle(Future.succeededFuture(results.get(0)));
+            if (results.size() > 0) {
+              handler.handle(Future.succeededFuture(results.get(0)));
+            } else {
+              handler.handle(Future.succeededFuture());
+            }
           }
         }
       }
