@@ -2,10 +2,7 @@ package examples;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.sql.ResultSet;
-import io.vertx.ext.sql.SQLConnection;
-import io.vertx.ext.sql.SQLRowStream;
-import io.vertx.ext.sql.UpdateResult;
+import io.vertx.ext.sql.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -277,6 +274,20 @@ public class SQLExamples {
           .endHandler(v -> {
             // no more data available...
           });
+      }
+    });
+  }
+
+  public void example16(SQLClient client) {
+    client.query("SELECT * FROM USERS", ar -> {
+      if (ar.succeeded()) {
+        if (ar.succeeded()) {
+          ResultSet result = ar.result();
+        } else {
+          // Failed!
+        }
+        // NOTE that you don't need to worry about
+        // the connection management (e.g.: close)
       }
     });
   }
