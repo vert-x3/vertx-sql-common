@@ -45,6 +45,18 @@
  * {@link examples.SQLExamples#example16}
  * ----
  *
+ * You can perform the following operations as a simple one "shot" method call:
+ *
+ * * query
+ * * queryWithParam
+ * * update
+ * * updateWithParams
+ * * call
+ * * callWithParams
+ *
+ * For further details on these API please refer to the {@link io.vertx.ext.sql.SQLOperations} interface.
+ *
+ *
  * == The SQL Connection
  *
  * A connection to the database is represented by {@link io.vertx.ext.sql.SQLConnection}.
