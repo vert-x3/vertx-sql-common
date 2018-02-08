@@ -47,12 +47,14 @@
  *
  * You can perform the following operations as a simple one "shot" method call:
  *
- * * query
- * * queryWithParam
- * * update
- * * updateWithParams
- * * call
- * * callWithParams
+ * * {@link io.vertx.ext.sql.SQLClient#query(java.lang.String, io.vertx.core.Handler)}
+ * * {@link io.vertx.ext.sql.SQLClient#queryWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}
+ * * {@link io.vertx.ext.sql.SQLClient#querySingle(java.lang.String, io.vertx.core.Handler)}
+ * * {@link io.vertx.ext.sql.SQLClient#querySingleWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}
+ * * {@link io.vertx.ext.sql.SQLClient#update(java.lang.String, io.vertx.core.Handler)}
+ * * {@link io.vertx.ext.sql.SQLClient#updateWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}
+ * * {@link io.vertx.ext.sql.SQLClient#call(java.lang.String, io.vertx.core.Handler)}
+ * * {@link io.vertx.ext.sql.SQLClient#callWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}
  *
  * For further details on these API please refer to the {@link io.vertx.ext.sql.SQLOperations} interface.
  *
