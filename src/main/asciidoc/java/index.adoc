@@ -14,7 +14,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 <dependency>
   <groupId>io.vertx</groupId>
   <artifactId>vertx-sql-common</artifactId>
-  <version>3.5.0</version>
+  <version>3.5.1-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -22,7 +22,26 @@ To use this project, add the following dependency to the _dependencies_ section 
 
 [source,groovy,subs="+attributes"]
 ----
-compile 'io.vertx:vertx-sql-common:3.5.0'
+compile 'io.vertx:vertx-sql-common:3.5.1-SNAPSHOT'
+----
+
+== Simple SQL Operations
+
+There are times when you will want to run a single SQL operation, e.g.: a single select of a row, or a update to a
+set of rows which do not require to be part of a transaction or have dependencies on the previous or next operation.
+
+For these cases, clients provide a boilerplate-less API `link:../../apidocs/io/vertx/ext/sql/SQLOperations.html[SQLOperations]`. This interface will
+perform the following steps for you:
+
+1. acquire a connection from the connection pool
+2. perform your action
+3. close and return the connection to the connection pool
+
+An example where users get loaded from the `USERS` table could be:
+
+[source,java]
+----
+`link:../../apidocs/examples/SQLExamples.html#example16-io.vertx.ext.sql.SQLClient-[example16]`
 ----
 
 == The SQL Connection
@@ -41,13 +60,7 @@ When the operation is complete, the handler will be called:
 
 [source,java]
 ----
-connection.setAutoCommit(false, res -> {
-  if (res.succeeded()) {
-    // OK!
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example1-io.vertx.ext.sql.SQLConnection-[example1]`
 ----
 
 === Executing queries
@@ -61,14 +74,7 @@ been run.
 
 [source,java]
 ----
-connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", res -> {
-  if (res.succeeded()) {
-    // Get the result set
-    ResultSet resultSet = res.result();
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example2-io.vertx.ext.sql.SQLConnection-[example2]`
 ----
 
 The `link:../../apidocs/io/vertx/ext/sql/ResultSet.html[ResultSet]` instance represents the results of a query.
@@ -80,18 +86,7 @@ The results are a list of `link:../../apidocs/io/vertx/core/json/JsonArray.html[
 
 [source,java]
 ----
-List<String> columnNames = resultSet.getColumnNames();
-
-List<JsonArray> results = resultSet.getResults();
-
-for (JsonArray row : results) {
-
-  String id = row.getString(0);
-  String fName = row.getString(1);
-  String lName = row.getString(2);
-  int shoeSize = row.getInteger(3);
-
-}
+`link:../../apidocs/examples/SQLExamples.html#example3-io.vertx.ext.sql.ResultSet-[example3]`
 ----
 
 You can also retrieve the rows as a list of Json object instances with `link:../../apidocs/io/vertx/ext/sql/ResultSet.html#getRows--[getRows]` -
@@ -102,16 +97,7 @@ Here's an example of iterating through the results as Json object instances:
 
 [source,java]
 ----
-List<JsonObject> rows = resultSet.getRows();
-
-for (JsonObject row : rows) {
-
-  String id = row.getString("ID");
-  String fName = row.getString("FNAME");
-  String lName = row.getString("LNAME");
-  int shoeSize = row.getInteger("SHOE_SIZE");
-
-}
+`link:../../apidocs/examples/SQLExamples.html#example3__1-io.vertx.ext.sql.ResultSet-[example3__1]`
 ----
 
 === Prepared statement queries
@@ -124,18 +110,7 @@ values.
 
 [source,java]
 ----
-String query = "SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE WHERE LNAME=? AND SHOE_SIZE > ?";
-JsonArray params = new JsonArray().add("Fox").add(9);
-
-connection.queryWithParams(query, params, res -> {
-
-  if (res.succeeded()) {
-    // Get the result set
-    ResultSet resultSet = res.result();
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example3_1-io.vertx.ext.sql.SQLConnection-[example3_1]`
 ----
 
 === Executing INSERT, UPDATE or DELETE
@@ -152,17 +127,7 @@ if the update generated keys, they are available with `link:../../apidocs/io/ver
 
 [source,java]
 ----
-connection.update("INSERT INTO PEOPLE VALUES (null, 'john', 'smith', 9)", res -> {
-  if (res.succeeded()) {
-
-    UpdateResult result = res.result();
-    System.out.println("Updated no. of rows: " + result.getUpdated());
-    System.out.println("Generated keys: " + result.getKeys());
-
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example4-io.vertx.ext.sql.SQLConnection-[example4]`
 ----
 
 === Prepared statement updates
@@ -175,23 +140,7 @@ values.
 
 [source,java]
 ----
-String update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?";
-JsonArray params = new JsonArray().add("Fox");
-
-connection.updateWithParams(update, params, res -> {
-
-  if (res.succeeded()) {
-
-    UpdateResult updateResult = res.result();
-
-    System.out.println("No. of rows updated: " + updateResult.getUpdated());
-
-  } else {
-
-    // Failed!
-
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example5-io.vertx.ext.sql.SQLConnection-[example5]`
 ----
 
 === Callable statements
@@ -211,16 +160,7 @@ A SQL function returns some output using the `return` keyword, and in this case 
 
 [source,java]
 ----
-String func = "{ call one_hour_ago() }";
-
-connection.call(func, res -> {
-
-  if (res.succeeded()) {
-    ResultSet result = res.result();
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example8-io.vertx.ext.sql.SQLConnection-[example8]`
 ----
 
 When working with Procedures you and still return values from your procedures via its arguments, in the case you do
@@ -228,32 +168,14 @@ not return anything the usage is as follows:
 
 [source,java]
 ----
-String func = "{ call new_customer(?, ?) }";
-
-connection.callWithParams(func, new JsonArray().add("John").add("Doe"), null, res -> {
-
-  if (res.succeeded()) {
-    // Success!
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example9-io.vertx.ext.sql.SQLConnection-[example9]`
 ----
 
 However you can also return values like this:
 
 [source,java]
 ----
-String func = "{ call customer_lastname(?, ?) }";
-
-connection.callWithParams(func, new JsonArray().add("John"), new JsonArray().addNull().add("VARCHAR"), res -> {
-
-  if (res.succeeded()) {
-    ResultSet result = res.result();
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example10-io.vertx.ext.sql.SQLConnection-[example10]`
 ----
 
 Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a
@@ -280,34 +202,14 @@ A batches statement will exeucte a list of sql statements as for example:
 
 [source,java]
 ----
-List<String> batch = new ArrayList<>();
-batch.add("INSERT INTO emp (NAME) VALUES ('JOE')");
-batch.add("INSERT INTO emp (NAME) VALUES ('JANE')");
-
-connection.batch(batch, res -> {
-  if (res.succeeded()) {
-    List<Integer> result = res.result();
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example12-io.vertx.ext.sql.SQLConnection-[example12]`
 ----
 
 While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
 
 [source,java]
 ----
-List<JsonArray> batch = new ArrayList<>();
-batch.add(new JsonArray().add("joe"));
-batch.add(new JsonArray().add("jane"));
-
-connection.batchWithParams("INSERT INTO emp (name) VALUES (?)", batch, res -> {
-  if (res.succeeded()) {
-    List<Integer> result = res.result();
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example11-io.vertx.ext.sql.SQLConnection-[example11]`
 ----
 
 === Executing other operations
@@ -320,16 +222,7 @@ is complete
 
 [source,java]
 ----
-String sql = "CREATE TABLE PEOPLE (ID int generated by default as identity (start with 1 increment by 1) not null," +
-  "FNAME varchar(255), LNAME varchar(255), SHOE_SIZE int);";
-
-connection.execute(sql, execute -> {
-  if (execute.succeeded()) {
-    System.out.println("Table created !");
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example6-io.vertx.ext.sql.SQLConnection-[example6]`
 ----
 
 === Multiple ResultSet responses
@@ -340,12 +233,7 @@ under the property `next`. A simple walk of all result sets can be achieved like
 
 [source,java]
 ----
-while (rs != null) {
-  // do something with the result set...
-
-  // next step
-  rs = rs.getNext();
-}
+`link:../../apidocs/examples/SQLExamples.html#example13-io.vertx.ext.sql.ResultSet-[example13]`
 ----
 
 === Streaming
@@ -355,13 +243,7 @@ inflating the whole response into memory and JSON and data is just processed on 
 
 [source,java]
 ----
-connection.queryStream("SELECT * FROM large_table", stream -> {
-  if (stream.succeeded()) {
-    stream.result().handler(row -> {
-      // do something with the row...
-    });
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example14-io.vertx.ext.sql.SQLConnection-[example14]`
 ----
 
 You still have full control on when the stream is pauses, resumed and ended. For cases where your query returns
@@ -370,23 +252,7 @@ data the stream handler will receive the new data, otherwise the end handler is 
 
 [source,java]
 ----
-connection.queryStream("SELECT * FROM large_table; SELECT * FROM other_table", stream -> {
-  if (stream.succeeded()) {
-    SQLRowStream sqlRowStream = stream.result();
-
-    sqlRowStream
-      .resultSetClosedHandler(v -> {
-        // will ask to restart the stream with the new result set if any
-        sqlRowStream.moreResults();
-      })
-      .handler(row -> {
-        // do something with the row...
-      })
-      .endHandler(v -> {
-        // no more data available...
-      });
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example15-io.vertx.ext.sql.SQLConnection-[example15]`
 ----
 
 === Using transactions
@@ -401,13 +267,7 @@ Once the commit/rollback is complete the handler will be called and the next tra
 
 [source,java]
 ----
-connection.commit(res -> {
-  if (res.succeeded()) {
-    // Committed OK!
-  } else {
-    // Failed!
-  }
-});
+`link:../../apidocs/examples/SQLExamples.html#example7-io.vertx.ext.sql.SQLConnection-[example7]`
 ----
 
 === Closing connections

@@ -26,6 +26,25 @@
  * compile '${maven.groupId}:${maven.artifactId}:${maven.version}'
  * ----
  *
+ * == Simple SQL Operations
+ *
+ * There are times when you will want to run a single SQL operation, e.g.: a single select of a row, or a update to a
+ * set of rows which do not require to be part of a transaction or have dependencies on the previous or next operation.
+ *
+ * For these cases, clients provide a boilerplate-less API {@link io.vertx.ext.sql.SQLOperations}. This interface will
+ * perform the following steps for you:
+ *
+ * 1. acquire a connection from the connection pool
+ * 2. perform your action
+ * 3. close and return the connection to the connection pool
+ *
+ * An example where users get loaded from the `USERS` table could be:
+ *
+ * [source,$lang]
+ * ----
+ * {@link examples.SQLExamples#example16}
+ * ----
+ *
  * == The SQL Connection
  *
  * A connection to the database is represented by {@link io.vertx.ext.sql.SQLConnection}.
@@ -40,7 +59,7 @@
  *
  * When the operation is complete, the handler will be called:
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example1}
  * ----
@@ -54,7 +73,7 @@
  * The handler will be called with the results, represented by {@link io.vertx.ext.sql.ResultSet} when the query has
  * been run.
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example2}
  * ----
@@ -66,7 +85,7 @@
  *
  * The results are a list of {@link io.vertx.core.json.JsonArray} instances, one for each row of the results.
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example3}
  * ----
@@ -77,7 +96,7 @@
  *
  * Here's an example of iterating through the results as Json object instances:
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example3__1}
  * ----
@@ -90,7 +109,7 @@
  * This takes the query, containing the parameter place holders, and a {@link io.vertx.core.json.JsonArray} or parameter
  * values.
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example3_1}
  * ----
@@ -107,7 +126,7 @@
  * The update result holds the number of rows updated with {@link io.vertx.ext.sql.UpdateResult#getUpdated()}, and
  * if the update generated keys, they are available with {@link io.vertx.ext.sql.UpdateResult#getKeys()}.
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example4}
  * ----
@@ -120,7 +139,7 @@
  * This takes the update, containing the parameter place holders, and a {@link io.vertx.core.json.JsonArray} or parameter
  * values.
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example5}
  * ----
@@ -140,7 +159,7 @@
  *
  * A SQL function returns some output using the `return` keyword, and in this case one can call it like this:
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example8}
  * ----
@@ -148,14 +167,14 @@
  * When working with Procedures you and still return values from your procedures via its arguments, in the case you do
  * not return anything the usage is as follows:
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example9}
  * ----
  *
  * However you can also return values like this:
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example10}
  * ----
@@ -182,14 +201,14 @@
  *
  * A batches statement will exeucte a list of sql statements as for example:
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example12}
  * ----
  *
  * While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example11}
  * ----
@@ -202,7 +221,7 @@
  * The string is passed through without changes to the actual database. The handler is called when the operation
  * is complete
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example6}
  * ----
@@ -247,7 +266,7 @@
  *
  * Once the commit/rollback is complete the handler will be called and the next transaction will be automatically started.
  *
- * [source,java]
+ * [source,$lang]
  * ----
  * {@link examples.SQLExamples#example7}
  * ----
