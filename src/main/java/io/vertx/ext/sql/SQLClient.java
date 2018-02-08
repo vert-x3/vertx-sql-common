@@ -223,4 +223,95 @@ public interface SQLClient extends SQLOperations {
     return this;
   }
 
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   *
+   * @param sql  the SQL to execute. For example <code>{call getEmpName}</code>.
+   * @param handler  the handler which is called once the operation completes. It will return a {@code ResultSet}.
+   *
+   * @see java.sql.CallableStatement#execute(String)
+   */
+  @Fluent
+  @Override
+  default SQLClient call(String sql, Handler<AsyncResult<ResultSet>> handler) {
+    getConnection(getConnection -> {
+      if (getConnection.failed()) {
+        handler.handle(Future.failedFuture(getConnection.cause()));
+      } else {
+        final SQLConnection conn = getConnection.result();
+
+        conn.call(sql, call -> {
+          if (call.failed()) {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.failedFuture(call.cause()));
+              }
+            });
+          } else {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.succeededFuture(call.result()));
+              }
+            });
+          }
+        });
+      }
+    });
+    return this;
+  }
+
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   *
+   * The index of params and outputs are important for both arrays, for example when dealing with a prodecure that
+   * takes the first 2 arguments as input values and the 3 arg as an output then the arrays should be like:
+   *
+   * <pre>
+   *   params = [VALUE1, VALUE2, null]
+   *   outputs = [null, null, "VARCHAR"]
+   * </pre>
+   *
+   * @param sql  the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param params  these are the parameters to fill the statement.
+   * @param outputs  these are the outputs to fill the statement.
+   * @param handler  the handler which is called once the operation completes. It will return a {@code ResultSet}.
+   *
+   * @see java.sql.CallableStatement#execute(String)
+   */
+  @Fluent
+  @Override
+  default SQLClient callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> handler) {
+    getConnection(getConnection -> {
+      if (getConnection.failed()) {
+        handler.handle(Future.failedFuture(getConnection.cause()));
+      } else {
+        final SQLConnection conn = getConnection.result();
+
+        conn.callWithParams(sql, params, outputs, call -> {
+          if (call.failed()) {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.failedFuture(call.cause()));
+              }
+            });
+          } else {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.succeededFuture(call.result()));
+              }
+            });
+          }
+        });
+      }
+    });
+    return this;
+  }
 }

@@ -137,4 +137,37 @@ public interface SQLOperations {
    */
   @Fluent
   SQLOperations updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
+
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   *
+   * @param sql  the SQL to execute. For example <code>{call getEmpName}</code>.
+   * @param resultHandler  the handler which is called once the operation completes. It will return a {@code ResultSet}.
+   *
+   * @see java.sql.CallableStatement#execute(String)
+   */
+  @Fluent
+  SQLOperations call(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
+
+  /**
+   * Calls the given SQL <code>PROCEDURE</code> which returns the result from the procedure.
+   *
+   * The index of params and outputs are important for both arrays, for example when dealing with a prodecure that
+   * takes the first 2 arguments as input values and the 3 arg as an output then the arrays should be like:
+   *
+   * <pre>
+   *   params = [VALUE1, VALUE2, null]
+   *   outputs = [null, null, "VARCHAR"]
+   * </pre>
+   *
+   * @param sql  the SQL to execute. For example <code>{call getEmpName (?, ?)}</code>.
+   * @param params  these are the parameters to fill the statement.
+   * @param outputs  these are the outputs to fill the statement.
+   * @param resultHandler  the handler which is called once the operation completes. It will return a {@code ResultSet}.
+   *
+   * @see java.sql.CallableStatement#execute(String)
+   */
+  @Fluent
+  SQLOperations callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> resultHandler);
+
 }
