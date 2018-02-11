@@ -14,7 +14,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 <dependency>
   <groupId>io.vertx</groupId>
   <artifactId>vertx-sql-common</artifactId>
-  <version>3.5.1-SNAPSHOT</version>
+  <version>3.5.1</version>
 </dependency>
 ----
 
@@ -22,7 +22,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 
 [source,groovy,subs="+attributes"]
 ----
-compile 'io.vertx:vertx-sql-common:3.5.1-SNAPSHOT'
+compile 'io.vertx:vertx-sql-common:3.5.1'
 ----
 
 == Simple SQL Operations
@@ -43,6 +43,20 @@ An example where users get loaded from the `USERS` table could be:
 ----
 `link:unavailable#example16-instance_method[example16]`
 ----
+
+You can perform the following operations as a simple one "shot" method call:
+
+* `link:../../yardoc/VertxSql/SQLClient.html#query-instance_method[query]`
+* `link:../../yardoc/VertxSql/SQLClient.html#query_with_params-instance_method[queryWithParams]`
+* `link:../../yardoc/VertxSql/SQLOperations.html#query_single-instance_method[querySingle]`
+* `link:../../yardoc/VertxSql/SQLOperations.html#query_single_with_params-instance_method[querySingleWithParams]`
+* `link:../../yardoc/VertxSql/SQLClient.html#update-instance_method[update]`
+* `link:../../yardoc/VertxSql/SQLClient.html#update_with_params-instance_method[updateWithParams]`
+* `link:../../yardoc/VertxSql/SQLClient.html#call-instance_method[call]`
+* `link:../../yardoc/VertxSql/SQLClient.html#call_with_params-instance_method[callWithParams]`
+
+For further details on these API please refer to the `link:../../yardoc/VertxSql/SQLOperations.html[SQLOperations]` interface.
+
 
 == The SQL Connection
 

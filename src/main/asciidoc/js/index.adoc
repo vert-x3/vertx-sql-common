@@ -14,7 +14,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 <dependency>
   <groupId>io.vertx</groupId>
   <artifactId>vertx-sql-common</artifactId>
-  <version>3.5.1-SNAPSHOT</version>
+  <version>3.5.1</version>
 </dependency>
 ----
 
@@ -22,7 +22,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 
 [source,groovy,subs="+attributes"]
 ----
-compile 'io.vertx:vertx-sql-common:3.5.1-SNAPSHOT'
+compile 'io.vertx:vertx-sql-common:3.5.1'
 ----
 
 == Simple SQL Operations
@@ -43,6 +43,20 @@ An example where users get loaded from the `USERS` table could be:
 ----
 `example16`
 ----
+
+You can perform the following operations as a simple one "shot" method call:
+
+* `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#query[query]`
+* `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#queryWithParams[queryWithParams]`
+* `link:../../jsdoc/module-vertx-sql-js_sql_operations-SQLOperations.html#querySingle[querySingle]`
+* `link:../../jsdoc/module-vertx-sql-js_sql_operations-SQLOperations.html#querySingleWithParams[querySingleWithParams]`
+* `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#update[update]`
+* `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#updateWithParams[updateWithParams]`
+* `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#call[call]`
+* `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#callWithParams[callWithParams]`
+
+For further details on these API please refer to the `link:../../jsdoc/module-vertx-sql-js_sql_operations-SQLOperations.html[SQLOperations]` interface.
+
 
 == The SQL Connection
 
