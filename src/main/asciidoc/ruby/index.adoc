@@ -59,6 +59,8 @@ You can perform the following operations as a simple one "shot" method call:
 
 * `link:../../yardoc/VertxSql/SQLClient.html#query-instance_method[query]`
 * `link:../../yardoc/VertxSql/SQLClient.html#query_with_params-instance_method[queryWithParams]`
+* `link:../../yardoc/VertxSql/SQLClient.html#query_stream-instance_method[queryStream]`
+* `link:../../yardoc/VertxSql/SQLClient.html#query_stream_with_params-instance_method[queryStreamWithParams]`
 * `link:../../yardoc/VertxSql/SQLOperations.html#query_single-instance_method[querySingle]`
 * `link:../../yardoc/VertxSql/SQLOperations.html#query_single_with_params-instance_method[querySingleWithParams]`
 * `link:../../yardoc/VertxSql/SQLClient.html#update-instance_method[update]`

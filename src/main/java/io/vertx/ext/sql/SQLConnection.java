@@ -90,6 +90,7 @@ public interface SQLConnection extends SQLOperations, AutoCloseable {
    * @see java.sql.PreparedStatement#executeQuery(String)
    */
   @Fluent
+  @Override
   SQLConnection queryStream(String sql, Handler<AsyncResult<SQLRowStream>> handler);
 
   /**
@@ -117,6 +118,7 @@ public interface SQLConnection extends SQLOperations, AutoCloseable {
    * @see java.sql.PreparedStatement#executeQuery(String)
    */
   @Fluent
+  @Override
   SQLConnection queryStreamWithParams(String sql, JsonArray params, Handler<AsyncResult<SQLRowStream>> handler);
 
   /**
@@ -130,6 +132,7 @@ public interface SQLConnection extends SQLOperations, AutoCloseable {
    * @see java.sql.PreparedStatement#executeUpdate(String)
    */
   @Fluent
+  @Override
   SQLConnection update(String sql, Handler<AsyncResult<UpdateResult>> resultHandler);
 
   /**
@@ -144,6 +147,7 @@ public interface SQLConnection extends SQLOperations, AutoCloseable {
    * @see java.sql.PreparedStatement#executeUpdate(String)
    */
   @Fluent
+  @Override
   SQLConnection updateWithParams(String sql, JsonArray params, Handler<AsyncResult<UpdateResult>> resultHandler);
 
   /**
@@ -155,6 +159,7 @@ public interface SQLConnection extends SQLOperations, AutoCloseable {
    * @see java.sql.CallableStatement#execute(String)
    */
   @Fluent
+  @Override
   SQLConnection call(String sql, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
@@ -176,6 +181,7 @@ public interface SQLConnection extends SQLOperations, AutoCloseable {
    * @see java.sql.CallableStatement#execute(String)
    */
   @Fluent
+  @Override
   SQLConnection callWithParams(String sql, JsonArray params, JsonArray outputs, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
@@ -188,6 +194,7 @@ public interface SQLConnection extends SQLOperations, AutoCloseable {
   /**
    * Closes the connection. Important to always close the connection when you are done so it's returned to the pool.
    */
+  @Override
   void close();
 
   /**

@@ -49,6 +49,8 @@
  *
  * * {@link io.vertx.ext.sql.SQLClient#query(java.lang.String, io.vertx.core.Handler)}
  * * {@link io.vertx.ext.sql.SQLClient#queryWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}
+ * * {@link io.vertx.ext.sql.SQLClient#queryStream(java.lang.String, io.vertx.core.Handler)}
+ * * {@link io.vertx.ext.sql.SQLClient#queryStreamWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}
  * * {@link io.vertx.ext.sql.SQLClient#querySingle(java.lang.String, io.vertx.core.Handler)}
  * * {@link io.vertx.ext.sql.SQLClient#querySingleWithParams(java.lang.String, io.vertx.core.json.JsonArray, io.vertx.core.Handler)}
  * * {@link io.vertx.ext.sql.SQLClient#update(java.lang.String, io.vertx.core.Handler)}

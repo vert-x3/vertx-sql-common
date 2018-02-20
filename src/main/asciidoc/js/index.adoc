@@ -59,6 +59,8 @@ You can perform the following operations as a simple one "shot" method call:
 
 * `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#query[query]`
 * `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#queryWithParams[queryWithParams]`
+* `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#queryStream[queryStream]`
+* `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#queryStreamWithParams[queryStreamWithParams]`
 * `link:../../jsdoc/module-vertx-sql-js_sql_operations-SQLOperations.html#querySingle[querySingle]`
 * `link:../../jsdoc/module-vertx-sql-js_sql_operations-SQLOperations.html#querySingleWithParams[querySingleWithParams]`
 * `link:../../jsdoc/module-vertx-sql-js_sql_client-SQLClient.html#update[update]`

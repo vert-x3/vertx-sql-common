@@ -59,6 +59,8 @@ You can perform the following operations as a simple one "shot" method call:
 
 * `link:../../apidocs/io/vertx/ext/sql/SQLClient.html#query-java.lang.String-io.vertx.core.Handler-[query]`
 * `link:../../apidocs/io/vertx/ext/sql/SQLClient.html#queryWithParams-java.lang.String-io.vertx.core.json.JsonArray-io.vertx.core.Handler-[queryWithParams]`
+* `link:../../apidocs/io/vertx/ext/sql/SQLClient.html#queryStream-java.lang.String-io.vertx.core.Handler-[queryStream]`
+* `link:../../apidocs/io/vertx/ext/sql/SQLClient.html#queryStreamWithParams-java.lang.String-io.vertx.core.json.JsonArray-io.vertx.core.Handler-[queryStreamWithParams]`
 * `link:../../apidocs/io/vertx/ext/sql/SQLOperations.html#querySingle-java.lang.String-io.vertx.core.Handler-[querySingle]`
 * `link:../../apidocs/io/vertx/ext/sql/SQLOperations.html#querySingleWithParams-java.lang.String-io.vertx.core.json.JsonArray-io.vertx.core.Handler-[querySingleWithParams]`
 * `link:../../apidocs/io/vertx/ext/sql/SQLClient.html#update-java.lang.String-io.vertx.core.Handler-[update]`
