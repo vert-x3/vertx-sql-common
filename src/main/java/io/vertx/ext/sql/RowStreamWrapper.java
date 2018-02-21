@@ -76,7 +76,7 @@ class RowStreamWrapper implements SQLRowStream {
 
   @Override
   public void close() {
-    rowStream.close();
+    rowStream.close(h1 -> closeConnection(h2 -> {}));
   }
 
   @Override
