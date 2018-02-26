@@ -39,7 +39,7 @@ perform the following steps for you:
 
 An example where users get loaded from the `USERS` table could be:
 
-[source,java]
+[source,$lang]
 ----
 {@link examples.SQLExamples#example16}
 ----
