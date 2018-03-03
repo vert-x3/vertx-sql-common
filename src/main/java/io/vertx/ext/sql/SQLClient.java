@@ -22,6 +22,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
+import io.vertx.ext.sql.impl.RowStreamWrapper;
 
 /**
  * A common asynchronous client interface for interacting with SQL compliant database
@@ -69,7 +70,6 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-
         conn.query(sql, query -> {
           if (query.failed()) {
             conn.close(close -> {
@@ -95,6 +95,80 @@ public interface SQLClient extends SQLOperations {
   }
 
   /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   *
+   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param handler  the handler which is called once the operation completes. It will return a {@code SQLRowStream}.
+   *
+   * @see java.sql.Statement#executeQuery(String)
+   * @see java.sql.PreparedStatement#executeQuery(String)
+   */
+  @Fluent
+  @Override
+  default SQLClient queryStream(String sql, Handler<AsyncResult<SQLRowStream>> handler) {
+    getConnection(getConnection -> {
+      if (getConnection.failed()) {
+        handler.handle(Future.failedFuture(getConnection.cause()));
+      } else {
+        final SQLConnection conn = getConnection.result();
+        conn.queryStream(sql, query -> {
+          if (query.failed()) {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.failedFuture(query.cause()));
+              }
+            });
+          } else {
+            SQLRowStream wrapped = new RowStreamWrapper(conn, query.result());
+            handler.handle(Future.succeededFuture(wrapped));
+          }
+        });
+      }
+    });
+    return this;
+  }
+
+  /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   *
+   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params  these are the parameters to fill the statement.
+   * @param handler  the handler which is called once the operation completes. It will return a {@code SQLRowStream}.
+   *
+   * @see java.sql.Statement#executeQuery(String)
+   * @see java.sql.PreparedStatement#executeQuery(String)
+   */
+  @Fluent
+  @Override
+  default SQLClient queryStreamWithParams(String sql, JsonArray params, Handler<AsyncResult<SQLRowStream>> handler) {
+    getConnection(getConnection -> {
+      if (getConnection.failed()) {
+        handler.handle(Future.failedFuture(getConnection.cause()));
+      } else {
+        final SQLConnection conn = getConnection.result();
+        conn.queryStreamWithParams(sql, params, query -> {
+          if (query.failed()) {
+            conn.close(close -> {
+              if (close.failed()) {
+                handler.handle(Future.failedFuture(close.cause()));
+              } else {
+                handler.handle(Future.failedFuture(query.cause()));
+              }
+            });
+          } else {
+            SQLRowStream wrapped = new RowStreamWrapper(conn, query.result());
+            handler.handle(Future.succeededFuture(wrapped));
+          }
+        });
+      }
+    });
+    return this;
+  }
+
+
+  /**
    * Execute a single SQL prepared statement, this method acquires a connection from the the pool and executes the SQL
    * prepared statement and returns it back after the execution.
    *
@@ -111,7 +185,6 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-
         conn.queryWithParams(sql, arguments, query -> {
           if (query.failed()) {
             conn.close(close -> {
@@ -154,7 +227,6 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-
         conn.update(sql, query -> {
           if (query.failed()) {
             conn.close(close -> {
@@ -198,7 +270,6 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-
         conn.updateWithParams(sql, params, query -> {
           if (query.failed()) {
             conn.close(close -> {
@@ -239,7 +310,6 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-
         conn.call(sql, call -> {
           if (call.failed()) {
             conn.close(close -> {
@@ -290,7 +360,6 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-
         conn.callWithParams(sql, params, outputs, call -> {
           if (call.failed()) {
             conn.close(close -> {

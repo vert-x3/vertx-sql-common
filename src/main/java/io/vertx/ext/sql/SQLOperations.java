@@ -43,6 +43,31 @@ public interface SQLOperations {
   SQLOperations queryWithParams(String sql, JsonArray params, Handler<AsyncResult<ResultSet>> resultHandler);
 
   /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   *
+   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param handler  the handler which is called once the operation completes. It will return a {@code SQLRowStream}.
+   *
+   * @see java.sql.Statement#executeQuery(String)
+   * @see java.sql.PreparedStatement#executeQuery(String)
+   */
+  @Fluent
+  SQLOperations queryStream(String sql, Handler<AsyncResult<SQLRowStream>> handler);
+
+  /**
+   * Executes the given SQL <code>SELECT</code> statement which returns the results of the query as a read stream.
+   *
+   * @param sql  the SQL to execute. For example <code>SELECT * FROM table ...</code>.
+   * @param params  these are the parameters to fill the statement.
+   * @param handler  the handler which is called once the operation completes. It will return a {@code SQLRowStream}.
+   *
+   * @see java.sql.Statement#executeQuery(String)
+   * @see java.sql.PreparedStatement#executeQuery(String)
+   */
+  @Fluent
+  SQLOperations queryStreamWithParams(String sql, JsonArray params, Handler<AsyncResult<SQLRowStream>> handler);
+
+  /**
    * Execute a one shot SQL statement that returns a single SQL row. This method will reduce the boilerplate code by
    * getting a connection from the pool (this object) and return it back after the execution. Only the first result
    * from the result set is returned.
