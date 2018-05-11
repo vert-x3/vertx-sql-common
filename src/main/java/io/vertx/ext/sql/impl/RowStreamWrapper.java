@@ -44,7 +44,11 @@ public class RowStreamWrapper implements SQLRowStream {
 
   @Override
   public SQLRowStream exceptionHandler(Handler<Throwable> handler) {
-    rowStream.exceptionHandler(h1 -> closeConnection(h2 -> handler.handle(h1)));
+    if (handler == null) {
+      rowStream.exceptionHandler(null);
+    } else {
+      rowStream.exceptionHandler(h1 -> closeConnection(h2 -> handler.handle(h1)));
+    }
     return this;
   }
 
@@ -68,7 +72,11 @@ public class RowStreamWrapper implements SQLRowStream {
 
   @Override
   public SQLRowStream endHandler(Handler<Void> endHandler) {
-    rowStream.endHandler(h1 -> closeConnection(h2 -> endHandler.handle(h1)));
+    if (endHandler == null) {
+      rowStream.endHandler(null);
+    } else {
+      rowStream.endHandler(h1 -> closeConnection(h2 -> endHandler.handle(h1)));
+    }
     return this;
   }
 
@@ -95,11 +103,15 @@ public class RowStreamWrapper implements SQLRowStream {
 
   @Override
   public void close() {
-    rowStream.close(h1 -> closeConnection(h2 -> {}));
+    close(null);
   }
 
   @Override
   public void close(Handler<AsyncResult<Void>> handler) {
-    rowStream.close(h1 -> closeConnection(h2 -> handler.handle(h1)));
+    rowStream.close(h1 -> closeConnection(h2 -> {
+      if (handler != null) {
+        handler.handle(h1);
+      }
+    }));
   }
 }
