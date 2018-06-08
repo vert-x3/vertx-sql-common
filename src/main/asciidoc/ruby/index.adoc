@@ -14,7 +14,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 <dependency>
   <groupId>io.vertx</groupId>
   <artifactId>vertx-sql-common</artifactId>
-  <version>3.5.2</version>
+  <version>3.5.3-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -22,7 +22,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 
 [source,groovy,subs="+attributes"]
 ----
-compile 'io.vertx:vertx-sql-common:3.5.2'
+compile 'io.vertx:vertx-sql-common:3.5.3-SNAPSHOT'
 ----
 
 == Simple SQL Operations
@@ -41,7 +41,18 @@ An example where users get loaded from the `USERS` table could be:
 
 [source,ruby]
 ----
-`link:unavailable#example16-instance_method[example16]`
+client.query("SELECT * FROM USERS") { |ar_err,ar|
+  if (ar_err == nil)
+    if (ar_err == nil)
+      result = ar
+    else
+      # Failed!
+    end
+    # NOTE that you don't need to worry about
+    # the connection management (e.g.: close)
+  end
+}
+
 ----
 
 You can perform the following operations as a simple one "shot" method call:
@@ -74,7 +85,14 @@ When the operation is complete, the handler will be called:
 
 [source,ruby]
 ----
-`link:unavailable#example1-instance_method[example1]`
+connection.set_auto_commit(false) { |res_err,res|
+  if (res_err == nil)
+    # OK!
+  else
+    # Failed!
+  end
+}
+
 ----
 
 === Executing queries
@@ -88,7 +106,15 @@ been run.
 
 [source,ruby]
 ----
-`link:unavailable#example2-instance_method[example2]`
+connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE") { |res_err,res|
+  if (res_err == nil)
+    # Get the result set
+    resultSet = res
+  else
+    # Failed!
+  end
+}
+
 ----
 
 The `link:../dataobjects.html#ResultSet[ResultSet]` instance represents the results of a query.
@@ -100,7 +126,21 @@ The results are a list of `link:unavailable[JsonArray]` instances, one for each 
 
 [source,ruby]
 ----
-`link:unavailable#example3-instance_method[example3]`
+
+columnNames = resultSet['columnNames']
+
+results = resultSet['results']
+
+results.each do |row|
+
+  id = row[0]
+  fName = row[1]
+  lName = row[2]
+  shoeSize = row[3]
+
+end
+
+
 ----
 
 You can also retrieve the rows as a list of Json object instances with `link:../dataobjects.html#ResultSet#get_rows-instance_method[getRows]` -
@@ -111,7 +151,19 @@ Here's an example of iterating through the results as Json object instances:
 
 [source,ruby]
 ----
-`link:unavailable#example3__1-instance_method[example3__1]`
+
+rows = resultSet['rows']
+
+rows.each do |row|
+
+  id = row['ID']
+  fName = row['FNAME']
+  lName = row['LNAME']
+  shoeSize = row['SHOE_SIZE']
+
+end
+
+
 ----
 
 === Prepared statement queries
@@ -124,7 +176,24 @@ values.
 
 [source,ruby]
 ----
-`link:unavailable#example3_1-instance_method[example3_1]`
+
+query = "SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE WHERE LNAME=? AND SHOE_SIZE > ?"
+params = [
+  "Fox",
+  9
+]
+
+connection.query_with_params(query, params) { |res_err,res|
+
+  if (res_err == nil)
+    # Get the result set
+    resultSet = res
+  else
+    # Failed!
+  end
+}
+
+
 ----
 
 === Executing INSERT, UPDATE or DELETE
@@ -141,7 +210,21 @@ if the update generated keys, they are available with `link:../dataobjects.html#
 
 [source,ruby]
 ----
-`link:unavailable#example4-instance_method[example4]`
+
+connection.update("INSERT INTO PEOPLE VALUES (null, 'john', 'smith', 9)") { |res_err,res|
+  if (res_err == nil)
+
+    result = res
+    puts "Updated no. of rows: #{result['updated']}"
+    puts "Generated keys: #{result['keys']}"
+
+  else
+    # Failed!
+  end
+}
+
+
+
 ----
 
 === Prepared statement updates
@@ -154,7 +237,28 @@ values.
 
 [source,ruby]
 ----
-`link:unavailable#example5-instance_method[example5]`
+
+update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?"
+params = [
+  "Fox"
+]
+
+connection.update_with_params(update, params) { |res_err,res|
+
+  if (res_err == nil)
+
+    updateResult = res
+
+    puts "No. of rows updated: #{updateResult['updated']}"
+
+  else
+
+    # Failed!
+
+  end
+}
+
+
 ----
 
 === Callable statements
@@ -174,7 +278,23 @@ A SQL function returns some output using the `return` keyword, and in this case 
 
 [source,ruby]
 ----
-`link:unavailable#example8-instance_method[example8]`
+# Assume that there is a SQL function like this:
+#
+# create function one_hour_ago() returns timestamp
+#    return now() - 1 hour;
+
+# note that you do not need to declare the output for functions
+func = "{ call one_hour_ago() }"
+
+connection.call(func) { |res_err,res|
+
+  if (res_err == nil)
+    result = res
+  else
+    # Failed!
+  end
+}
+
 ----
 
 When working with Procedures you and still return values from your procedures via its arguments, in the case you do
@@ -182,14 +302,54 @@ not return anything the usage is as follows:
 
 [source,ruby]
 ----
-`link:unavailable#example9-instance_method[example9]`
+# Assume that there is a SQL procedure like this:
+#
+# create procedure new_customer(firstname varchar(50), lastname varchar(50))
+#   modifies sql data
+#   insert into customers values (default, firstname, lastname, current_timestamp);
+
+func = "{ call new_customer(?, ?) }"
+
+connection.call_with_params(func, [
+  "John",
+  "Doe"
+], nil) { |res_err,res|
+
+  if (res_err == nil)
+    # Success!
+  else
+    # Failed!
+  end
+}
+
 ----
 
 However you can also return values like this:
 
 [source,ruby]
 ----
-`link:unavailable#example10-instance_method[example10]`
+# Assume that there is a SQL procedure like this:
+#
+# create procedure customer_lastname(IN firstname varchar(50), OUT lastname varchar(50))
+#   modifies sql data
+#   select lastname into lastname from customers where firstname = firstname;
+
+func = "{ call customer_lastname(?, ?) }"
+
+connection.call_with_params(func, [
+  "John"
+], [
+  nil,
+  "VARCHAR"
+]) { |res_err,res|
+
+  if (res_err == nil)
+    result = res
+  else
+    # Failed!
+  end
+}
+
 ----
 
 Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a
@@ -216,14 +376,42 @@ A batches statement will exeucte a list of sql statements as for example:
 
 [source,ruby]
 ----
-`link:unavailable#example12-instance_method[example12]`
+# Batch values
+batch = Array.new
+batch.push("INSERT INTO emp (NAME) VALUES ('JOE')")
+batch.push("INSERT INTO emp (NAME) VALUES ('JANE')")
+
+connection.batch(batch) { |res_err,res|
+  if (res_err == nil)
+    result = res
+  else
+    # Failed!
+  end
+}
+
 ----
 
 While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
 
 [source,ruby]
 ----
-`link:unavailable#example11-instance_method[example11]`
+# Batch values
+batch = Array.new
+batch.push([
+  "joe"
+])
+batch.push([
+  "jane"
+])
+
+connection.batch_with_params("INSERT INTO emp (name) VALUES (?)", batch) { |res_err,res|
+  if (res_err == nil)
+    result = res
+  else
+    # Failed!
+  end
+}
+
 ----
 
 === Executing other operations
@@ -236,7 +424,18 @@ is complete
 
 [source,ruby]
 ----
-`link:unavailable#example6-instance_method[example6]`
+
+sql = "CREATE TABLE PEOPLE (ID int generated by default as identity (start with 1 increment by 1) not null,FNAME varchar(255), LNAME varchar(255), SHOE_SIZE int);"
+
+connection.execute(sql) { |execute_err,execute|
+  if (execute_err == nil)
+    puts "Table created !"
+  else
+    # Failed!
+  end
+}
+
+
 ----
 
 === Multiple ResultSet responses
@@ -247,7 +446,12 @@ under the property `next`. A simple walk of all result sets can be achieved like
 
 [source,ruby]
 ----
-`link:unavailable#example13-instance_method[example13]`
+# do something with the result set...
+
+# next step
+rs = rs['next']
+
+
 ----
 
 === Streaming
@@ -257,7 +461,14 @@ inflating the whole response into memory and JSON and data is just processed on 
 
 [source,ruby]
 ----
-`link:unavailable#example14-instance_method[example14]`
+connection.query_stream("SELECT * FROM large_table") { |stream_err,stream|
+  if (stream_err == nil)
+    stream.handler() { |row|
+      # do something with the row...
+    }
+  end
+}
+
 ----
 
 You still have full control on when the stream is pauses, resumed and ended. For cases where your query returns
@@ -266,7 +477,21 @@ data the stream handler will receive the new data, otherwise the end handler is 
 
 [source,ruby]
 ----
-`link:unavailable#example15-instance_method[example15]`
+connection.query_stream("SELECT * FROM large_table; SELECT * FROM other_table") { |stream_err,stream|
+  if (stream_err == nil)
+    sqlRowStream = stream
+
+    sqlRowStream.result_set_closed_handler() { |v|
+      # will ask to restart the stream with the new result set if any
+      sqlRowStream.more_results()
+    }.handler() { |row|
+      # do something with the row...
+    }.end_handler() { |v|
+      # no more data available...
+    }
+  end
+}
+
 ----
 
 === Using transactions
@@ -281,7 +506,20 @@ Once the commit/rollback is complete the handler will be called and the next tra
 
 [source,ruby]
 ----
-`link:unavailable#example7-instance_method[example7]`
+
+# Do stuff with connection - updates etc
+
+# Now commit
+
+connection.commit() { |res_err,res|
+  if (res_err == nil)
+    # Committed OK!
+  else
+    # Failed!
+  end
+}
+
+
 ----
 
 === Closing connections

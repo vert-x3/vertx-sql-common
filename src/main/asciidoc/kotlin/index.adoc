@@ -14,7 +14,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 <dependency>
   <groupId>io.vertx</groupId>
   <artifactId>vertx-sql-common</artifactId>
-  <version>3.5.2</version>
+  <version>3.5.3-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -22,7 +22,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 
 [source,groovy,subs="+attributes"]
 ----
-compile 'io.vertx:vertx-sql-common:3.5.2'
+compile 'io.vertx:vertx-sql-common:3.5.3-SNAPSHOT'
 ----
 
 == Simple SQL Operations
@@ -41,7 +41,18 @@ An example where users get loaded from the `USERS` table could be:
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example16-io.vertx.ext.sql.SQLClient-[example16]`
+client.query("SELECT * FROM USERS", { ar ->
+  if (ar.succeeded()) {
+    if (ar.succeeded()) {
+      var result = ar.result()
+    } else {
+      // Failed!
+    }
+    // NOTE that you don't need to worry about
+    // the connection management (e.g.: close)
+  }
+})
+
 ----
 
 You can perform the following operations as a simple one "shot" method call:
@@ -74,7 +85,14 @@ When the operation is complete, the handler will be called:
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example1-io.vertx.ext.sql.SQLConnection-[example1]`
+connection.setAutoCommit(false, { res ->
+  if (res.succeeded()) {
+    // OK!
+  } else {
+    // Failed!
+  }
+})
+
 ----
 
 === Executing queries
@@ -88,7 +106,15 @@ been run.
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example2-io.vertx.ext.sql.SQLConnection-[example2]`
+connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", { res ->
+  if (res.succeeded()) {
+    // Get the result set
+    var resultSet = res.result()
+  } else {
+    // Failed!
+  }
+})
+
 ----
 
 The `link:../../apidocs/io/vertx/ext/sql/ResultSet.html[ResultSet]` instance represents the results of a query.
@@ -100,7 +126,21 @@ The results are a list of `link:../../apidocs/io/vertx/core/json/JsonArray.html[
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example3-io.vertx.ext.sql.ResultSet-[example3]`
+
+var columnNames = resultSet.columnNames
+
+var results = resultSet.results
+
+for (row in results) {
+
+  var id = row.getString(0)
+  var fName = row.getString(1)
+  var lName = row.getString(2)
+  var shoeSize = row.getInteger(3)
+
+}
+
+
 ----
 
 You can also retrieve the rows as a list of Json object instances with `link:../../apidocs/io/vertx/ext/sql/ResultSet.html#getRows--[getRows]` -
@@ -111,7 +151,19 @@ Here's an example of iterating through the results as Json object instances:
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example3__1-io.vertx.ext.sql.ResultSet-[example3__1]`
+
+var rows = resultSet.rows
+
+for (row in rows) {
+
+  var id = row.getString("ID")
+  var fName = row.getString("FNAME")
+  var lName = row.getString("LNAME")
+  var shoeSize = row.getInteger("SHOE_SIZE")
+
+}
+
+
 ----
 
 === Prepared statement queries
@@ -124,7 +176,23 @@ values.
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example3_1-io.vertx.ext.sql.SQLConnection-[example3_1]`
+
+var query = "SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE WHERE LNAME=? AND SHOE_SIZE > ?"
+var params = json {
+  array("Fox", 9)
+}
+
+connection.queryWithParams(query, params, { res ->
+
+  if (res.succeeded()) {
+    // Get the result set
+    var resultSet = res.result()
+  } else {
+    // Failed!
+  }
+})
+
+
 ----
 
 === Executing INSERT, UPDATE or DELETE
@@ -141,7 +209,21 @@ if the update generated keys, they are available with `link:../../apidocs/io/ver
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example4-io.vertx.ext.sql.SQLConnection-[example4]`
+
+connection.update("INSERT INTO PEOPLE VALUES (null, 'john', 'smith', 9)", { res ->
+  if (res.succeeded()) {
+
+    var result = res.result()
+    println("Updated no. of rows: ${result.updated}")
+    println("Generated keys: ${result.keys}")
+
+  } else {
+    // Failed!
+  }
+})
+
+
+
 ----
 
 === Prepared statement updates
@@ -154,7 +236,28 @@ values.
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example5-io.vertx.ext.sql.SQLConnection-[example5]`
+
+var update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?"
+var params = json {
+  array("Fox")
+}
+
+connection.updateWithParams(update, params, { res ->
+
+  if (res.succeeded()) {
+
+    var updateResult = res.result()
+
+    println("No. of rows updated: ${updateResult.updated}")
+
+  } else {
+
+    // Failed!
+
+  }
+})
+
+
 ----
 
 === Callable statements
@@ -174,7 +277,23 @@ A SQL function returns some output using the `return` keyword, and in this case 
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example8-io.vertx.ext.sql.SQLConnection-[example8]`
+// Assume that there is a SQL function like this:
+//
+// create function one_hour_ago() returns timestamp
+//    return now() - 1 hour;
+
+// note that you do not need to declare the output for functions
+var func = "{ call one_hour_ago() }"
+
+connection.call(func, { res ->
+
+  if (res.succeeded()) {
+    var result = res.result()
+  } else {
+    // Failed!
+  }
+})
+
 ----
 
 When working with Procedures you and still return values from your procedures via its arguments, in the case you do
@@ -182,14 +301,52 @@ not return anything the usage is as follows:
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example9-io.vertx.ext.sql.SQLConnection-[example9]`
+// Assume that there is a SQL procedure like this:
+//
+// create procedure new_customer(firstname varchar(50), lastname varchar(50))
+//   modifies sql data
+//   insert into customers values (default, firstname, lastname, current_timestamp);
+
+var func = "{ call new_customer(?, ?) }"
+
+connection.callWithParams(func, json {
+  array("John", "Doe")
+}, null, { res ->
+
+  if (res.succeeded()) {
+    // Success!
+  } else {
+    // Failed!
+  }
+})
+
 ----
 
 However you can also return values like this:
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example10-io.vertx.ext.sql.SQLConnection-[example10]`
+// Assume that there is a SQL procedure like this:
+//
+// create procedure customer_lastname(IN firstname varchar(50), OUT lastname varchar(50))
+//   modifies sql data
+//   select lastname into lastname from customers where firstname = firstname;
+
+var func = "{ call customer_lastname(?, ?) }"
+
+connection.callWithParams(func, json {
+  array("John")
+}, json {
+  array(null, "VARCHAR")
+}, { res ->
+
+  if (res.succeeded()) {
+    var result = res.result()
+  } else {
+    // Failed!
+  }
+})
+
 ----
 
 Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a
@@ -216,14 +373,42 @@ A batches statement will exeucte a list of sql statements as for example:
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example12-io.vertx.ext.sql.SQLConnection-[example12]`
+// Batch values
+var batch = mutableListOf<Any?>()
+batch.add("INSERT INTO emp (NAME) VALUES ('JOE')")
+batch.add("INSERT INTO emp (NAME) VALUES ('JANE')")
+
+connection.batch(batch, { res ->
+  if (res.succeeded()) {
+    var result = res.result()
+  } else {
+    // Failed!
+  }
+})
+
 ----
 
 While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example11-io.vertx.ext.sql.SQLConnection-[example11]`
+// Batch values
+var batch = mutableListOf<Any?>()
+batch.add(json {
+  array("joe")
+})
+batch.add(json {
+  array("jane")
+})
+
+connection.batchWithParams("INSERT INTO emp (name) VALUES (?)", batch, { res ->
+  if (res.succeeded()) {
+    var result = res.result()
+  } else {
+    // Failed!
+  }
+})
+
 ----
 
 === Executing other operations
@@ -236,7 +421,18 @@ is complete
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example6-io.vertx.ext.sql.SQLConnection-[example6]`
+
+var sql = "CREATE TABLE PEOPLE (ID int generated by default as identity (start with 1 increment by 1) not null,FNAME varchar(255), LNAME varchar(255), SHOE_SIZE int);"
+
+connection.execute(sql, { execute ->
+  if (execute.succeeded()) {
+    println("Table created !")
+  } else {
+    // Failed!
+  }
+})
+
+
 ----
 
 === Multiple ResultSet responses
@@ -247,7 +443,12 @@ under the property `next`. A simple walk of all result sets can be achieved like
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example13-io.vertx.ext.sql.ResultSet-[example13]`
+// do something with the result set...
+
+// next step
+rs = rs.next
+
+
 ----
 
 === Streaming
@@ -257,7 +458,14 @@ inflating the whole response into memory and JSON and data is just processed on 
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example14-io.vertx.ext.sql.SQLConnection-[example14]`
+connection.queryStream("SELECT * FROM large_table", { stream ->
+  if (stream.succeeded()) {
+    stream.result().handler({ row ->
+      // do something with the row...
+    })
+  }
+})
+
 ----
 
 You still have full control on when the stream is pauses, resumed and ended. For cases where your query returns
@@ -266,7 +474,21 @@ data the stream handler will receive the new data, otherwise the end handler is 
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example15-io.vertx.ext.sql.SQLConnection-[example15]`
+connection.queryStream("SELECT * FROM large_table; SELECT * FROM other_table", { stream ->
+  if (stream.succeeded()) {
+    var sqlRowStream = stream.result()
+
+    sqlRowStream.resultSetClosedHandler({ v ->
+      // will ask to restart the stream with the new result set if any
+      sqlRowStream.moreResults()
+    }).handler({ row ->
+      // do something with the row...
+    }).endHandler({ v ->
+      // no more data available...
+    })
+  }
+})
+
 ----
 
 === Using transactions
@@ -281,7 +503,20 @@ Once the commit/rollback is complete the handler will be called and the next tra
 
 [source,kotlin]
 ----
-`link:../../apidocs/examples/SQLExamples.html#example7-io.vertx.ext.sql.SQLConnection-[example7]`
+
+// Do stuff with connection - updates etc
+
+// Now commit
+
+connection.commit({ res ->
+  if (res.succeeded()) {
+    // Committed OK!
+  } else {
+    // Failed!
+  }
+})
+
+
 ----
 
 === Closing connections

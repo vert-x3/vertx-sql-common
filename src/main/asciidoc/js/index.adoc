@@ -14,7 +14,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 <dependency>
   <groupId>io.vertx</groupId>
   <artifactId>vertx-sql-common</artifactId>
-  <version>3.5.2</version>
+  <version>3.5.3-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -22,7 +22,7 @@ To use this project, add the following dependency to the _dependencies_ section 
 
 [source,groovy,subs="+attributes"]
 ----
-compile 'io.vertx:vertx-sql-common:3.5.2'
+compile 'io.vertx:vertx-sql-common:3.5.3-SNAPSHOT'
 ----
 
 == Simple SQL Operations
@@ -41,7 +41,18 @@ An example where users get loaded from the `USERS` table could be:
 
 [source,js]
 ----
-`example16`
+client.query("SELECT * FROM USERS", function (ar, ar_err) {
+  if (ar_err == null) {
+    if (ar_err == null) {
+      var result = ar;
+    } else {
+      // Failed!
+    }
+    // NOTE that you don't need to worry about
+    // the connection management (e.g.: close)
+  }
+});
+
 ----
 
 You can perform the following operations as a simple one "shot" method call:
@@ -74,7 +85,14 @@ When the operation is complete, the handler will be called:
 
 [source,js]
 ----
-`example1`
+connection.setAutoCommit(false, function (res, res_err) {
+  if (res_err == null) {
+    // OK!
+  } else {
+    // Failed!
+  }
+});
+
 ----
 
 === Executing queries
@@ -88,7 +106,15 @@ been run.
 
 [source,js]
 ----
-`example2`
+connection.query("SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE", function (res, res_err) {
+  if (res_err == null) {
+    // Get the result set
+    var resultSet = res;
+  } else {
+    // Failed!
+  }
+});
+
 ----
 
 The `link:../dataobjects.html#ResultSet[ResultSet]` instance represents the results of a query.
@@ -100,7 +126,21 @@ The results are a list of `JsonArray` instances, one for each row of the results
 
 [source,js]
 ----
-`example3`
+
+var columnNames = resultSet.columnNames;
+
+var results = resultSet.results;
+
+Array.prototype.forEach.call(results, function(row) {
+
+  var id = row[0];
+  var fName = row[1];
+  var lName = row[2];
+  var shoeSize = row[3];
+
+});
+
+
 ----
 
 You can also retrieve the rows as a list of Json object instances with `link:../dataobjects.html#ResultSet#getRows[getRows]` -
@@ -111,7 +151,19 @@ Here's an example of iterating through the results as Json object instances:
 
 [source,js]
 ----
-`example3__1`
+
+var rows = resultSet.rows;
+
+Array.prototype.forEach.call(rows, function(row) {
+
+  var id = row.ID;
+  var fName = row.FNAME;
+  var lName = row.LNAME;
+  var shoeSize = row.SHOE_SIZE;
+
+});
+
+
 ----
 
 === Prepared statement queries
@@ -124,7 +176,24 @@ values.
 
 [source,js]
 ----
-`example3_1`
+
+var query = "SELECT ID, FNAME, LNAME, SHOE_SIZE from PEOPLE WHERE LNAME=? AND SHOE_SIZE > ?";
+var params = [
+  "Fox",
+  9
+];
+
+connection.queryWithParams(query, params, function (res, res_err) {
+
+  if (res_err == null) {
+    // Get the result set
+    var resultSet = res;
+  } else {
+    // Failed!
+  }
+});
+
+
 ----
 
 === Executing INSERT, UPDATE or DELETE
@@ -141,7 +210,21 @@ if the update generated keys, they are available with `link:../dataobjects.html#
 
 [source,js]
 ----
-`example4`
+
+connection.update("INSERT INTO PEOPLE VALUES (null, 'john', 'smith', 9)", function (res, res_err) {
+  if (res_err == null) {
+
+    var result = res;
+    console.log("Updated no. of rows: " + result.updated);
+    console.log("Generated keys: " + result.keys);
+
+  } else {
+    // Failed!
+  }
+});
+
+
+
 ----
 
 === Prepared statement updates
@@ -154,7 +237,28 @@ values.
 
 [source,js]
 ----
-`example5`
+
+var update = "UPDATE PEOPLE SET SHOE_SIZE = 10 WHERE LNAME=?";
+var params = [
+  "Fox"
+];
+
+connection.updateWithParams(update, params, function (res, res_err) {
+
+  if (res_err == null) {
+
+    var updateResult = res;
+
+    console.log("No. of rows updated: " + updateResult.updated);
+
+  } else {
+
+    // Failed!
+
+  }
+});
+
+
 ----
 
 === Callable statements
@@ -174,7 +278,23 @@ A SQL function returns some output using the `return` keyword, and in this case 
 
 [source,js]
 ----
-`example8`
+// Assume that there is a SQL function like this:
+//
+// create function one_hour_ago() returns timestamp
+//    return now() - 1 hour;
+
+// note that you do not need to declare the output for functions
+var func = "{ call one_hour_ago() }";
+
+connection.call(func, function (res, res_err) {
+
+  if (res_err == null) {
+    var result = res;
+  } else {
+    // Failed!
+  }
+});
+
 ----
 
 When working with Procedures you and still return values from your procedures via its arguments, in the case you do
@@ -182,14 +302,54 @@ not return anything the usage is as follows:
 
 [source,js]
 ----
-`example9`
+// Assume that there is a SQL procedure like this:
+//
+// create procedure new_customer(firstname varchar(50), lastname varchar(50))
+//   modifies sql data
+//   insert into customers values (default, firstname, lastname, current_timestamp);
+
+var func = "{ call new_customer(?, ?) }";
+
+connection.callWithParams(func, [
+  "John",
+  "Doe"
+], null, function (res, res_err) {
+
+  if (res_err == null) {
+    // Success!
+  } else {
+    // Failed!
+  }
+});
+
 ----
 
 However you can also return values like this:
 
 [source,js]
 ----
-`example10`
+// Assume that there is a SQL procedure like this:
+//
+// create procedure customer_lastname(IN firstname varchar(50), OUT lastname varchar(50))
+//   modifies sql data
+//   select lastname into lastname from customers where firstname = firstname;
+
+var func = "{ call customer_lastname(?, ?) }";
+
+connection.callWithParams(func, [
+  "John"
+], [
+  null,
+  "VARCHAR"
+], function (res, res_err) {
+
+  if (res_err == null) {
+    var result = res;
+  } else {
+    // Failed!
+  }
+});
+
 ----
 
 Note that the index of the arguments matches the index of the `?` and that the output parameters expect to be a
@@ -216,14 +376,42 @@ A batches statement will exeucte a list of sql statements as for example:
 
 [source,js]
 ----
-`example12`
+// Batch values
+var batch = [];
+batch.push("INSERT INTO emp (NAME) VALUES ('JOE')");
+batch.push("INSERT INTO emp (NAME) VALUES ('JANE')");
+
+connection.batch(batch, function (res, res_err) {
+  if (res_err == null) {
+    var result = res;
+  } else {
+    // Failed!
+  }
+});
+
 ----
 
 While a prepared or callable statement batch will reuse the sql statement and take an list of arguments as for example:
 
 [source,js]
 ----
-`example11`
+// Batch values
+var batch = [];
+batch.push([
+  "joe"
+]);
+batch.push([
+  "jane"
+]);
+
+connection.batchWithParams("INSERT INTO emp (name) VALUES (?)", batch, function (res, res_err) {
+  if (res_err == null) {
+    var result = res;
+  } else {
+    // Failed!
+  }
+});
+
 ----
 
 === Executing other operations
@@ -236,7 +424,18 @@ is complete
 
 [source,js]
 ----
-`example6`
+
+var sql = "CREATE TABLE PEOPLE (ID int generated by default as identity (start with 1 increment by 1) not null,FNAME varchar(255), LNAME varchar(255), SHOE_SIZE int);";
+
+connection.execute(sql, function (execute, execute_err) {
+  if (execute_err == null) {
+    console.log("Table created !");
+  } else {
+    // Failed!
+  }
+});
+
+
 ----
 
 === Multiple ResultSet responses
@@ -247,7 +446,12 @@ under the property `next`. A simple walk of all result sets can be achieved like
 
 [source,js]
 ----
-`example13`
+// do something with the result set...
+
+// next step
+rs = rs.next;
+;
+
 ----
 
 === Streaming
@@ -257,7 +461,14 @@ inflating the whole response into memory and JSON and data is just processed on 
 
 [source,js]
 ----
-`example14`
+connection.queryStream("SELECT * FROM large_table", function (stream, stream_err) {
+  if (stream_err == null) {
+    stream.handler(function (row) {
+      // do something with the row...
+    });
+  }
+});
+
 ----
 
 You still have full control on when the stream is pauses, resumed and ended. For cases where your query returns
@@ -266,7 +477,21 @@ data the stream handler will receive the new data, otherwise the end handler is 
 
 [source,js]
 ----
-`example15`
+connection.queryStream("SELECT * FROM large_table; SELECT * FROM other_table", function (stream, stream_err) {
+  if (stream_err == null) {
+    var sqlRowStream = stream;
+
+    sqlRowStream.resultSetClosedHandler(function (v) {
+      // will ask to restart the stream with the new result set if any
+      sqlRowStream.moreResults();
+    }).handler(function (row) {
+      // do something with the row...
+    }).endHandler(function (v) {
+      // no more data available...
+    });
+  }
+});
+
 ----
 
 === Using transactions
@@ -281,7 +506,20 @@ Once the commit/rollback is complete the handler will be called and the next tra
 
 [source,js]
 ----
-`example7`
+
+// Do stuff with connection - updates etc
+
+// Now commit
+
+connection.commit(function (res, res_err) {
+  if (res_err == null) {
+    // Committed OK!
+  } else {
+    // Failed!
+  }
+});
+
+
 ----
 
 === Closing connections
