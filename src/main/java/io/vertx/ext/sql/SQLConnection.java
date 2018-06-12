@@ -23,6 +23,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 
+import java.io.Closeable;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ import java.util.List;
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
 @VertxGen
-public interface SQLConnection extends SQLOperations, AutoCloseable {
+public interface SQLConnection extends SQLOperations, Closeable {
 
   /**
    * Sets the desired options to be applied to the current connection when statements are executed.
