@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2014 Red Hat, Inc. and others
- *
- * Red Hat licenses this file to you under the Apache License, version 2.0
- * (the "License"); you may not use this file except in compliance with the
- * License.  You may obtain a copy of the License at:
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
-
 package io.vertx.ext.sql;
 
 import io.vertx.core.json.JsonObject;
@@ -21,39 +5,60 @@ import io.vertx.core.json.JsonArray;
 
 /**
  * Converter for {@link io.vertx.ext.sql.ResultSet}.
- *
  * NOTE: This class has been automatically generated from the {@link io.vertx.ext.sql.ResultSet} original class using Vert.x codegen.
  */
 public class ResultSetConverter {
 
-  public static void fromJson(JsonObject json, ResultSet obj) {
-    if (json.getValue("columnNames") instanceof JsonArray) {
-      java.util.ArrayList<java.lang.String> list = new java.util.ArrayList<>();
-      json.getJsonArray("columnNames").forEach( item -> {
-        if (item instanceof String)
-          list.add((String)item);
-      });
-      obj.setColumnNames(list);
-    }
-    if (json.getValue("next") instanceof JsonObject) {
-      obj.setNext(new io.vertx.ext.sql.ResultSet((JsonObject)json.getValue("next")));
-    }
-    if (json.getValue("output") instanceof JsonArray) {
-      obj.setOutput(((JsonArray)json.getValue("output")).copy());
-    }
-    if (json.getValue("results") instanceof JsonArray) {
-      java.util.ArrayList<io.vertx.core.json.JsonArray> list = new java.util.ArrayList<>();
-      json.getJsonArray("results").forEach( item -> {
-        if (item instanceof JsonArray)
-          list.add(((JsonArray)item).copy());
-      });
-      obj.setResults(list);
-    }
-    if (json.getValue("rows") instanceof JsonArray) {
+  public static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, ResultSet obj) {
+    for (java.util.Map.Entry<String, Object> member : json) {
+      switch (member.getKey()) {
+        case "columnNames":
+          if (member.getValue() instanceof JsonArray) {
+            java.util.ArrayList<java.lang.String> list =  new java.util.ArrayList<>();
+            ((Iterable<Object>)member.getValue()).forEach( item -> {
+              if (item instanceof String)
+                list.add((String)item);
+            });
+            obj.setColumnNames(list);
+          }
+          break;
+        case "next":
+          if (member.getValue() instanceof JsonObject) {
+            obj.setNext(new io.vertx.ext.sql.ResultSet((JsonObject)member.getValue()));
+          }
+          break;
+        case "numColumns":
+          break;
+        case "numRows":
+          break;
+        case "output":
+          if (member.getValue() instanceof JsonArray) {
+            obj.setOutput(((JsonArray)member.getValue()).copy());
+          }
+          break;
+        case "results":
+          if (member.getValue() instanceof JsonArray) {
+            java.util.ArrayList<io.vertx.core.json.JsonArray> list =  new java.util.ArrayList<>();
+            ((Iterable<Object>)member.getValue()).forEach( item -> {
+              if (item instanceof JsonArray)
+                list.add(((JsonArray)item).copy());
+            });
+            obj.setResults(list);
+          }
+          break;
+        case "rows":
+          if (member.getValue() instanceof JsonArray) {
+          }
+          break;
+      }
     }
   }
 
   public static void toJson(ResultSet obj, JsonObject json) {
+    toJson(obj, json.getMap());
+  }
+
+  public static void toJson(ResultSet obj, java.util.Map<String, Object> json) {
     if (obj.getColumnNames() != null) {
       JsonArray array = new JsonArray();
       obj.getColumnNames().forEach(item -> array.add(item));
