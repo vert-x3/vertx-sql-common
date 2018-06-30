@@ -1,6 +1,7 @@
 package io.vertx.ext.sql;
 
 import io.vertx.codegen.annotations.Fluent;
+import io.vertx.codegen.annotations.Nullable;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
@@ -52,7 +53,7 @@ public interface SQLOperations {
    * @return self
    */
   @Fluent
-  default SQLOperations querySingle(String sql, Handler<AsyncResult<JsonArray>> handler) {
+  default SQLOperations querySingle(String sql, Handler<AsyncResult<@Nullable JsonArray>> handler) {
     return query(sql, execute -> {
       if (execute.failed()) {
         handler.handle(Future.failedFuture(execute.cause()));
@@ -87,7 +88,7 @@ public interface SQLOperations {
    * @return self
    */
   @Fluent
-  default SQLOperations querySingleWithParams(String sql, JsonArray arguments, Handler<AsyncResult<JsonArray>> handler) {
+  default SQLOperations querySingleWithParams(String sql, JsonArray arguments, Handler<AsyncResult<@Nullable JsonArray>> handler) {
     return queryWithParams(sql, arguments, execute -> {
       if (execute.failed()) {
         handler.handle(Future.failedFuture(execute.cause()));
