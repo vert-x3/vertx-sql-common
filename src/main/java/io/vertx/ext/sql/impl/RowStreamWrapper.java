@@ -18,6 +18,7 @@ package io.vertx.ext.sql.impl;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.streams.ReadStream;
 import io.vertx.ext.sql.SQLConnection;
 import io.vertx.ext.sql.SQLRowStream;
 
@@ -55,6 +56,12 @@ public class RowStreamWrapper implements SQLRowStream {
   @Override
   public SQLRowStream handler(Handler<JsonArray> handler) {
     rowStream.handler(handler);
+    return this;
+  }
+
+  @Override
+  public ReadStream<JsonArray> fetch(long amount) {
+    rowStream.fetch(amount);
     return this;
   }
 
