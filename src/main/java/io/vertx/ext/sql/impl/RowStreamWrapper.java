@@ -60,7 +60,7 @@ public class RowStreamWrapper implements SQLRowStream {
   }
 
   @Override
-  public ReadStream<JsonArray> fetch(long amount) {
+  public SQLRowStream fetch(long amount) {
     rowStream.fetch(amount);
     return this;
   }
