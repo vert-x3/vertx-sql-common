@@ -1,6 +1,6 @@
 # Common SQL Interfaces
 
-[![Build Status](https://vertx.ci.cloudbees.com/buildStatus/icon?job=vert.x3-sql-common)](https://vertx.ci.cloudbees.com/view/vert.x-3/job/vert.x3-sql-common/)
+[![Build Status](https://travis-ci.org/vert-x3/vertx-sql-common.svg?branch=master?branch=master)](https://travis-ci.org/vert-x3/vertx-sql-common)
 
 This repository contains common SQL interfaces used by different Vert.x sql-based services, e.g. JDBC, MySQL and
 PostgreSQL.

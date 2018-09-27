@@ -1,26 +1,25 @@
-sudo: required
 language: java
-notifications:
-  email:
-  - vertx3-ci@googlegroups.com
-jdk:
-- oraclejdk8
 branches:
   only:
   - master
-downstream:
-- vert-x3/vertx-mysql-postgresql-client
-env:
-  global:
-  - secure: KS3szyPdmJWwPmz61X+uSpPMrrgE8mEKAhpX69kuav5U5oIucM7ISmg1OnPBorJzlLJsEGgyI/FlXmrUKxwcZUOVqOvFTn6gzcihICNJjgE2t8CXOrwdtXSnIObr2qIABHeRw+l2xfvxVGpEsqJnZ0TaQr6okJN9h9ojCcsrSAw=
-  - secure: Q0tJf6oh/zp7sNlPkco4GSzitIO7iMMFVzC/d/TZsZhaYjjTC6Lo/gy+VAxnxVqvUGQ0XLxC4emxnNzF/70NA4y52uImmi7ZH/TzBDH23M1IDe6+7ohVE32gDpLx+fHWQeT7IBc8PnTvvS4cGznGyMxwIgmrJOzm2AcgXQkHaug=
-  - secure: MPH2+FbAjK91pMV9B/Q0Wz8+xJlB53nEJ+Fd0Ndl91zv/DNsLAC8RFKzm0n0uzH3jtfl2oFxalV6Hhd4jBMItCuIdNGeZHdAZFYhi0bmMY05SCaedniuTHrdWxtop+RF1jDMuFjjeW2dZ+Azw/vQffr9DfClR1fasjKom/eV0uQ=
-before_install:
-- gem install travis
-- cp .travis.maven.settings.xml $HOME/.m2/settings.xml
-install: true
-script:
-- set -e
-- travis_wait 30 mvn -q -Dmaven.test.redirectTestOutputToFile clean verify -B
-- bash .travis.deploy.artifacts.sh
-- ruby .travis.downstream.rb
+  - /^\d+\.\d+$/
+jobs:
+  include:
+    - stage: test
+      name: "OracleJDK 8"
+      jdk: oraclejdk8
+      script: mvn -q clean verify -B
+    - if: type != pull_request
+      name: "OpenJDK 11"
+      jdk: openjdk11
+      script: mvn -q clean verify -B
+    - stage: deploy
+      name: "Deploy to Sonatype's snapshots repository"
+      if: type != pull_request
+      script: bash .travis.deploy.artifacts.sh
+notifications:
+  email:
+    recipients:
+      - vertx3-ci@googlegroups.com
+    on_success: always
+    on_failure: always
