@@ -74,10 +74,7 @@
         <configuration>
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-            <Export-Package>io.vertx.ext.sql;version=${project.version},
-              io.vertx.groovy.ext.sql;version=${project.version},
-              io.vertx.rxjava.ext.sql;version=${project.version}
-            </Export-Package>
+            <Export-Package>io.vertx.ext.sql;version=${project.version}</Export-Package>
             <Import-Package>
               javax.sql,
               io.vertx.core*,
