@@ -23,6 +23,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.sql.impl.RowStreamWrapper;
+import io.vertx.ext.sql.util.HandlerUtil;
 
 /**
  * A common asynchronous client interface for interacting with SQL compliant database
@@ -185,25 +186,7 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-        conn.queryWithParams(sql, arguments, query -> {
-          if (query.failed()) {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.failedFuture(query.cause()));
-              }
-            });
-          } else {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.succeededFuture(query.result()));
-              }
-            });
-          }
-        });
+        conn.queryWithParams(sql, arguments, HandlerUtil.closeAndHandleResult(conn,handler));
       }
     });
     return this;
@@ -227,25 +210,7 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-        conn.update(sql, query -> {
-          if (query.failed()) {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.failedFuture(query.cause()));
-              }
-            });
-          } else {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.succeededFuture(query.result()));
-              }
-            });
-          }
-        });
+        conn.update(sql, HandlerUtil.closeAndHandleResult(conn,handler));
       }
     });
     return this;
@@ -270,25 +235,7 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-        conn.updateWithParams(sql, params, query -> {
-          if (query.failed()) {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.failedFuture(query.cause()));
-              }
-            });
-          } else {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.succeededFuture(query.result()));
-              }
-            });
-          }
-        });
+        conn.updateWithParams(sql, params, HandlerUtil.closeAndHandleResult(conn,handler));
       }
     });
     return this;
@@ -310,25 +257,7 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-        conn.call(sql, call -> {
-          if (call.failed()) {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.failedFuture(call.cause()));
-              }
-            });
-          } else {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.succeededFuture(call.result()));
-              }
-            });
-          }
-        });
+        conn.call(sql, HandlerUtil.closeAndHandleResult(conn, handler));
       }
     });
     return this;
@@ -360,25 +289,7 @@ public interface SQLClient extends SQLOperations {
         handler.handle(Future.failedFuture(getConnection.cause()));
       } else {
         final SQLConnection conn = getConnection.result();
-        conn.callWithParams(sql, params, outputs, call -> {
-          if (call.failed()) {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.failedFuture(call.cause()));
-              }
-            });
-          } else {
-            conn.close(close -> {
-              if (close.failed()) {
-                handler.handle(Future.failedFuture(close.cause()));
-              } else {
-                handler.handle(Future.succeededFuture(call.result()));
-              }
-            });
-          }
-        });
+        conn.callWithParams(sql, params, outputs, HandlerUtil.closeAndHandleResult(conn, handler));
       }
     });
     return this;

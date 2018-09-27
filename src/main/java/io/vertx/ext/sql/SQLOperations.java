@@ -4,11 +4,10 @@ import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.Nullable;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
+import io.vertx.ext.sql.util.HandlerUtil;
 
-import java.util.List;
 
 /**
  * Represents a SQL query interface to a database
@@ -79,27 +78,7 @@ public interface SQLOperations {
    */
   @Fluent
   default SQLOperations querySingle(String sql, Handler<AsyncResult<@Nullable JsonArray>> handler) {
-    return query(sql, execute -> {
-      if (execute.failed()) {
-        handler.handle(Future.failedFuture(execute.cause()));
-      } else {
-        final ResultSet rs = execute.result();
-        if (rs == null) {
-          handler.handle(Future.succeededFuture());
-        } else {
-          List<JsonArray> results = rs.getResults();
-          if (results == null) {
-            handler.handle(Future.succeededFuture());
-          } else {
-            if (results.size() > 0) {
-              handler.handle(Future.succeededFuture(results.get(0)));
-            } else {
-              handler.handle(Future.succeededFuture());
-            }
-          }
-        }
-      }
-    });
+    return query(sql, HandlerUtil.handleResultSetSingleRow(handler));
   }
 
   /**
@@ -114,27 +93,7 @@ public interface SQLOperations {
    */
   @Fluent
   default SQLOperations querySingleWithParams(String sql, JsonArray arguments, Handler<AsyncResult<@Nullable JsonArray>> handler) {
-    return queryWithParams(sql, arguments, execute -> {
-      if (execute.failed()) {
-        handler.handle(Future.failedFuture(execute.cause()));
-      } else {
-        final ResultSet rs = execute.result();
-        if (rs == null) {
-          handler.handle(Future.succeededFuture());
-        } else {
-          List<JsonArray> results = rs.getResults();
-          if (results == null) {
-            handler.handle(Future.succeededFuture());
-          } else {
-            if (results.size() > 0) {
-              handler.handle(Future.succeededFuture(results.get(0)));
-            } else {
-              handler.handle(Future.succeededFuture());
-            }
-          }
-        }
-      }
-    });
+    return queryWithParams(sql, arguments, HandlerUtil.handleResultSetSingleRow(handler));
   }
 
   /**
