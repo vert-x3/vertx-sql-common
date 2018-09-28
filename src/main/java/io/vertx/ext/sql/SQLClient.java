@@ -23,7 +23,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.ext.sql.impl.RowStreamWrapper;
-import io.vertx.ext.sql.util.HandlerUtil;
 
 /**
  * A common asynchronous client interface for interacting with SQL compliant database
