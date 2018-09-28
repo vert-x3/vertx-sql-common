@@ -14,15 +14,13 @@
  * You may elect to redistribute this code under either of these licenses.
  */
 
-package io.vertx.ext.sql.util;
+package io.vertx.ext.sql;
 
 import io.vertx.codegen.annotations.Nullable;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
-import io.vertx.ext.sql.ResultSet;
-import io.vertx.ext.sql.SQLConnection;
 
 import java.util.List;
 
@@ -31,7 +29,7 @@ import java.util.List;
  *
  * @author <a href="mailto:jvelez@chibchasoft.com">Juan VELEZ</a>
  */
-public final class HandlerUtil {
+final class HandlerUtil {
   /**
    * Returns a {@link Handler} for {@link AsyncResult} of {@link ResultSet} that will delegate the outcome of the result
    * (only a single row) to the passed handler. If the {@code AsyncResult} is failed then the failure will be propagated
@@ -39,7 +37,7 @@ public final class HandlerUtil {
    * @param handler the target handler of the result
    * @return the new handler
    */
-  public static Handler<AsyncResult<ResultSet>> handleResultSetSingleRow(Handler<AsyncResult<@Nullable JsonArray>> handler) {
+  static Handler<AsyncResult<ResultSet>> handleResultSetSingleRow(Handler<AsyncResult<@Nullable JsonArray>> handler) {
     return ar -> {
       if (ar.failed()) {
         handler.handle(Future.failedFuture(ar.cause()));
@@ -72,7 +70,7 @@ public final class HandlerUtil {
    * @param handler the target handler of the result
    * @return the new handler
    */
-  public static <T> Handler<AsyncResult<T>> closeAndHandleResult(SQLConnection conn, Handler<AsyncResult<T>> handler) {
+  static <T> Handler<AsyncResult<T>> closeAndHandleResult(SQLConnection conn, Handler<AsyncResult<T>> handler) {
     return ar -> {
       if (ar.failed()) {
         conn.close(close -> {
