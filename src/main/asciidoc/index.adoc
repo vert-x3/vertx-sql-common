@@ -287,3 +287,7 @@ Once the commit/rollback is complete the handler will be called and the next tra
 === Closing connections
 
 When you've done with the connection you should return it to the pool with {@link io.vertx.ext.sql.SQLConnection#close(io.vertx.core.Handler)}.
+
+ifeval::["$lang" == "java"]
+include::override/rxjava2.adoc[]
+endif::[]
