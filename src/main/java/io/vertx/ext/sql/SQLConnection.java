@@ -221,6 +221,7 @@ public interface SQLConnection extends SQLOperations, Closeable {
    * It can be over written at any time and becomes active on the next query call.
    *
    * @param timeoutInSeconds the max amount of seconds the query can take to execute.
+   * @deprecated instead use {@link #setOptions(SQLOptions)} with {@link SQLOptions#setQueryTimeout(int)}
    */
   @Fluent
   @Deprecated
