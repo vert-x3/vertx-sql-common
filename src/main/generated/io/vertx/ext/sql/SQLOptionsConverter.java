@@ -4,12 +4,19 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.json.JsonArray;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import io.vertx.core.spi.json.JsonDecoder;
 
 /**
- * Converter for {@link io.vertx.ext.sql.SQLOptions}.
+ * Converter and Codec for {@link io.vertx.ext.sql.SQLOptions}.
  * NOTE: This class has been automatically generated from the {@link io.vertx.ext.sql.SQLOptions} original class using Vert.x codegen.
  */
-public class SQLOptionsConverter {
+public class SQLOptionsConverter implements JsonDecoder<SQLOptions, JsonObject> {
+
+  public static final SQLOptionsConverter INSTANCE = new SQLOptionsConverter();
+
+  @Override public SQLOptions decode(JsonObject value) { return (value != null) ? new SQLOptions(value) : null; }
+
+  @Override public Class<SQLOptions> getTargetClass() { return SQLOptions.class; }
 
   public static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, SQLOptions obj) {
     for (java.util.Map.Entry<String, Object> member : json) {

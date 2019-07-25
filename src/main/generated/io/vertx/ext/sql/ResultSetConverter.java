@@ -4,12 +4,21 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.json.JsonArray;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import io.vertx.core.spi.json.JsonCodec;
 
 /**
- * Converter for {@link io.vertx.ext.sql.ResultSet}.
+ * Converter and Codec for {@link io.vertx.ext.sql.ResultSet}.
  * NOTE: This class has been automatically generated from the {@link io.vertx.ext.sql.ResultSet} original class using Vert.x codegen.
  */
-public class ResultSetConverter {
+public class ResultSetConverter implements JsonCodec<ResultSet, JsonObject> {
+
+  public static final ResultSetConverter INSTANCE = new ResultSetConverter();
+
+  @Override public JsonObject encode(ResultSet value) { return (value != null) ? value.toJson() : null; }
+
+  @Override public ResultSet decode(JsonObject value) { return (value != null) ? new ResultSet(value) : null; }
+
+  @Override public Class<ResultSet> getTargetClass() { return ResultSet.class; }
 
   public static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, ResultSet obj) {
     for (java.util.Map.Entry<String, Object> member : json) {
