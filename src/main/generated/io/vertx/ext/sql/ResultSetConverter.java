@@ -27,7 +27,7 @@ public class ResultSetConverter {
           break;
         case "next":
           if (member.getValue() instanceof JsonObject) {
-            obj.setNext(new io.vertx.ext.sql.ResultSet((JsonObject)member.getValue()));
+            obj.setNext(new io.vertx.ext.sql.ResultSet((io.vertx.core.json.JsonObject)member.getValue()));
           }
           break;
         case "numColumns":
