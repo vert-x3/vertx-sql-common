@@ -1,6 +1,5 @@
 # Common SQL Interfaces
 
-[![Build Status](https://travis-ci.org/vert-x3/vertx-sql-common.svg?branch=master)](https://travis-ci.org/vert-x3/vertx-sql-common)
+This module has been merged in https://github.com/vert-x3/vertx-jdbc-client in Vert.x 4
 
-This repository contains common SQL interfaces used by different Vert.x sql-based services, e.g. JDBC, MySQL and
-PostgreSQL.
+This module is still supported for Vert.x 3 https://github.com/vert-x3/vertx-jdbc-client/tree/3.9 
