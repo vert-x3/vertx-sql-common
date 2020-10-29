@@ -157,6 +157,7 @@ public class SQLOptions {
   
   public SQLOptions setMaxRows(int maxRows) {
     this.maxRows = maxRows;
+    return this;
   }
   
   public FetchDirection getFetchDirection() {
